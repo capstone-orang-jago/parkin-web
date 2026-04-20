@@ -1,26 +1,92 @@
 @import "tailwindcss";
 
+/* Design spec 02 — semantic tokens (hindari hex di komponen; pakai var ini) */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --nav-active: #d4860a;
+
+  --color-bg: #fbf8f2;
+  /* Kartu / panel di atas latar krem — putih bersih (selaras preferensi produk) */
+  --color-surface-card: #ffffff;
+  --color-surface: #f7f3ea;
+  --color-surface-2: #f2ede0;
+  --color-surface-offset: #eae2d2;
+  --color-surface-dynamic: #e0d6c4;
+  --color-divider: #d5c9b4;
+  --color-border: #c9baa2;
+
+  --color-text: #2b2218;
+  --color-text-muted: #71624f;
+  --color-text-faint: #afa093;
+  --color-text-inverse: #fbf8f2;
+
+  --color-primary: #d4860a;
+  --color-primary-hover: #b56808;
+  --color-primary-active: #8f4e07;
+  --color-primary-highlight: #fdecc2;
+
+  --color-secondary: #0d7e96;
+  --color-secondary-hover: #0a6578;
+  --color-secondary-active: #08505f;
+  --color-secondary-highlight: #c3eef3;
+
+  --color-success: #138a50;
+  --color-success-highlight: #c8f0da;
+  --color-error: #c93232;
+  --color-error-highlight: #fdd8d8;
+  --color-warning: #d4860a;
+  --color-warning-highlight: #fdecc2;
+
+  --shadow-sm: 0 1px 2px oklch(0.2 0.02 60 / 0.06);
+  --shadow-md: 0 4px 12px oklch(0.2 0.02 60 / 0.08);
+
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-full: 9999px;
+
+  --text-xs: clamp(0.6875rem, 0.65rem + 0.2vw, 0.75rem);
+  --text-sm: clamp(0.75rem, 0.72rem + 0.2vw, 0.875rem);
+  --text-base: clamp(0.875rem, 0.85rem + 0.2vw, 0.9375rem);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-bomba-50: #fef7e6;
+  --color-bomba-100: #fdecc2;
+  --color-bomba-500: #d4860a;
+  --color-bomba-600: #b56808;
+  --color-bomba-700: #8f4e07;
+  --color-megalit-50: #f9f7f4;
+  --color-megalit-100: #f0ede7;
+  --color-megalit-200: #e1d9ce;
+  --color-megalit-300: #cbbfb0;
+  --color-megalit-400: #afa093;
+  --color-megalit-500: #8e7d6f;
+  --color-megalit-600: #71624f;
+  --color-megalit-700: #574a3c;
+  --color-megalit-800: #3e3329;
+  --color-megalit-900: #2b2218;
+  --color-teluk-50: #eaf8fa;
+  --color-teluk-100: #c3eef3;
+  --color-teluk-500: #0d7e96;
+  --color-teluk-600: #0a6578;
+  --color-teluk-700: #08505f;
+  --color-lore-100: #c8f0da;
+  --color-lore-500: #138a50;
+  --color-lore-600: #0f6e40;
+  --color-merahbomba-100: #fdd8d8;
+  --color-merahbomba-500: #c93232;
+  --color-merahbomba-600: #a32626;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-sans: var(--font-body), "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-display: var(--font-brand-display), "Instrument Serif", Georgia, serif;
+  --font-mono: var(--font-mono), ui-monospace, monospace;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: 1.5;
 }
