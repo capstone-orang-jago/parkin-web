@@ -22,32 +22,32 @@ export function TransactionDetailView({ tx }: { tx: TransactionDetail }) {
         <p className="font-mono text-sm text-(--color-text-muted)">{tx.code}</p>
       </div>
 
-      <div className="rounded-[var(--radius-lg)] border border-(--color-border) bg-(--color-surface-card) p-6 shadow-sm">
+      <div className="rounded-lg border border-(--color-border) bg-(--color-surface-card) p-6 shadow-sm">
         <div className="grid gap-8 lg:grid-cols-2">
           <div className="space-y-4">
             <h3 className="text-xs font-semibold uppercase tracking-wide text-(--color-text-muted)">
               Parkir &amp; tarif
             </h3>
             <dl className="space-y-3 text-sm">
-              <div className="flex justify-between gap-4 border-b border-[var(--color-divider)] pb-2">
+              <div className="flex justify-between gap-4 border-b border-(--color-divider) pb-2">
                 <dt className="text-(--color-text-muted)">Waktu</dt>
                 <dd className="text-right font-medium text-(--color-text)">
                   {formatDateTime(tx.time)}
                 </dd>
               </div>
-              <div className="flex justify-between gap-4 border-b border-[var(--color-divider)] pb-2">
+              <div className="flex justify-between gap-4 border-b border-(--color-divider) pb-2">
                 <dt className="text-(--color-text-muted)">Lokasi</dt>
                 <dd className="text-right font-medium text-(--color-text)">
                   {tx.locationName}
                 </dd>
               </div>
-              <div className="flex justify-between gap-4 border-b border-[var(--color-divider)] pb-2">
+              <div className="flex justify-between gap-4 border-b border-(--color-divider) pb-2">
                 <dt className="text-(--color-text-muted)">Petugas</dt>
                 <dd className="text-right font-medium text-(--color-text)">
                   {tx.officerName}
                 </dd>
               </div>
-              <div className="flex justify-between gap-4 border-b border-[var(--color-divider)] pb-2">
+              <div className="flex justify-between gap-4 border-b border-(--color-divider) pb-2">
                 <dt className="text-(--color-text-muted)">Kendaraan</dt>
                 <dd className="flex items-center justify-end gap-2 font-medium text-(--color-text)">
                   {tx.vehicleType === "Motor" ? (
@@ -72,11 +72,11 @@ export function TransactionDetailView({ tx }: { tx: TransactionDetail }) {
               Pengguna &amp; saldo
             </h3>
             <dl className="space-y-3 text-sm">
-              <div className="flex justify-between gap-4 border-b border-[var(--color-divider)] pb-2">
+              <div className="flex justify-between gap-4 border-b border-(--color-divider) pb-2">
                 <dt className="text-(--color-text-muted)">ID pengguna</dt>
                 <dd className="font-mono text-right text-(--color-text)">{tx.userIdMasked}</dd>
               </div>
-              <div className="flex justify-between gap-4 border-b border-[var(--color-divider)] pb-2">
+              <div className="flex justify-between gap-4 border-b border-(--color-divider) pb-2">
                 <dt className="text-(--color-text-muted)">Saldo sebelum</dt>
                 <dd className="text-right text-lg font-semibold tabular-nums text-(--color-text)">
                   {formatRp(tx.balanceBeforeRp)}
@@ -92,7 +92,7 @@ export function TransactionDetailView({ tx }: { tx: TransactionDetail }) {
           </div>
         </div>
 
-        <p className="mt-6 text-xs text-[var(--color-text-faint)]">
+        <p className="mt-6 text-xs text-(--color-text-faint)">
           Waktu sistem mencatat transaksi sesuai server ParkIn. Hubungi operator jika ada
           selisih.
         </p>

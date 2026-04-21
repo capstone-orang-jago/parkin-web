@@ -38,7 +38,7 @@ export function ReportKpiRow({ summary }: { summary: ReportSummary }) {
       {cards.map((c) => (
         <div
           key={c.label}
-          className="rounded-[var(--radius-lg)] border border-(--color-border) bg-(--color-surface-card) p-4 shadow-sm"
+          className="rounded-lg border border-(--color-border) bg-(--color-surface-card) p-4 shadow-sm"
         >
           <p className="text-xs font-semibold uppercase tracking-wide text-(--color-text-muted)">
             {c.label}

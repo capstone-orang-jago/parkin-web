@@ -4,7 +4,7 @@ const styles: Record<LocationOperationalStatus, string> = {
   active:
     "bg-[var(--color-success-highlight)] text-[var(--color-success)] ring-1 ring-[var(--color-success)]/15",
   inactive:
-    "bg-[var(--color-surface-offset)] text-(--color-text-muted) ring-1 ring-[var(--color-border)]",
+    "bg-(--color-surface-offset) text-(--color-text-muted) ring-1 ring-[var(--color-border)]",
 };
 
 const labels: Record<LocationOperationalStatus, string> = {

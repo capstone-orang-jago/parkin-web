@@ -26,7 +26,7 @@ export function TransactionPagination({
 
   const btn =
     "h-9 rounded-md border border-(--color-border) bg-(--color-surface-2) px-3 text-sm font-medium text-(--color-text) transition-colors hover:bg-(--color-surface-offset)";
-  const btnDisabled = "h-9 rounded-md border border-[var(--color-divider)] px-3 text-sm text-[var(--color-text-faint)] opacity-60";
+  const btnDisabled = "h-9 rounded-md border border-(--color-divider) px-3 text-sm text-[var(--color-text-faint)] opacity-60";
 
   return (
     <div className="flex flex-col items-stretch justify-between gap-3 border-t border-(--color-border) pt-4 sm:flex-row sm:items-center">

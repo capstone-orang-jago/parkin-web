@@ -2,7 +2,7 @@ import type { FilterOption } from "@/lib/transactions/types";
 import type { ReportFilters } from "@/lib/reports/types";
 
 const inputClass =
-  "h-10 rounded-md border border-(--color-border) bg-[var(--color-surface-2)] px-3 text-sm text-(--color-text) transition-[border-color,box-shadow] focus:border-bomba-500 focus:outline-none focus:ring-2 focus:ring-bomba-100";
+  "h-10 rounded-md border border-(--color-border) bg-(--color-surface-2) px-3 text-sm text-(--color-text) transition-[border-color,box-shadow] focus:border-bomba-500 focus:outline-none focus:ring-2 focus:ring-bomba-100";
 
 type Props = {
   filters: ReportFilters;
@@ -14,9 +14,9 @@ export function ReportFiltersBar({ filters, locations }: Props) {
     <form
       action="/laporan"
       method="get"
-      className="sticky top-0 z-10 -mx-6 mb-6 border-b border-(--color-border) bg-[var(--color-bg)]/95 px-6 py-4 backdrop-blur-sm"
+      className="sticky top-0 z-10 -mx-6 mb-6 border-b border-(--color-border) bg-(--color-bg)/95 px-6 py-4 backdrop-blur-sm"
     >
-      <div className="flex flex-col gap-4 rounded-[var(--radius-lg)] border border-(--color-border) bg-(--color-surface-card) p-5 shadow-sm">
+      <div className="flex flex-col gap-4 rounded-lg border border-(--color-border) bg-(--color-surface-card) p-5 shadow-sm">
         <p className="text-xs font-medium tracking-wide text-(--color-text-muted)">
           Filter laporan
         </p>

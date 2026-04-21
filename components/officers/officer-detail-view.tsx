@@ -128,7 +128,7 @@ export function OfficerDetailView({ officer }: { officer: OfficerDetail }) {
         <div className="overflow-x-auto">
           <table className="w-full min-w-[520px] border-collapse text-left text-sm">
             <thead>
-              <tr className="border-b border-(--color-border) bg-[var(--color-surface-offset)]">
+              <tr className="border-b border-(--color-border) bg-(--color-surface-offset)">
                 <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wide text-(--color-text-muted) sm:px-5">
                   Lokasi
                 </th>
@@ -144,7 +144,7 @@ export function OfficerDetailView({ officer }: { officer: OfficerDetail }) {
               {officer.assignmentHistory.map((h, i) => (
                 <tr
                   key={`${h.locationName}-${i}`}
-                  className="border-b border-(--color-divider) last:border-b-0 hover:bg-[var(--color-surface-offset)]/60"
+                  className="border-b border-(--color-divider) last:border-b-0 hover:bg-(--color-surface-offset)/60"
                 >
                   <td className="px-4 py-3 text-(--color-text) sm:px-5">{h.locationName}</td>
                   <td className="whitespace-nowrap px-4 py-3 text-(--color-text-muted) sm:px-5">
@@ -182,7 +182,7 @@ export function OfficerDetailView({ officer }: { officer: OfficerDetail }) {
           <div className="overflow-x-auto">
             <table className="w-full min-w-[880px] border-collapse text-left text-sm">
               <thead>
-                <tr className="border-b border-(--color-border) bg-[var(--color-surface-offset)]">
+                <tr className="border-b border-(--color-border) bg-(--color-surface-offset)">
                   <th className="whitespace-nowrap px-4 py-3 text-xs font-semibold uppercase tracking-wide text-(--color-text-muted) sm:px-5">
                     Waktu
                   </th>
@@ -204,7 +204,7 @@ export function OfficerDetailView({ officer }: { officer: OfficerDetail }) {
                 {officer.recentTransactions.map((row) => (
                   <tr
                     key={row.id}
-                    className="border-b border-(--color-divider) last:border-b-0 hover:bg-[var(--color-surface-offset)]/60"
+                    className="border-b border-(--color-divider) last:border-b-0 hover:bg-(--color-surface-offset)/60"
                   >
                     <td className="whitespace-nowrap px-4 py-3 text-(--color-text-muted) sm:px-5">
                       {formatDateTime(row.time)}

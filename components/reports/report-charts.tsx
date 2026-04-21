@@ -36,7 +36,7 @@ export function ReportCharts({
           Pendapatan dari transaksi sukses (Rp), per tanggal dalam filter.
         </p>
         {dailyEmpty ? (
-          <div className="flex h-[280px] items-center justify-center rounded-lg border border-dashed border-(--color-border) bg-[var(--color-surface-2)] text-sm text-(--color-text-muted)">
+          <div className="flex h-[280px] items-center justify-center rounded-lg border border-dashed border-(--color-border) bg-(--color-surface-2) text-sm text-(--color-text-muted)">
             Tidak ada data pendapatan untuk periode ini.
           </div>
         ) : (
@@ -82,7 +82,7 @@ export function ReportCharts({
           Perbandingan pendapatan sukses antar lokasi dalam filter.
         </p>
         {locEmpty ? (
-          <div className="flex h-[280px] items-center justify-center rounded-lg border border-dashed border-(--color-border) bg-[var(--color-surface-2)] text-sm text-(--color-text-muted)">
+          <div className="flex h-[280px] items-center justify-center rounded-lg border border-dashed border-(--color-border) bg-(--color-surface-2) text-sm text-(--color-text-muted)">
             Tidak ada data per lokasi untuk periode ini.
           </div>
         ) : (

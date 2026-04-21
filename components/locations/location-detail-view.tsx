@@ -108,7 +108,7 @@ export function LocationDetailView({ location }: { location: LocationDetail }) {
         <div className="rounded-xl border border-(--color-border) bg-(--color-surface-card) p-5 shadow-sm lg:col-span-2">
           <div className="flex items-center justify-between gap-2">
             <h3 className="text-sm font-semibold text-(--color-text)">Petugas ditugaskan</h3>
-            <span className="inline-flex min-w-[1.5rem] items-center justify-center rounded-full bg-bomba-100 px-2 py-0.5 text-xs font-semibold text-bomba-800">
+            <span className="inline-flex min-w-6 items-center justify-center rounded-full bg-bomba-100 px-2 py-0.5 text-xs font-semibold text-bomba-800">
               {location.assignedOfficerNames.length}
             </span>
           </div>
@@ -162,7 +162,7 @@ export function LocationDetailView({ location }: { location: LocationDetail }) {
           <div className="overflow-x-auto">
             <table className="w-full min-w-[800px] border-collapse text-left text-sm">
               <thead>
-                <tr className="border-b border-(--color-border) bg-[var(--color-surface-offset)]">
+                <tr className="border-b border-(--color-border) bg-(--color-surface-offset)">
                   <th className="whitespace-nowrap px-4 py-3 text-xs font-semibold uppercase tracking-wide text-(--color-text-muted) sm:px-5">
                     Waktu
                   </th>
@@ -184,7 +184,7 @@ export function LocationDetailView({ location }: { location: LocationDetail }) {
                 {location.recentTransactions.map((row) => (
                   <tr
                     key={row.id}
-                    className="border-b border-(--color-divider) last:border-b-0 hover:bg-[var(--color-surface-offset)]/60"
+                    className="border-b border-(--color-divider) last:border-b-0 hover:bg-(--color-surface-offset)/60"
                   >
                     <td className="whitespace-nowrap px-4 py-3 text-(--color-text-muted) sm:px-5">
                       {formatDateTime(row.time)}

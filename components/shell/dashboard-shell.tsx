@@ -12,7 +12,7 @@ export function DashboardShell({
   topbarFallbackTitle: string;
 }) {
   return (
-    <div className="flex h-dvh max-h-dvh overflow-hidden bg-[var(--color-bg)]">
+    <div className="flex h-dvh max-h-dvh overflow-hidden bg-(--color-bg)">
       <AppSidebar />
       <div className="flex min-h-0 min-w-0 flex-1 flex-col">
         <AppTopbar fallbackTitle={topbarFallbackTitle} />
