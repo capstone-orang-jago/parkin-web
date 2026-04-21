@@ -31,7 +31,7 @@ function withPathnameHeader(request: NextRequest) {
   return requestHeaders;
 }
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const token = request.cookies.get(ACCESS_COOKIE)?.value;
   const ok = await tryVerifyAccessCookie(token);

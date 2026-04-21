@@ -43,9 +43,9 @@ export default async function DashboardPage({ searchParams }: PageProps) {
         <h3 className="text-sm font-semibold text-megalit-900">
           Tren 7 hari terakhir
         </h3>
-        <p className="text-xs text-megalit-600">
+        {/* <p className="text-xs text-megalit-600">
           Garis oranye: jumlah transaksi. Garis teal: pendapatan (sumbu kanan).
-        </p>
+        </p> */}
         <TrendChart data={data.trend} />
       </section>
 

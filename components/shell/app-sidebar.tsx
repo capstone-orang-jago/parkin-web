@@ -26,7 +26,7 @@ function navItemActive(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
-export function AppSidebar() {
+export function AppSidebar({ username }: { username: string }) {
   const pathname = usePathname();
 
   return (
@@ -68,10 +68,23 @@ export function AppSidebar() {
           );
         })}
       </nav>
-      <div className="border-t border-(--color-border) p-2 text-xs text-(--color-text-muted)">
-        <p className="hidden truncate lg:block">Admin (placeholder)</p>
+      <div className="border-t border-(--color-border) px-4 py-4 text-xs text-(--color-text-muted)">
+        <div className="hidden items-center gap-2 lg:flex">
+          <span
+            className="flex size-10 shrink-0 items-center justify-center rounded-full bg-bomba-100 text-[15px] font-semibold text-bomba-700"
+            aria-hidden
+          >
+            {username.trim().charAt(0).toUpperCase() || "A"}
+          </span>
+          <p className="truncate">{username}</p>
+        </div>
         <p className="text-center lg:hidden" aria-hidden>
-          ···
+        <span
+            className="flex size-8 shrink-0 items-center justify-center rounded-full bg-bomba-100 text-[12px] font-semibold text-bomba-700"
+            aria-hidden
+          >
+            {username.trim().charAt(0).toUpperCase() || "A"}
+          </span>
         </p>
       </div>
     </aside>

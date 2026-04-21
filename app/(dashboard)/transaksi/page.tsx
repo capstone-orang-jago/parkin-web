@@ -30,12 +30,12 @@ export default async function TransaksiListPage({ searchParams }: PageProps) {
 
   return (
     <div className="flex flex-col">
-      <header className="mb-2">
+      {/* <header className="mb-2">
         <h2 className="text-lg font-bold text-(--color-text)">Transaksi</h2>
         <p className="text-sm text-(--color-text-muted)">
           Kelola dan pantau data transaksi parkir digital.
         </p>
-      </header>
+      </header> */}
 
       <TransactionFiltersBar
         filters={filters}

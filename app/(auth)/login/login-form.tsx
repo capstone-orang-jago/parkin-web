@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useTransition } from "react";
 
@@ -38,6 +39,24 @@ export function LoginForm() {
 
   return (
     <div className="w-full max-w-md rounded-lg border border-megalit-200 bg-(--color-surface-card) p-8 shadow-sm">
+      <div className="mb-4 flex items-center justify-center gap-4">
+        <Image
+          src="/dishub.svg"
+          alt="Logo Dinas Perhubungan"
+          width={70}
+          height={70}
+          loading="eager"
+          className="h-[70px] w-auto"
+        />
+        <Image
+          src="/kota-palu.png"
+          alt="Logo Kota Palu"
+          width={70}
+          height={70}
+          loading="eager"
+          className="h-[70px] w-auto"
+        />
+      </div>
       <h1 className="text-xl font-semibold text-megalit-900">Masuk admin</h1>
       <p className="mt-2 text-sm text-megalit-600">
         Gunakan nomor telepon dan password akun Dishub (mode dummy: lihat{" "}
