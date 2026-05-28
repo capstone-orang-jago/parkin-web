@@ -13,6 +13,25 @@ export type LocationListItem = {
   transactionsToday: number;
 };
 
+export type ApiPetugas = {
+  email: string;
+  id: string;
+  is_verified: boolean;
+  lokasi: string;
+  name: string;
+  password: string;
+  role: string;
+  saldo: number;
+  telephone: string;
+};
+export type ApiLocation = {
+  alamat: string;
+  id: string;
+  is_active: boolean;
+  nama_lokasi: string;
+  petugas: ApiPetugas | null;
+}
+
 export type LocationRecentTransaction = {
   id: string;
   time: string;
