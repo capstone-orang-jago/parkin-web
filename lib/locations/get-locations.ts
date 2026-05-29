@@ -1,6 +1,4 @@
-import { ACCESS_COOKIE } from "../auth/session-edge";
-import { cookies } from "next/headers";
-import { buildLocationList, getMockLocationDetail } from "./mock";
+import { fetchWithTokenRetry } from "@/lib/auth/server-api";
 import type { ApiLocation, LocationDetail, LocationListItem } from "./types";
 
 /**
@@ -19,21 +17,6 @@ function mapApiLocationToListItem(item: ApiLocation): LocationListItem {
 	};
 }
 
-function mapApiLocationToDetail(item: ApiLocation): LocationDetail {
-	return {
-		id: item.id,
-		name: item.nama_lokasi,
-		address: item.alamat,
-		status: item.is_active ? "active" : "inactive",
-		createdAt: new Date().toISOString(),
-		assignedOfficerNames: item.petugas ? [item.petugas.name] : [],
-		totalTransactions: 0,
-		totalRevenueRp: 0,
-		avgDailyRp: 0,
-		recentTransactions: [],
-	};
-}
-
 function unwrapLocationDetailPayload(payload: unknown): ApiLocation {
 	if (payload && typeof payload === "object" && "data" in payload) {
 		return (payload as { data: ApiLocation }).data;
@@ -48,16 +31,7 @@ export async function getLocationList(): Promise<LocationListItem[]> {
 		throw new Error("API_BASE_URL belum disetel");
 	}
 
-	const accessToken = (await cookies()).get(ACCESS_COOKIE)?.value;
-
-	const res = await fetch(`${baseUrl}/admin/locations`, {
-		cache: "no-store",
-		headers: accessToken
-			? {
-					Authorization: `Bearer ${accessToken}`,
-				}
-			: undefined,
-	});
+	const res = await fetchWithTokenRetry(`${baseUrl}/admin/locations`);
 
 	if (!res.ok) {
 		throw new Error(`Gagal mengambil lokasi: ${res.status} ${res.statusText}`);
@@ -78,16 +52,7 @@ export async function getLocationById(
 		throw new Error("API_BASE_URL belum diset.");
 	}
 
-	const accessToken = (await cookies()).get(ACCESS_COOKIE)?.value;
-
-	const res = await fetch(`${baseUrl}/admin/lokasi-parkir/${id}`, {
-		cache: "no-store",
-		headers: accessToken
-			? {
-					Authorization: `Bearer ${accessToken}`,
-				}
-			: undefined,
-	});
+	const res = await fetchWithTokenRetry(`${baseUrl}/admin/lokasi-parkir/${id}`);
 
 	if (res.status === 404) return null;
 	if (!res.ok) {

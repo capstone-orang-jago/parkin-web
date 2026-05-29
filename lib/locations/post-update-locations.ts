@@ -1,7 +1,6 @@
 "use server";
 
-import { cookies } from "next/headers";
-import { ACCESS_COOKIE } from "@/lib/auth/cookies";
+import { getAccessToken } from "@/lib/auth/server-api";
 import type { LocationFormValues } from "@/components/locations/location-form-modal";
 
 async function callBackend(
@@ -12,7 +11,7 @@ async function callBackend(
 	const baseUrl = process.env.API_BASE_URL?.replace(/\/$/, "");
 	if (!baseUrl) throw new Error("API_BASE_URL belum disetel.");
 
-	const token = (await cookies()).get(ACCESS_COOKIE)?.value;
+	const token = await getAccessToken();
 	if (!token) throw new Error("Sesi login tidak ditemukan.");
 
 	const res = await fetch(baseUrl + path, {

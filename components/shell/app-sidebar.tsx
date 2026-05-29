@@ -54,7 +54,7 @@ export function AppSidebar({ username }: { username: string }) {
                 "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
                 "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bomba-500",
                 active
-                  ? "border-l-2 border-bomba-500 bg-bomba-100 pl-[calc(0.75rem-2px)] text-bomba-700"
+                  ? "border-l-2 border-bomba-500 bg-bomba-100 pl-2.5 text-bomba-700"
                   : "border-l-2 border-transparent text-(--color-text-muted) hover:bg-(--color-surface-offset) hover:text-(--color-text)",
               ].join(" ")}
             >

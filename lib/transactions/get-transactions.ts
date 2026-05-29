@@ -1,5 +1,4 @@
-import { cookies } from "next/headers";
-import { ACCESS_COOKIE } from "@/lib/auth/cookies";
+import { fetchWithTokenRetry } from "@/lib/auth/server-api";
 import type {
 	TransactionDetail,
 	TransactionFilterOptions,
@@ -122,10 +121,6 @@ function mapApiTransactionDetail(item: ApiTransactionItem): TransactionDetail {
 	};
 }
 
-async function getAccessToken() {
-	return (await cookies()).get(ACCESS_COOKIE)?.value;
-}
-
 async function callAdminApi<T extends { code?: number; message?: string }>(
 	path: string,
 ): Promise<T> {
@@ -134,15 +129,7 @@ async function callAdminApi<T extends { code?: number; message?: string }>(
 		throw new Error("API_BASE_URL belum disetel.");
 	}
 
-	const accessToken = await getAccessToken();
-	const res = await fetch(`${baseUrl}${path}`, {
-		cache: "no-store",
-		headers: accessToken
-			? {
-					Authorization: `Bearer ${accessToken}`,
-				}
-			: undefined,
-	});
+	const res = await fetchWithTokenRetry(`${baseUrl}${path}`);
 
 	if (!res.ok) {
 		if (res.status === 404) {

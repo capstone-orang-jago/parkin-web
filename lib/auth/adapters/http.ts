@@ -98,8 +98,8 @@ export function createHttpAdapter(baseUrl: string): AuthAdapter {
 		},
 
 		async refresh(input: RefreshInput): Promise<LoginResult> {
-			const bearer = input.refreshToken ?? input.accessToken;
-			if (!bearer) {
+			const refreshToken = input.refreshToken;
+			if (!refreshToken) {
 				return { ok: false, status: 401, message: "Sesi berakhir." };
 			}
 
@@ -109,8 +109,8 @@ export function createHttpAdapter(baseUrl: string): AuthAdapter {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
-						Authorization: `Bearer ${bearer}`,
 					},
+					body: JSON.stringify({ refreshToken }),
 					cache: "no-store",
 				});
 			} catch {

@@ -1,5 +1,4 @@
-import { cookies } from "next/headers";
-import { ACCESS_COOKIE } from "@/lib/auth/cookies";
+import { fetchWithTokenRetry } from "@/lib/auth/server-api";
 import { buildMockDashboard } from "./mock";
 import type {
 	DashboardData,
@@ -49,9 +48,10 @@ type ApiAdminDashboardData = {
 };
 
 type ApiEnvelope = {
-	code?: number;
-	data?: ApiAdminDashboardData | null;
-	message?: string;
+  code?: number;
+  success?: boolean;
+  data?: ApiAdminDashboardData | null;
+  message?: string;
 };
 
 function normalizeVehicleType(
@@ -69,10 +69,6 @@ function normalizeStatus(value: string): RecentTransactionRow["status"] {
 	return "Sukses";
 }
 
-async function getAccessToken() {
-	return (await cookies()).get(ACCESS_COOKIE)?.value;
-}
-
 async function fetchAdminDashboard(
 	range: DashboardRange,
 ): Promise<DashboardData | null> {
@@ -81,18 +77,10 @@ async function fetchAdminDashboard(
 		return null;
 	}
 
-	const accessToken = await getAccessToken();
 	const url = new URL(`${baseUrl}/admin/dashboard`);
 	url.searchParams.set("range", range);
 
-	const res = await fetch(url.toString(), {
-		cache: "no-store",
-		headers: accessToken
-			? {
-					Authorization: `Bearer ${accessToken}`,
-				}
-			: undefined,
-	});
+	const res = await fetchWithTokenRetry(url.toString());
 
 	if (!res.ok) {
 		throw new Error(
@@ -101,6 +89,9 @@ async function fetchAdminDashboard(
 	}
 
 	const payload = (await res.json()) as ApiEnvelope;
+	if (payload.success === false) {
+    throw new Error(payload.message || "Gagal mengambil dashboard.");
+  }
 	if (
 		payload.code !== undefined &&
 		payload.code !== 0 &&

@@ -1,5 +1,4 @@
-import { cookies } from "next/headers";
-import { ACCESS_COOKIE } from "@/lib/auth/cookies";
+import { fetchWithTokenRetry } from "@/lib/auth/server-api";
 import { filterMockTransactionsForReport } from "@/lib/transactions/mock";
 import { buildReportPageData } from "./build-report";
 import type { ReportFilters, ReportPageData } from "./types";
@@ -32,10 +31,6 @@ function formatPeriodLabel(filters: ReportFilters): string {
 		year: "numeric",
 	});
 	return `${formatter.format(from)} – ${formatter.format(to)}`;
-}
-
-async function getAccessToken() {
-	return (await cookies()).get(ACCESS_COOKIE)?.value;
 }
 
 function buildRemoteReportPageData(
@@ -93,15 +88,7 @@ async function fetchReportData(
 	if (filters.vehicle !== "Semua")
 		url.searchParams.set("vehicle", filters.vehicle.toLowerCase());
 
-	const accessToken = await getAccessToken();
-	const res = await fetch(url.toString(), {
-		cache: "no-store",
-		headers: accessToken
-			? {
-					Authorization: `Bearer ${accessToken}`,
-				}
-			: undefined,
-	});
+	const res = await fetchWithTokenRetry(url.toString());
 
 	if (!res.ok) {
 		throw new Error(`Gagal mengambil laporan: ${res.status} ${res.statusText}`);

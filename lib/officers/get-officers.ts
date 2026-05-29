@@ -1,5 +1,4 @@
-import { cookies } from "next/headers";
-import { ACCESS_COOKIE } from "../auth/cookies";
+import { fetchWithTokenRetry } from "@/lib/auth/server-api";
 import { getMockOfficerDetail } from "./mock";
 import type { OfficerDetail, OfficerListItem } from "./types";
 
@@ -44,16 +43,7 @@ export async function getOfficerList(): Promise<OfficerListItem[]> {
 		throw new Error("API_BASE_URL belum disetel.");
 	}
 
-	const accessToken = (await cookies()).get(ACCESS_COOKIE)?.value;
-
-	const res = await fetch(`${baseUrl}/admin/officers`, {
-		cache: "no-store",
-		headers: accessToken
-			? {
-					Authorization: `Bearer ${accessToken}`,
-				}
-			: undefined,
-	});
+	const res = await fetchWithTokenRetry(`${baseUrl}/admin/officers`);
 
 	if (!res.ok) {
 		throw new Error(`Gagal mengambil petugas: ${res.status} ${res.statusText}`);
