@@ -1,5 +1,4 @@
 import type { TransactionListItem } from "@/lib/transactions/types";
-import { listMockLocations } from "@/lib/transactions/mock";
 import type {
   ReportDailyBar,
   ReportFilters,
@@ -106,25 +105,24 @@ function buildDailyBars(
 function buildLocationAggregates(
   rows: TransactionListItem[],
 ): Map<string, ReportLocationRow> {
-  const locs = listMockLocations();
   const map = new Map<string, ReportLocationRow>();
-  for (const l of locs) {
-    map.set(l.id, {
-      locationId: l.id,
-      locationName: l.label,
-      transactionCount: 0,
-      motorCount: 0,
-      mobilCount: 0,
-      totalRevenueRp: 0,
-    });
-  }
   for (const r of rows) {
-    const cur = map.get(r.locationId);
-    if (!cur) continue;
-    cur.transactionCount += 1;
-    if (r.vehicleType === "Motor") cur.motorCount += 1;
-    else cur.mobilCount += 1;
-    cur.totalRevenueRp += revenueRp(r);
+    const existing = map.get(r.locationId);
+    if (existing) {
+      existing.transactionCount += 1;
+      if (r.vehicleType === "Motor") existing.motorCount += 1;
+      else existing.mobilCount += 1;
+      existing.totalRevenueRp += revenueRp(r);
+    } else {
+      map.set(r.locationId, {
+        locationId: r.locationId,
+        locationName: r.locationName,
+        transactionCount: 1,
+        motorCount: r.vehicleType === "Motor" ? 1 : 0,
+        mobilCount: r.vehicleType === "Mobil" ? 1 : 0,
+        totalRevenueRp: revenueRp(r),
+      });
+    }
   }
   return map;
 }

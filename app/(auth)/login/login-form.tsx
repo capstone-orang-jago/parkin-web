@@ -60,8 +60,7 @@ export function LoginForm() {
 			</div>
 			<h1 className="text-xl font-semibold text-megalit-900">Masuk admin</h1>
 			<p className="mt-2 text-sm text-megalit-600">
-				Gunakan nomor telepon dan password akun Dishub (mode dummy: lihat{" "}
-				<code className="text-megalit-800">.env.example</code>).
+				Gunakan email dan password akun admin Dishub.
 			</p>
 			{sessionHint ? (
 				<p className="mt-3 rounded-md border border-megalit-300 bg-megalit-100 px-3 py-2 text-sm text-megalit-800">

@@ -1,9 +1,13 @@
 import { fetchWithTokenRetry } from "@/lib/auth/server-api";
-import type { ApiLocation, LocationDetail, LocationListItem } from "./types";
+import type {
+	ApiLocation,
+	LocationDetail,
+	LocationListItem,
+	LocationRecentTransaction,
+} from "./types";
 
 /**
- * Daftar lokasi parkir (mock).
- * Nanti: GET /admin/locations.
+ * Daftar lokasi parkir.
  */
 
 function mapApiLocationToListItem(item: ApiLocation): LocationListItem {
@@ -13,16 +17,57 @@ function mapApiLocationToListItem(item: ApiLocation): LocationListItem {
 		address: item.alamat,
 		activeOfficerLabel: item.petugas ? item.petugas.name : "-",
 		status: item.is_active ? "active" : "inactive",
-		transactionsToday: 0, // Nanti: hitung dari transaksi hari ini
+		transactionsToday: 0,
 	};
 }
 
-function unwrapLocationDetailPayload(payload: unknown): ApiLocation {
-	if (payload && typeof payload === "object" && "data" in payload) {
-		return (payload as { data: ApiLocation }).data;
-	}
+type ApiTransactionItem = {
+	created_at: string;
+	id: string;
+	jenis_kendaraan: string;
+	kode_transaksi: string;
+	lokasi: { nama_lokasi: string };
+	pengguna: { name: string };
+	status: string;
+	tarif: number;
+};
 
-	return payload as ApiLocation;
+type ApiLocationDetail = {
+	alamat: string;
+	id: string;
+	is_active: boolean;
+	nama_lokasi: string;
+	recent_history: ApiTransactionItem[] | null;
+	total_pendapatan: number;
+	total_transaksi: number;
+};
+
+function normalizeVehicleType(
+	value: string,
+): LocationRecentTransaction["vehicleType"] {
+	const v = value.trim().toLowerCase();
+	if (v === "mobil") return "Mobil";
+	return "Motor";
+}
+
+function normalizeStatus(
+	value: string,
+): LocationRecentTransaction["status"] {
+	const v = value.trim().toLowerCase();
+	if (v === "gagal") return "Gagal";
+	if (v === "pending") return "Pending";
+	return "Sukses";
+}
+
+function mapRecentTransaction(item: ApiTransactionItem): LocationRecentTransaction {
+	return {
+		id: item.id,
+		time: item.created_at,
+		vehicleType: normalizeVehicleType(item.jenis_kendaraan),
+		officerName: item.pengguna?.name ?? "-",
+		amountRp: item.tarif,
+		status: normalizeStatus(item.status),
+	};
 }
 
 export async function getLocationList(): Promise<LocationListItem[]> {
@@ -52,14 +97,20 @@ export async function getLocationById(
 		throw new Error("API_BASE_URL belum diset.");
 	}
 
-	const res = await fetchWithTokenRetry(`${baseUrl}/admin/lokasi-parkir/${id}`);
+	// Gunakan /admin/locations/{id} yang mengembalikan AdminLocationDetailDTO dengan stats
+	const res = await fetchWithTokenRetry(`${baseUrl}/admin/locations/${id}`);
 
 	if (res.status === 404) return null;
 	if (!res.ok) {
 		throw new Error("Gagal mengambil detail lokasi.");
 	}
 
-	const item = unwrapLocationDetailPayload(await res.json());
+	const payload = await res.json();
+	const item: ApiLocationDetail = payload.data ?? payload;
+
+	const recentTransactions = Array.isArray(item.recent_history)
+		? item.recent_history.map(mapRecentTransaction)
+		: [];
 
 	return {
 		id: item.id,
@@ -67,10 +118,10 @@ export async function getLocationById(
 		address: item.alamat,
 		status: item.is_active ? "active" : "inactive",
 		createdAt: new Date().toISOString(),
-		assignedOfficerNames: item.petugas ? [item.petugas.name] : [],
-		totalTransactions: 0,
-		totalRevenueRp: 0,
+		assignedOfficerNames: [],
+		totalTransactions: item.total_transaksi ?? 0,
+		totalRevenueRp: item.total_pendapatan ?? 0,
 		avgDailyRp: 0,
-		recentTransactions: [],
+		recentTransactions,
 	};
 }

@@ -1,21 +1,18 @@
 import { createHttpAdapter } from "./adapters/http";
-import { createMockAdapter } from "./adapters/mock";
 import type { AuthAdapter } from "./adapters/types";
 
 /**
- * `AUTH_MODE=http` + `API_BASE_URL` → adapter HTTP (backend nyata).
- * Selain itu → adapter mock (dummy env).
+ * Membuat auth adapter yang terhubung ke backend nyata.
+ * Wajib API_BASE_URL di environment.
  */
 export function getAuthAdapter(): AuthAdapter {
-  const mode = process.env.AUTH_MODE?.trim().toLowerCase() ?? "";
   const base = process.env.API_BASE_URL?.trim().replace(/\/$/, "") ?? "";
 
-  if (mode === "http") {
-    if (!base) {
-      throw new Error("AUTH_MODE=http membutuhkan API_BASE_URL.");
-    }
-    return createHttpAdapter(base);
+  if (!base) {
+    throw new Error(
+      "API_BASE_URL belum disetel. Dibutuhkan untuk koneksi ke backend.",
+    );
   }
 
-  return createMockAdapter();
+  return createHttpAdapter(base);
 }

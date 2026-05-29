@@ -1,5 +1,4 @@
 import { fetchWithTokenRetry } from "@/lib/auth/server-api";
-import { buildMockDashboard } from "./mock";
 import type {
 	DashboardData,
 	DashboardRange,
@@ -160,10 +159,6 @@ async function fetchAdminDashboard(
 	};
 }
 
-/**
- * Data dashboard. Saat ini: mock. Nanti: ganti dengan fetch ke
- * `/admin/dashboard/summary`, `/admin/dashboard/trend`, dll. + Bearer.
- */
 export async function getDashboardData(
 	range: DashboardRange,
 ): Promise<DashboardData> {
@@ -172,7 +167,7 @@ export async function getDashboardData(
 		return remote;
 	}
 
-	return buildMockDashboard(range);
+	throw new Error("Gagal mengambil data dashboard dari backend.");
 }
 
 export function parseDashboardRange(

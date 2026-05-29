@@ -1,6 +1,4 @@
 import { fetchWithTokenRetry } from "@/lib/auth/server-api";
-import { filterMockTransactionsForReport } from "@/lib/transactions/mock";
-import { buildReportPageData } from "./build-report";
 import type { ReportFilters, ReportPageData } from "./types";
 
 type ApiReportBreakdown = {
@@ -113,20 +111,10 @@ async function fetchReportData(
 export async function getReportPageData(
 	filters: ReportFilters,
 ): Promise<ReportPageData> {
-	try {
-		const remote = await fetchReportData(filters);
-		if (remote) {
-			return remote;
-		}
-	} catch {
-		// Fallback ke mock agar halaman tetap bisa dirender saat API belum siap.
+	const remote = await fetchReportData(filters);
+	if (remote) {
+		return remote;
 	}
 
-	const rows = filterMockTransactionsForReport({
-		dateFrom: filters.dateFrom,
-		dateTo: filters.dateTo,
-		locationId: filters.locationId,
-		vehicle: filters.vehicle === "Semua" ? "Semua" : filters.vehicle,
-	});
-	return buildReportPageData(filters, rows);
+	throw new Error("Gagal mengambil data laporan dari backend.");
 }

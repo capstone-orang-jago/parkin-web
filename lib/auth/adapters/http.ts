@@ -110,7 +110,7 @@ export function createHttpAdapter(baseUrl: string): AuthAdapter {
 					headers: {
 						"Content-Type": "application/json",
 					},
-					body: JSON.stringify({ refreshToken }),
+					body: JSON.stringify({ refresh_token: refreshToken }),
 					cache: "no-store",
 				});
 			} catch {
@@ -150,15 +150,16 @@ export function createHttpAdapter(baseUrl: string): AuthAdapter {
 		},
 
 		async logout(input: LogoutInput) {
-			const bearer = input.accessToken;
-			if (!bearer) return;
+			const refreshToken = input.refreshToken;
+			if (!refreshToken) return;
 			try {
 				await fetch(`${base}/auth/logout`, {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
-						Authorization: `Bearer ${bearer}`,
+						Authorization: `Bearer ${input.accessToken ?? ""}`,
 					},
+					body: JSON.stringify({ refresh_token: refreshToken }),
 					cache: "no-store",
 				});
 			} catch {

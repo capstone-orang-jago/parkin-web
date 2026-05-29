@@ -4,9 +4,9 @@ import { ReportExportButtons } from "@/components/reports/report-export-buttons"
 import { ReportFiltersBar } from "@/components/reports/report-filters-bar";
 import { ReportKpiRow } from "@/components/reports/report-kpi-row";
 import { ReportLocationTable } from "@/components/reports/report-location-table";
+import { getLocationList } from "@/lib/locations/get-locations";
 import { getReportPageData } from "@/lib/reports/get-report";
 import { parseReportFilters } from "@/lib/reports/search-params";
-import { listMockLocations } from "@/lib/transactions/mock";
 
 export const metadata: Metadata = {
   title: "Laporan",
@@ -19,10 +19,12 @@ type PageProps = {
 export default async function LaporanPage({ searchParams }: PageProps) {
   const sp = await searchParams;
   const filters = parseReportFilters(sp);
-  const [data, locations] = await Promise.all([
+  const [data, locationList] = await Promise.all([
     getReportPageData(filters),
-    Promise.resolve(listMockLocations()),
+    getLocationList(),
   ]);
+
+  const locations = locationList.map((loc) => ({ id: loc.id, label: loc.name }));
 
   return (
     <div className="flex flex-col gap-8">

@@ -4,7 +4,7 @@ export type TransactionVehicleFilter = "Semua" | VehicleType;
 
 export type TransactionStatusFilter = "Semua" | TransactionStatus;
 
-/** Filter daftar transaksi (mock & nanti API). */
+/** Filter daftar transaksi. */
 export type TransactionFilters = {
 	dateFrom: string;
 	dateTo: string;

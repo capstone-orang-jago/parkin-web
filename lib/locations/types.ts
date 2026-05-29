@@ -36,7 +36,7 @@ export type LocationRecentTransaction = {
   id: string;
   time: string;
   vehicleType: VehicleType;
-  /** Nama petugas dari data transaksi (mock) */
+  /** Nama petugas dari data transaksi */
   officerName: string;
   amountRp: number;
   status: TransactionStatus;
@@ -47,12 +47,12 @@ export type LocationDetail = {
   name: string;
   address: string;
   status: LocationOperationalStatus;
-  /** ISO tanggal pembuatan (mock) */
+  /** ISO tanggal pembuatan */
   createdAt: string;
   assignedOfficerNames: string[];
   totalTransactions: number;
   totalRevenueRp: number;
-  /** Rata-rata pendapatan harian (mock, Rp) */
+  /** Rata-rata pendapatan harian (Rp) */
   avgDailyRp: number;
   recentTransactions: LocationRecentTransaction[];
 };

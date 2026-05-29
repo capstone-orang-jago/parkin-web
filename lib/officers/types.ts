@@ -8,7 +8,7 @@ export type OfficerListItem = {
   phone: string;
   assignedLocationName: string;
   status: OfficerAccountStatus;
-  /** Jumlah transaksi hari ini (QR / pembayaran yang ditangani) — mock */
+  /** Jumlah transaksi hari ini (QR / pembayaran yang ditangani) */
   transactionsToday: number;
 };
 
