@@ -34,6 +34,14 @@ function mapApiLocationToDetail(item: ApiLocation): LocationDetail {
 	};
 }
 
+function unwrapLocationDetailPayload(payload: unknown): ApiLocation {
+	if (payload && typeof payload === "object" && "data" in payload) {
+		return (payload as { data: ApiLocation }).data;
+	}
+
+	return payload as ApiLocation;
+}
+
 export async function getLocationList(): Promise<LocationListItem[]> {
 	const baseUrl = process.env.API_BASE_URL;
 	if (!baseUrl) {
@@ -70,7 +78,7 @@ export async function getLocationById(
 		throw new Error("API_BASE_URL belum diset.");
 	}
 
-  const accessToken = (await cookies()).get(ACCESS_COOKIE)?.value;
+	const accessToken = (await cookies()).get(ACCESS_COOKIE)?.value;
 
 	const res = await fetch(`${baseUrl}/admin/lokasi-parkir/${id}`, {
 		cache: "no-store",
@@ -86,7 +94,7 @@ export async function getLocationById(
 		throw new Error("Gagal mengambil detail lokasi.");
 	}
 
-	const item: ApiLocation = await res.json();
+	const item = unwrapLocationDetailPayload(await res.json());
 
 	return {
 		id: item.id,
