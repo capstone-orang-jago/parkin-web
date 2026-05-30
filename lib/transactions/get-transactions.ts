@@ -10,23 +10,16 @@ import type {
 } from "./types";
 
 type ApiUser = {
-	email: string;
 	id: string;
-	is_verified: boolean;
-	lokasi: string | null;
 	name: string;
-	password?: string;
-	role: string;
-	saldo: number;
-	telephone: string;
+	email: string;
 };
 
 type ApiLocation = {
-	alamat: string;
 	id: string;
-	is_active: boolean;
 	nama_lokasi: string;
-	petugas: ApiUser | null;
+	alamat: string;
+	is_active: boolean;
 };
 
 type ApiTransactionItem = {
@@ -82,6 +75,7 @@ function normalizeStatus(value: string): TransactionStatusFilter {
 	const v = value.trim().toLowerCase();
 	if (v === "sukses") return "Sukses";
 	if (v === "gagal") return "Gagal";
+	if (v === "pending") return "Pending";
 	return "Semua";
 }
 
@@ -116,6 +110,8 @@ function mapApiTransactionDetail(item: ApiTransactionItem): TransactionDetail {
 		...row,
 		tariffRp: item.tarif,
 		userIdMasked: maskUserId(item.pengguna.id),
+		userName: item.pengguna?.name ?? "-",
+		userEmail: item.pengguna?.email ?? "-",
 		balanceBeforeRp: item.saldo_sebelum,
 		balanceAfterRp: item.saldo_sesudah,
 	};

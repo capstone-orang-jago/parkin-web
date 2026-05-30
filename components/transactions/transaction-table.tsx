@@ -48,59 +48,33 @@ export function TransactionTable({ rows }: { rows: TransactionListItem[] }) {
 
   return (
     <div className="overflow-x-auto rounded-lg border border-(--color-border) bg-(--color-surface-card)">
-      <table className="w-full min-w-[880px] border-collapse text-left text-sm">
+      <table className="w-full min-w-220 border-collapse text-left text-sm">
         <thead>
           <tr className="border-b border-(--color-border) bg-(--color-surface-offset)">
-            <th className="whitespace-nowrap px-4 py-3 text-sm font-semibold text-(--color-text-muted)">
-              Kode transaksi
-            </th>
-            <th className="whitespace-nowrap px-4 py-3 text-sm font-semibold text-(--color-text-muted)">
-              Waktu
-            </th>
-            <th className="whitespace-nowrap px-4 py-3 text-sm font-semibold text-(--color-text-muted)">
-              Lokasi
-            </th>
-            <th className="whitespace-nowrap px-4 py-3 text-sm font-semibold text-(--color-text-muted)">
-              Petugas
-            </th>
-            <th className="whitespace-nowrap px-4 py-3 text-sm font-semibold text-(--color-text-muted)">
-              Kendaraan
-            </th>
-            <th className="whitespace-nowrap px-4 py-3 text-right text-sm font-semibold text-(--color-text-muted)">
-              Nominal
-            </th>
-            <th className="whitespace-nowrap px-4 py-3 text-sm font-semibold text-(--color-text-muted)">
-              Status
-            </th>
+            <th className="whitespace-nowrap px-4 py-3 text-sm font-semibold text-(--color-text-muted)">Kode transaksi</th>
+            <th className="whitespace-nowrap px-4 py-3 text-sm font-semibold text-(--color-text-muted)">Waktu</th>
+            <th className="whitespace-nowrap px-4 py-3 text-sm font-semibold text-(--color-text-muted)">Lokasi</th>
+            <th className="whitespace-nowrap px-4 py-3 text-sm font-semibold text-(--color-text-muted)">Petugas</th>
+            <th className="whitespace-nowrap px-4 py-3 text-sm font-semibold text-(--color-text-muted)">Kendaraan</th>
+            <th className="whitespace-nowrap px-4 py-3 text-right text-sm font-semibold text-(--color-text-muted)">Nominal</th>
+            <th className="whitespace-nowrap px-4 py-3 text-sm font-semibold text-(--color-text-muted)">Status</th>
           </tr>
         </thead>
         <tbody>
           {rows.map((row) => (
-            <tr
-              key={row.id}
-              className="border-b border-(--color-divider) transition-colors last:border-b-0 hover:cursor-pointer hover:bg-(--color-surface-offset)"
-            >
+            <tr key={row.id} className="border-b border-(--color-divider) transition-colors last:border-b-0 hover:cursor-pointer hover:bg-(--color-surface-offset)">
               <td className="px-4 py-3 align-middle">
-                <Link
-                  href={`/transaksi/${row.id}`}
-                  className="font-mono text-sm font-medium text-teluk-600 underline-offset-2 hover:text-teluk-700 hover:underline"
-                >
+                <Link href={`/transaksi/${row.id}`} className="font-mono text-sm font-medium text-teluk-600 underline-offset-2 hover:text-teluk-700 hover:underline">
                   {row.code}
                 </Link>
               </td>
-              <td className="whitespace-nowrap px-4 py-3 align-middle text-(--color-text-muted)">
-                {formatDateTime(row.time)}
-              </td>
+              <td className="whitespace-nowrap px-4 py-3 align-middle text-(--color-text-muted)">{formatDateTime(row.time)}</td>
               <td className="px-4 py-3 align-middle text-(--color-text)">{row.locationName}</td>
-              <td className="px-4 py-3 align-middle text-(--color-text-muted)">
-                {row.officerName}
-              </td>
+              <td className="px-4 py-3 align-middle text-(--color-text-muted)">{row.officerName}</td>
               <td className="px-4 py-3 align-middle">
                 <VehicleCell vehicleType={row.vehicleType} />
               </td>
-              <td className="px-4 py-3 text-right align-middle text-sm font-medium tabular-nums text-(--color-text)">
-                {formatRp(row.amountRp)}
-              </td>
+              <td className="px-4 py-3 text-right align-middle text-sm font-medium tabular-nums text-(--color-text)">{formatRp(row.amountRp)}</td>
               <td className="px-4 py-3 align-middle">
                 <TransactionStatusBadge status={row.status} />
               </td>

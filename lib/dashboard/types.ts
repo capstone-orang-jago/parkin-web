@@ -21,7 +21,7 @@ export type TrendPoint = {
 
 export type VehicleType = "Motor" | "Mobil";
 
-export type TransactionStatus = "Sukses" | "Gagal";
+export type TransactionStatus = "Sukses" | "Gagal" | "Pending";
 
 export type RecentTransactionRow = {
   id: string;

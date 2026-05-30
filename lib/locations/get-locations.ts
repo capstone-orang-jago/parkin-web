@@ -60,6 +60,7 @@ function normalizeStatus(
 ): LocationRecentTransaction["status"] {
 	const v = value.trim().toLowerCase();
 	if (v === "gagal") return "Gagal";
+	if (v === "pending") return "Pending";
 	return "Sukses";
 }
 

@@ -31,6 +31,8 @@ export type TransactionListItem = {
 export type TransactionDetail = TransactionListItem & {
 	tariffRp: number;
 	userIdMasked: string;
+	userName: string;
+	userEmail: string;
 	balanceBeforeRp: number;
 	balanceAfterRp: number;
 };

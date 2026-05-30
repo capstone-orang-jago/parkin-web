@@ -73,8 +73,16 @@ export function TransactionDetailView({ tx }: { tx: TransactionDetail }) {
             </h3>
             <dl className="space-y-3 text-sm">
               <div className="flex justify-between gap-4 border-b border-(--color-divider) pb-2">
+                <dt className="text-(--color-text-muted)">Nama pengguna</dt>
+                <dd className="text-right font-medium text-(--color-text)">{tx.userName}</dd>
+              </div>
+              <div className="flex justify-between gap-4 border-b border-(--color-divider) pb-2">
+                <dt className="text-(--color-text-muted)">Email</dt>
+                <dd className="text-right text-(--color-text)">{tx.userEmail}</dd>
+              </div>
+              <div className="flex justify-between gap-4 border-b border-(--color-divider) pb-2">
                 <dt className="text-(--color-text-muted)">ID pengguna</dt>
-                <dd className="font-mono text-right text-(--color-text)">{tx.userIdMasked}</dd>
+                <dd className="font-mono text-right text-(--color-text-muted)">{tx.userIdMasked}</dd>
               </div>
               <div className="flex justify-between gap-4 border-b border-(--color-divider) pb-2">
                 <dt className="text-(--color-text-muted)">Saldo sebelum</dt>
@@ -91,11 +99,6 @@ export function TransactionDetailView({ tx }: { tx: TransactionDetail }) {
             </dl>
           </div>
         </div>
-
-        <p className="mt-6 text-xs text-(--color-text-faint)">
-          Waktu sistem mencatat transaksi sesuai server ParkIn. Hubungi operator jika ada
-          selisih.
-        </p>
       </div>
 
       <div>
