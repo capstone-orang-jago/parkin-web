@@ -3,8 +3,6 @@ import { LocationStatusBadge } from "@/components/locations/location-status-badg
 import type { LocationListItem } from "@/lib/locations/types";
 import { Eye, Pencil, Trash } from "lucide-react";
 
-const stubTitle = "Menyusul integrasi API";
-
 type Props = {
 	rows: LocationListItem[];
 	onEdit: (row: LocationListItem) => void;
@@ -27,26 +25,23 @@ export function LocationTable({ rows, onEdit, onDelete }: Props) {
 
 	return (
 		<div className="overflow-x-auto rounded-lg border border-(--color-border) bg-(--color-surface-card)">
-			<table className="w-full min-w-[960px] border-collapse text-left text-sm">
+			<table className="w-full min-w-180 border-collapse text-left text-sm">
 				<thead>
 					<tr className="border-b border-(--color-border) bg-(--color-surface-offset)">
 						<th className="whitespace-nowrap px-4 py-3 text-sm font-semibold text-(--color-text-muted)">
 							Nama lokasi
 						</th>
-						<th className="min-w-[200px] px-4 py-3 text-sm font-semibold text-(--color-text-muted)">
+						<th className="min-w-50 px-4 py-3 text-sm font-semibold text-(--color-text-muted)">
 							Alamat
 						</th>
 						<th className="whitespace-nowrap px-4 py-3 text-sm font-semibold text-(--color-text-muted)">
 							Petugas aktif
 						</th>
-						<th className="whitespace-nowrap px-4 py-3 text-sm text-center font-semibold text-(--color-text-muted)">
+						<th className="whitespace-nowrap px-4 py-3 text-sm font-semibold text-(--color-text-muted)">
 							Status
 						</th>
-						<th className="whitespace-nowrap px-4 py-3 text-right text-sm font-semibold text-(--color-text-muted)">
-							Transaksi hari ini
-						</th>
-						<th className="whitespace-nowrap px-4 py-3 text-sm text-right font-semibold text-(--color-text-muted)">
-							Aksi <span className="sr-only">Lokasi</span>
+						<th className="whitespace-nowrap px-4 py-3 text-sm font-semibold text-(--color-text-muted)">
+							Aksi
 						</th>
 					</tr>
 				</thead>
@@ -73,31 +68,33 @@ export function LocationTable({ rows, onEdit, onDelete }: Props) {
 							<td className="px-4 py-3 align-middle">
 								<LocationStatusBadge status={row.status} />
 							</td>
-							<td className="px-4 py-3 text-right align-middle tabular-nums text-(--color-text)">
-								{row.transactionsToday}
-							</td>
-							<td className="whitespace-nowrap px-4 py-3 align-right">
-								<div className="flex flex-wrap items-center justify-end gap-2">
+							<td className="whitespace-nowrap px-4 py-3 align-middle">
+								<div className="flex flex-wrap items-center gap-2">
 									<Link
 										href={`/lokasi/${row.id}`}
-										className="text-sm font-medium text-teluk-600 hover:text-teluk-700 hover:underline"
+										className="inline-flex text-teluk-600 hover:text-teluk-700"
+										title="Detail"
+										aria-label="Detail"
 									>
-										<Eye className="size-4" />
+										<Eye className="size-4" strokeWidth={1.75} />
 									</Link>
 									<button
 										type="button"
 										onClick={() => onEdit(row)}
-										className="text-sm font-medium text-(--color-text-muted)"
+										title="Edit"
+										aria-label="Edit"
+										className="text-(--color-text-muted) hover:text-teluk-600"
 									>
-										<Pencil className="size-4" />
+										<Pencil className="size-4" strokeWidth={1.75} />
 									</button>
 									<button
 										type="button"
 										onClick={() => onDelete(row)}
 										aria-label={`Hapus lokasi ${row.name}`}
-										className="text-sm font-medium text-(--color-text-muted)"
+										title="Hapus"
+										className="text-(--color-text-muted) hover:text-red-600"
 									>
-										<Trash className="size-4" />
+										<Trash className="size-4" strokeWidth={1.75} />
 									</button>
 								</div>
 							</td>

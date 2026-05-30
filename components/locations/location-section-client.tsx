@@ -10,45 +10,51 @@ import type { LocationListItem } from "@/lib/locations/types";
 import {
 	createLocation,
 	updateLocation,
+	deleteLocation,
 } from "@/lib/locations/post-update-locations";
-import { deleteLocation } from "@/lib/locations/post-update-locations";
+import {
+	getOfficersForSelect,
+	type OfficerSelectOption,
+} from "@/lib/officers/post-officers";
 
 type Props = {
 	rows: LocationListItem[];
+};
+
+const emptyForm: LocationFormValues = {
+	alamat: "",
+	nama_lokasi: "",
+	petugas_id: "",
+	is_active: true,
 };
 
 export function LocationSectionClient({ rows }: Props) {
 	const [open, setOpen] = useState(false);
 	const [mode, setMode] = useState<"create" | "edit">("create");
 	const [selectedId, setSelectedId] = useState<string | null>(null);
-	const [initialValue, setInitialValue] = useState<LocationFormValues>({
-		alamat: "",
-		is_active: true,
-		nama_lokasi: "",
-		petugas_id: "",
-	});
+	const [formValues, setFormValues] = useState<LocationFormValues>(emptyForm);
+	const [officers, setOfficers] = useState<OfficerSelectOption[]>([]);
 
-	function openCreate() {
+	async function openCreate() {
 		setMode("create");
 		setSelectedId(null);
-		setInitialValue({
-			alamat: "",
-			is_active: true,
-			nama_lokasi: "",
-			petugas_id: "",
-		});
+		setFormValues(emptyForm);
+		const list = await getOfficersForSelect();
+		setOfficers(list);
 		setOpen(true);
 	}
 
-	function openEdit(row: LocationListItem) {
+	async function openEdit(row: LocationListItem) {
 		setMode("edit");
 		setSelectedId(row.id);
-		setInitialValue({
+		setFormValues({
 			alamat: row.address,
-			is_active: row.status === "active",
 			nama_lokasi: row.name,
 			petugas_id: "",
+			is_active: row.status === "active",
 		});
+		const list = await getOfficersForSelect();
+		setOfficers(list);
 		setOpen(true);
 	}
 
@@ -72,11 +78,9 @@ export function LocationSectionClient({ rows }: Props) {
 
 	return (
 		<div className="flex flex-col gap-6">
-			<div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+			<header className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
 				<div>
-					<h2 className="text-lg font-bold text-(--color-text)">
-						Lokasi Parkir
-					</h2>
+					<h2 className="text-lg font-bold text-(--color-text)">Lokasi Parkir</h2>
 					<p className="mt-1 text-sm text-(--color-text-muted)">
 						Kelola titik parkir resmi dan penugasan petugas.
 					</p>
@@ -88,14 +92,15 @@ export function LocationSectionClient({ rows }: Props) {
 				>
 					Tambah Lokasi
 				</button>
-			</div>
+			</header>
 
 			<LocationTable rows={rows} onEdit={openEdit} onDelete={handleDelete} />
 
 			<LocationFormModal
 				open={open}
 				mode={mode}
-				initialValues={initialValue}
+				initialValues={formValues}
+				officers={officers}
 				onClose={() => setOpen(false)}
 				onSubmit={submit}
 			/>
