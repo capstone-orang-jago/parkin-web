@@ -6,8 +6,6 @@ const styles: Record<TransactionStatus, string> = {
     "bg-[var(--color-success-highlight)] text-[var(--color-success)] ring-1 ring-[var(--color-success)]/15",
   Gagal:
     "bg-[var(--color-error-highlight)] text-[var(--color-error)] ring-1 ring-[var(--color-error)]/15",
-  Pending:
-    "bg-[var(--color-warning-highlight)] text-[var(--color-warning)] ring-1 ring-[var(--color-warning)]/20",
 };
 
 export function TransactionStatusBadge({ status }: { status: TransactionStatus }) {
