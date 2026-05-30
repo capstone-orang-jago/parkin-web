@@ -23,7 +23,7 @@ export type OfficerDetail = {
   fullName: string;
   email: string;
   phone: string;
-  /** Kode tampilan admin, mis. PET-088 */
+  /** Kode tampilan admin, mis. PK-550E8400 */
   officerCode: string;
   assignedLocationId: string | null;
   assignedLocationName: string | null;

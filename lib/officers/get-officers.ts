@@ -4,6 +4,7 @@ import type {
 	OfficerListItem,
 	OfficerRecentTransaction,
 } from "./types";
+import { formatShortId } from "../format/short-id";
 
 // ---------------------------------------------------------------------------
 // API response types — mirrors dto.UserResponseDTO from swagger.yaml
@@ -181,7 +182,7 @@ export async function getOfficerById(
 		fullName: item.name,
 		email: item.email,
 		phone: item.telephone,
-		officerCode: `PET-${item.id.slice(-3).toUpperCase()}`,
+		officerCode: formatShortId(item.id),
 		assignedLocationId: location?.id ?? null,
 		assignedLocationName: location?.name ?? null,
 		totalDutyDays: item.total_duty_days ?? 0,
