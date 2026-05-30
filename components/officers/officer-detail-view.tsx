@@ -66,6 +66,7 @@ export function OfficerDetailView({ officer }: { officer: OfficerDetail }) {
               <span>
                 ID petugas:{" "}
                 <span className="font-mono font-medium text-(--color-text)">{officer.officerCode}</span>
+                {/* todo: sesuaikan id petugas dengan yang ada di mobile */}
               </span>
             </p>
           </div>

@@ -93,7 +93,6 @@ function mapApiOfficerToListItem(item: ApiOfficer): OfficerListItem {
 		fullName: item.name,
 		email: item.email,
 		phone: item.telephone,
-		assignedLocationName: item.lokasi?.nama_lokasi ?? "—",
 	};
 }
 

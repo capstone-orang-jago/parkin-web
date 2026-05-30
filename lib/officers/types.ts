@@ -5,7 +5,6 @@ export type OfficerListItem = {
   fullName: string;
   email: string;
   phone: string;
-  assignedLocationName: string;
 };
 
 export type OfficerRecentTransaction = {

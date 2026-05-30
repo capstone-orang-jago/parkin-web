@@ -22,7 +22,7 @@ export function OfficerTable({ rows, onEdit, onDelete }: Props) {
 
   return (
     <div className="overflow-x-auto rounded-lg border border-(--color-border) bg-(--color-surface-card)">
-      <table className="w-full min-w-200 border-collapse text-left text-sm">
+      <table className="w-full min-w-180 border-collapse text-left text-sm">
         <thead>
           <tr className="border-b border-(--color-border) bg-(--color-surface-offset)">
             <th className="whitespace-nowrap px-4 py-3 text-sm font-semibold text-(--color-text-muted)">
@@ -33,9 +33,6 @@ export function OfficerTable({ rows, onEdit, onDelete }: Props) {
             </th>
             <th className="whitespace-nowrap px-4 py-3 text-sm font-semibold text-(--color-text-muted)">
               Nomor telepon
-            </th>
-            <th className="min-w-45 px-4 py-3 text-sm font-semibold text-(--color-text-muted)">
-              Lokasi penugasan
             </th>
             <th className="whitespace-nowrap px-4 py-3 text-sm font-semibold text-(--color-text-muted)">
               Aksi
@@ -62,7 +59,6 @@ export function OfficerTable({ rows, onEdit, onDelete }: Props) {
               <td className="whitespace-nowrap px-4 py-3 align-middle font-mono text-(--color-text-muted)">
                 {row.phone}
               </td>
-              <td className="px-4 py-3 align-middle text-(--color-text)">{row.assignedLocationName}</td>
               <td className="whitespace-nowrap px-4 py-3 align-middle">
                 <div className="flex flex-wrap items-center gap-2">
                   <Link
