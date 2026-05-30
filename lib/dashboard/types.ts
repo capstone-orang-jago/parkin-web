@@ -7,7 +7,7 @@ export type DashboardSummary = {
   motorCount: number;
   mobilCount: number;
   activeLocations: number;
-  activeOfficersToday: number;
+  activeOfficers: number;
 };
 
 export type TrendPoint = {
@@ -21,7 +21,7 @@ export type TrendPoint = {
 
 export type VehicleType = "Motor" | "Mobil";
 
-export type TransactionStatus = "Sukses" | "Gagal" | "Pending";
+export type TransactionStatus = "Sukses" | "Gagal";
 
 export type RecentTransactionRow = {
   id: string;
@@ -34,8 +34,8 @@ export type RecentTransactionRow = {
 
 export type LocationPerformanceRow = {
   locationName: string;
-  transactionsToday: number;
-  revenueTodayRp: number;
+  transactions: number;
+  revenueRp: number;
   officersOnDuty: string;
 };
 

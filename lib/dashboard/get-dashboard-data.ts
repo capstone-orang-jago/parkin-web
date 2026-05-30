@@ -37,7 +37,7 @@ type ApiAdminDashboardData = {
 	recent_transactions: ApiRecentTransaction[] | null;
 	summary: {
 		active_locations: number;
-		active_officers_today: number;
+		active_officers: number;
 		mobil_count: number;
 		motor_count: number;
 		total_revenue_rp: number;
@@ -64,7 +64,6 @@ function normalizeVehicleType(
 function normalizeStatus(value: string): RecentTransactionRow["status"] {
 	const normalized = value.trim().toLowerCase();
 	if (normalized === "gagal") return "Gagal";
-	if (normalized === "pending") return "Pending";
 	return "Sukses";
 }
 
@@ -131,8 +130,8 @@ async function fetchAdminDashboard(
 	)
 		? data.location_performance.map((item) => ({
 				locationName: item.location_name,
-				transactionsToday: item.transactions_today,
-				revenueTodayRp: item.revenue_today_rp,
+				transactions: item.transactions_today,
+				revenueRp: item.revenue_today_rp,
 				officersOnDuty: item.officers_on_duty,
 			}))
 		: [];
@@ -151,7 +150,7 @@ async function fetchAdminDashboard(
 			motorCount: data.summary?.motor_count ?? 0,
 			mobilCount: data.summary?.mobil_count ?? 0,
 			activeLocations: data.summary?.active_locations ?? 0,
-			activeOfficersToday: data.summary?.active_officers_today ?? 0,
+			activeOfficers: data.summary?.active_officers ?? 0,
 		},
 		trend,
 		recentTransactions,
