@@ -78,6 +78,9 @@ function buildSummary(rows: TransactionListItem[]): ReportSummary {
     totalTransactions: rows.length,
     motorCount,
     mobilCount,
+    averagePerTx: rows.length > 0 ? totalRevenueRp / rows.length : 0,
+    activeLocations: 0,
+    activeOfficers: 0,
     topLocationName,
     topLocationRevenueRp,
   };
@@ -143,13 +146,23 @@ export function buildReportPageData(
     revenueRp: r.totalRevenueRp,
   }));
 
+  // Derive trend from dailyBars (same data, different shape)
+  const trend = dailyBars.map((d) => ({
+    date: d.date,
+    label: d.label,
+    revenueRp: d.revenueRp,
+    transactionCount: 0, // not available from transaction rows
+  }));
+
   return {
     filters,
     periodLabel: periodLabel(filters),
     summary,
+    trend,
     dailyBars,
     locationBars,
     locationTable,
+    locationPerformance: [], // not available from transaction rows
     exportRows: rows,
   };
 }

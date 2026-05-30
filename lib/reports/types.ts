@@ -12,8 +12,25 @@ export type ReportSummary = {
   totalTransactions: number;
   motorCount: number;
   mobilCount: number;
+  averagePerTx: number;
+  activeLocations: number;
+  activeOfficers: number;
   topLocationName: string | null;
   topLocationRevenueRp: number;
+};
+
+export type ReportTrendPoint = {
+  date: string;
+  label: string;
+  revenueRp: number;
+  transactionCount: number;
+};
+
+export type ReportLocationPerformance = {
+  locationName: string;
+  officersOnDuty: string;
+  transactionsToday: number;
+  revenueTodayRp: number;
 };
 
 export type ReportDailyBar = {
@@ -42,9 +59,11 @@ export type ReportPageData = {
   /** Label periode untuk header */
   periodLabel: string;
   summary: ReportSummary;
+  trend: ReportTrendPoint[];
   dailyBars: ReportDailyBar[];
   locationBars: ReportLocationBar[];
   locationTable: ReportLocationRow[];
+  locationPerformance: ReportLocationPerformance[];
   /** Baris untuk ekspor CSV (sesuai filter) */
   exportRows: TransactionListItem[];
 };
