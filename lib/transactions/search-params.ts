@@ -34,7 +34,6 @@ export function parseTransactionFilters(
   const statusNorm: TransactionFilters["status"] =
     status === "Sukses" ||
     status === "Gagal" ||
-    status === "Pending" ||
     status === "Semua"
       ? status
       : "Semua";

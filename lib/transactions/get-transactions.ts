@@ -36,6 +36,7 @@ type ApiTransactionItem = {
 	kode_transaksi: string;
 	lokasi: ApiLocation;
 	pengguna: ApiUser;
+	petugas: ApiUser | null;
 	saldo_sebelum: number;
 	saldo_sesudah: number;
 	status: string;
@@ -81,7 +82,6 @@ function normalizeStatus(value: string): TransactionStatusFilter {
 	const v = value.trim().toLowerCase();
 	if (v === "sukses") return "Sukses";
 	if (v === "gagal") return "Gagal";
-	if (v === "pending") return "Pending";
 	return "Semua";
 }
 
@@ -100,8 +100,8 @@ function mapApiTransactionItem(item: ApiTransactionItem): TransactionListItem {
 		time: item.created_at,
 		locationId: item.lokasi.id,
 		locationName: item.lokasi.nama_lokasi,
-		officerId: item.lokasi.petugas?.id ?? "",
-		officerName: item.lokasi.petugas?.name ?? "-",
+		officerId: item.petugas?.id ?? "",
+		officerName: item.petugas?.name ?? "-",
 		vehicleType: normalizeVehicleType(
 			item.jenis_kendaraan,
 		) as TransactionListItem["vehicleType"],
