@@ -6,15 +6,9 @@ import type {
 } from "./types";
 
 type ApiPetugas = {
-	email: string;
 	id: string;
-	is_verified: boolean;
-	lokasi: string;
 	name: string;
-	password: string;
-	role: string;
-	saldo: number;
-	telephone: string;
+	email: string;
 };
 
 type ApiLocation = {
@@ -26,14 +20,17 @@ type ApiLocation = {
 };
 
 type ApiTransactionItem = {
-	created_at: string;
 	id: string;
-	jenis_kendaraan: string;
 	kode_transaksi: string;
-	lokasi: { nama_lokasi: string };
-	pengguna: { name: string };
-	status: string;
+	pengguna: { id: string; name: string; email: string };
+	petugas: { id: string; name: string; email: string };
+	lokasi: { id: string; nama_lokasi: string; alamat: string; is_active: boolean };
+	jenis_kendaraan: string;
 	tarif: number;
+	saldo_sebelum: number;
+	saldo_sesudah: number;
+	status: string;
+	created_at: string;
 };
 
 type ApiLocationDetail = {
@@ -83,10 +80,14 @@ function mapApiLocationToListItem(item: ApiLocation): LocationListItem {
 function mapRecentTransaction(item: ApiTransactionItem): LocationRecentTransaction {
 	return {
 		id: item.id,
+		kodeTransaksi: item.kode_transaksi,
 		time: item.created_at,
 		vehicleType: normalizeVehicleType(item.jenis_kendaraan),
-		officerName: item.pengguna?.name ?? "-",
+		userName: item.pengguna?.name ?? "-",
+		officerName: item.petugas?.name ?? "-",
 		amountRp: item.tarif,
+		saldoSebelum: item.saldo_sebelum ?? 0,
+		saldoSesudah: item.saldo_sesudah ?? 0,
 		status: normalizeStatus(item.status),
 	};
 }

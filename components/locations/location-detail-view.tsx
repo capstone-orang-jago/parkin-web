@@ -100,13 +100,19 @@ export function LocationDetailView({ location }: { location: LocationDetail }) {
               <thead>
                 <tr className="border-b border-(--color-border) bg-(--color-surface-offset)">
                   <th className="whitespace-nowrap px-4 py-3 text-xs font-semibold uppercase tracking-wide text-(--color-text-muted) sm:px-5">
+                    Kode
+                  </th>
+                  <th className="whitespace-nowrap px-4 py-3 text-xs font-semibold uppercase tracking-wide text-(--color-text-muted) sm:px-5">
                     Waktu
                   </th>
                   <th className="whitespace-nowrap px-4 py-3 text-xs font-semibold uppercase tracking-wide text-(--color-text-muted) sm:px-5">
-                    Kendaraan
+                    Pengguna
                   </th>
                   <th className="whitespace-nowrap px-4 py-3 text-xs font-semibold uppercase tracking-wide text-(--color-text-muted) sm:px-5">
                     Petugas
+                  </th>
+                  <th className="whitespace-nowrap px-4 py-3 text-xs font-semibold uppercase tracking-wide text-(--color-text-muted) sm:px-5">
+                    Kendaraan
                   </th>
                   <th className="whitespace-nowrap px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-(--color-text-muted) sm:px-5">
                     Nominal
@@ -122,13 +128,17 @@ export function LocationDetailView({ location }: { location: LocationDetail }) {
                     key={row.id}
                     className="border-b border-(--color-divider) last:border-b-0 hover:bg-(--color-surface-offset)/60"
                   >
+                    <td className="whitespace-nowrap px-4 py-3 font-mono text-xs text-(--color-text-muted) sm:px-5">
+                      {row.kodeTransaksi}
+                    </td>
                     <td className="whitespace-nowrap px-4 py-3 text-(--color-text-muted) sm:px-5">
                       {formatDateTime(row.time)}
                     </td>
+                    <td className="px-4 py-3 text-(--color-text) sm:px-5">{row.userName}</td>
+                    <td className="px-4 py-3 text-(--color-text) sm:px-5">{row.officerName}</td>
                     <td className="px-4 py-3 sm:px-5">
                       <VehicleCell vehicleType={row.vehicleType} />
                     </td>
-                    <td className="px-4 py-3 text-(--color-text) sm:px-5">{row.officerName}</td>
                     <td className="px-4 py-3 text-right font-medium tabular-nums text-(--color-text) sm:px-5">
                       {formatRp(row.amountRp)}
                     </td>

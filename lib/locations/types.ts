@@ -14,10 +14,14 @@ export type LocationListItem = {
 
 export type LocationRecentTransaction = {
   id: string;
+  kodeTransaksi: string;
   time: string;
   vehicleType: VehicleType;
+  userName: string;
   officerName: string;
   amountRp: number;
+  saldoSebelum: number;
+  saldoSesudah: number;
   status: TransactionStatus;
 };
 
