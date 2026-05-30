@@ -67,15 +67,17 @@ type ApiDashboardEnvelope = {
 };
 
 type ApiTransactionItem = {
-	created_at: string;
 	id: string;
-	jenis_kendaraan: string;
 	kode_transaksi: string;
-	lokasi: { id: string; nama_lokasi: string };
-	pengguna: { id: string; name: string };
-	petugas: { id: string; name: string } | null;
-	status: string;
+	pengguna: { id: string; name: string; email: string };
+	petugas: { id: string; name: string; email: string };
+	lokasi: { id: string; nama_lokasi: string; alamat: string; is_active: boolean };
+	jenis_kendaraan: string;
 	tarif: number;
+	saldo_sebelum: number;
+	saldo_sesudah: number;
+	status: string;
+	created_at: string;
 };
 
 type ApiTransactionListEnvelope = {
@@ -125,6 +127,7 @@ function normalizeVehicleType(value: string): TransactionListItem["vehicleType"]
 function normalizeStatus(value: string): TransactionListItem["status"] {
 	const v = value.trim().toLowerCase();
 	if (v === "gagal") return "Gagal";
+	if (v === "pending") return "Pending";
 	return "Sukses";
 }
 

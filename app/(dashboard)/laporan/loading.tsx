@@ -12,8 +12,8 @@ export default function LaporanLoading() {
         ))}
       </div>
       <div className="grid gap-6 lg:grid-cols-2">
-        <div className="h-[280px] rounded-lg bg-megalit-100" />
-        <div className="h-[280px] rounded-lg bg-megalit-100" />
+        <div className="h-70 rounded-lg bg-megalit-100" />
+        <div className="h-70 rounded-lg bg-megalit-100" />
       </div>
       <div className="flex flex-col gap-3">
         <div className="h-5 w-48 rounded bg-megalit-200" />
