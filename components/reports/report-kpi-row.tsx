@@ -24,12 +24,9 @@ export function ReportKpiRow({ summary }: { summary: ReportSummary }) {
       sub: "Volume kendaraan",
     },
     {
-      label: "Lokasi tertinggi",
-      value: summary.topLocationName ?? "—",
-      sub:
-        summary.topLocationRevenueRp > 0
-          ? formatRp(summary.topLocationRevenueRp)
-          : "Pendapatan sukses",
+      label: "Lokasi aktif",
+      value: summary.activeLocations.toLocaleString("id-ID"),
+      sub: `${summary.activeOfficers} petugas jaga`,
     },
   ];
 

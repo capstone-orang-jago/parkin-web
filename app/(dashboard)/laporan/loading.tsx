@@ -15,8 +15,14 @@ export default function LaporanLoading() {
         <div className="h-[280px] rounded-lg bg-megalit-100" />
         <div className="h-[280px] rounded-lg bg-megalit-100" />
       </div>
-      <div className="h-64 rounded-lg border border-megalit-200 bg-(--color-surface-card)" />
-      <div className="h-12 w-64 rounded-md bg-megalit-200" />
+      <div className="flex flex-col gap-3">
+        <div className="h-5 w-48 rounded bg-megalit-200" />
+        <div className="h-64 rounded-lg border border-megalit-200 bg-(--color-surface-card)" />
+      </div>
+      <div className="flex flex-col gap-3 border-t border-megalit-200 pt-6">
+        <div className="h-5 w-32 rounded bg-megalit-200" />
+        <div className="h-12 w-64 rounded-md bg-megalit-200" />
+      </div>
     </div>
   );
 }

@@ -10,7 +10,7 @@ import {
   YAxis,
 } from "recharts";
 import { formatRp } from "@/lib/format/rp";
-import type { ReportDailyBar, ReportLocationBar } from "@/lib/reports/types";
+import type { ReportLocationBar, ReportTrendPoint } from "@/lib/reports/types";
 
 function formatRpAxis(v: number) {
   if (v >= 1_000_000) return `${(v / 1_000_000).toFixed(1)} jt`;
@@ -19,13 +19,13 @@ function formatRpAxis(v: number) {
 }
 
 export function ReportCharts({
-  dailyBars,
+  trend,
   locationBars,
 }: {
-  dailyBars: ReportDailyBar[];
+  trend: ReportTrendPoint[];
   locationBars: ReportLocationBar[];
 }) {
-  const dailyEmpty = dailyBars.length === 0 || dailyBars.every((d) => d.revenueRp === 0);
+  const trendEmpty = trend.length === 0 || trend.every((d) => d.revenueRp === 0);
   const locEmpty = locationBars.length === 0 || locationBars.every((l) => l.revenueRp === 0);
 
   return (
@@ -33,16 +33,16 @@ export function ReportCharts({
       <section className="flex flex-col gap-2">
         <h3 className="text-sm font-semibold text-(--color-text)">Pendapatan per hari</h3>
         <p className="text-xs text-(--color-text-muted)">
-          Pendapatan dari transaksi sukses (Rp), per tanggal dalam filter.
+          Tren pendapatan harian dari data dashboard.
         </p>
-        {dailyEmpty ? (
-          <div className="flex h-[280px] items-center justify-center rounded-lg border border-dashed border-(--color-border) bg-(--color-surface-2) text-sm text-(--color-text-muted)">
-            Tidak ada data pendapatan untuk periode ini.
+        {trendEmpty ? (
+          <div className="flex h-70 items-center justify-center rounded-lg border border-dashed border-(--color-border) bg-(--color-surface-2) text-sm text-(--color-text-muted)">
+            Tidak ada data tren untuk periode ini.
           </div>
         ) : (
-          <div className="h-[280px] w-full min-w-0 rounded-lg border border-(--color-border) bg-(--color-surface-card) p-3 shadow-sm">
+          <div className="h-70 w-full min-w-0 rounded-lg border border-(--color-border) bg-(--color-surface-card) p-3 shadow-sm">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={dailyBars} margin={{ top: 8, right: 8, left: 0, bottom: 4 }}>
+              <BarChart data={trend} margin={{ top: 8, right: 8, left: 0, bottom: 4 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#e1d9ce" />
                 <XAxis
                   dataKey="label"
@@ -82,11 +82,11 @@ export function ReportCharts({
           Perbandingan pendapatan sukses antar lokasi dalam filter.
         </p>
         {locEmpty ? (
-          <div className="flex h-[280px] items-center justify-center rounded-lg border border-dashed border-(--color-border) bg-(--color-surface-2) text-sm text-(--color-text-muted)">
+          <div className="flex h-70 items-center justify-center rounded-lg border border-dashed border-(--color-border) bg-(--color-surface-2) text-sm text-(--color-text-muted)">
             Tidak ada data per lokasi untuk periode ini.
           </div>
         ) : (
-          <div className="h-[280px] w-full min-w-0 rounded-lg border border-(--color-border) bg-(--color-surface-card) p-3 pl-1 shadow-sm">
+          <div className="h-70 w-full min-w-0 rounded-lg border border-(--color-border) bg-(--color-surface-card) p-3 pl-1 shadow-sm">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
                 layout="vertical"

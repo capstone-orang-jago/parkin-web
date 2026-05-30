@@ -3,7 +3,7 @@ import { ReportCharts } from "@/components/reports/report-charts";
 import { ReportExportButtons } from "@/components/reports/report-export-buttons";
 import { ReportFiltersBar } from "@/components/reports/report-filters-bar";
 import { ReportKpiRow } from "@/components/reports/report-kpi-row";
-import { ReportLocationTable } from "@/components/reports/report-location-table";
+import { ReportPerformanceTable } from "@/components/reports/report-performance-table";
 import { getLocationList } from "@/lib/locations/get-locations";
 import { getReportPageData } from "@/lib/reports/get-report";
 import { parseReportFilters } from "@/lib/reports/search-params";
@@ -31,7 +31,7 @@ export default async function LaporanPage({ searchParams }: PageProps) {
       <header>
         <h2 className="text-lg font-bold text-(--color-text)">Laporan</h2>
         <p className="mt-1 text-sm text-(--color-text-muted)">
-          Rekap pendapatan dan volume kendaraan — periode:{" "}
+          Rekap pendapatan dan kinerja lokasi — periode:{" "}
           <span className="font-medium text-(--color-text)">{data.periodLabel}</span>
         </p>
       </header>
@@ -40,11 +40,14 @@ export default async function LaporanPage({ searchParams }: PageProps) {
 
       <ReportKpiRow summary={data.summary} />
 
-      <ReportCharts dailyBars={data.dailyBars} locationBars={data.locationBars} />
+      <ReportCharts trend={data.trend} locationBars={data.locationBars} />
 
       <section className="flex flex-col gap-3">
-        <h3 className="text-sm font-semibold text-(--color-text)">Rekap per lokasi</h3>
-        <ReportLocationTable rows={data.locationTable} />
+        <h3 className="text-sm font-semibold text-(--color-text)">Kinerja lokasi &amp; petugas</h3>
+        <p className="text-xs text-(--color-text-muted)">
+          Data realtime lokasi aktif dan petugas yang bertugas hari ini.
+        </p>
+        <ReportPerformanceTable rows={data.locationPerformance} />
       </section>
 
       <section className="flex flex-col gap-3 border-t border-(--color-border) pt-6">
