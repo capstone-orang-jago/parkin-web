@@ -13,7 +13,6 @@ function StatusBadge({ status }: { status: RecentTransactionRow["status"] }) {
   const map = {
     Sukses: "bg-emerald-100 text-emerald-900",
     Gagal: "bg-red-100 text-red-800",
-    Pending: "bg-amber-100 text-amber-900",
   } as const;
   return (
     <span

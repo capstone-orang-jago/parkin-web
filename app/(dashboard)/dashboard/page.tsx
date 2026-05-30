@@ -41,7 +41,7 @@ export default async function DashboardPage({ searchParams }: PageProps) {
 
       <section className="flex flex-col gap-2">
         <h3 className="text-sm font-semibold text-megalit-900">
-          Tren 7 hari terakhir
+          {range === "month" ? "Tren 30 hari terakhir" : "Tren 7 hari terakhir"}
         </h3>
         {/* <p className="text-xs text-megalit-600">
           Garis oranye: jumlah transaksi. Garis teal: pendapatan (sumbu kanan).

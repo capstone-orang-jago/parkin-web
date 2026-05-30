@@ -42,8 +42,8 @@ export function KpiGrid({ summary, periodLabel }: Props) {
       Icon: MapPin,
     },
     {
-      label: "Petugas aktif (hari ini)",
-      value: String(summary.activeOfficersToday),
+      label: "Petugas aktif",
+      value: String(summary.activeOfficers),
       Icon: Users,
     },
   ];

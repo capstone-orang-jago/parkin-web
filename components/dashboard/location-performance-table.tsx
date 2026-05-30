@@ -34,10 +34,10 @@ export function LocationPerformanceTable({ rows }: { rows: LocationPerformanceRo
                     {r.locationName}
                   </td>
                   <td className="px-4 py-2.5 text-right tabular-nums text-megalit-800">
-                    {r.transactionsToday}
+                    {r.transactions}
                   </td>
                   <td className="px-4 py-2.5 text-right tabular-nums text-megalit-900">
-                    {formatRp(r.revenueTodayRp)}
+                    {formatRp(r.revenueRp)}
                   </td>
                   <td className="px-4 py-2.5 text-megalit-700">{r.officersOnDuty}</td>
                 </tr>
