@@ -40,7 +40,23 @@ export function LoginForm() {
 
 	return (
 		<div className="w-full max-w-md rounded-lg border border-megalit-200 bg-(--color-surface-card) p-8 shadow-sm">
-			<div className="mb-4 flex items-center justify-center gap-4">
+			<div className="mb-6 flex flex-col items-center gap-4 text-center">
+				<Image
+					src="/logo.svg"
+					alt="Logo ParkIn Palu"
+					width={88}
+					height={88}
+					priority
+					className="h-20 w-20"
+				/>
+				<div>
+					<h1 className="text-xl font-semibold text-megalit-900">Masuk admin</h1>
+					<p className="mt-2 text-sm text-megalit-600">
+						Gunakan email dan password akun admin ParkIn Palu.
+					</p>
+				</div>
+			</div>
+			{/* <div className="mb-4 flex items-center justify-center gap-4">
 				<Image
 					src="/dishub.svg"
 					alt="Logo Dinas Perhubungan"
@@ -57,11 +73,7 @@ export function LoginForm() {
 					loading="eager"
 					className="h-17.5 w-auto"
 				/>
-			</div>
-			<h1 className="text-xl font-semibold text-megalit-900">Masuk admin</h1>
-			<p className="mt-2 text-sm text-megalit-600">
-				Gunakan email dan password akun admin Dishub.
-			</p>
+			</div> */}
 			{sessionHint ? (
 				<p className="mt-3 rounded-md border border-megalit-300 bg-megalit-100 px-3 py-2 text-sm text-megalit-800">
 					{sessionHint}

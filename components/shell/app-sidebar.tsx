@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -32,12 +33,21 @@ export function AppSidebar({ username }: { username: string }) {
   return (
     <aside className="sticky top-0 flex h-dvh w-16 shrink-0 flex-col border-r border-(--color-border) bg-(--color-surface) lg:w-60">
       <div className="flex h-14 items-center justify-center border-b border-(--color-border) px-2 lg:justify-start lg:px-4">
-        <span
-          className={`truncate text-base font-normal text-(--color-text) lg:text-[1.125rem] ${fontDisplay.className}`}
-        >
-          <span className="lg:hidden">P</span>
-          <span className="hidden tracking-tight text-3xl lg:inline">ParkIn Palu</span>
-        </span>
+        <div className="flex items-center gap-3">
+          <Image
+            src="/logo.svg"
+            alt="Logo ParkIn Palu"
+            width={36}
+            height={36}
+            priority
+            className="h-9 w-9 shrink-0"
+          />
+          <span
+            className={`hidden truncate text-base font-normal text-(--color-text) lg:inline lg:text-[1.125rem] ${fontDisplay.className}`}
+          >
+            <span className="tracking-tight text-3xl">ParkIn Palu</span>
+          </span>
+        </div>
       </div>
       <nav
         className="flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto p-2"
