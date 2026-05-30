@@ -1,11 +1,14 @@
 import Link from "next/link";
 import { Eye, Pencil, Trash } from "lucide-react";
-import { OfficerStatusBadge } from "@/components/officers/officer-status-badge";
 import type { OfficerListItem } from "@/lib/officers/types";
 
-const stubTitle = "Menyusul integrasi API";
+type Props = {
+  rows: OfficerListItem[];
+  onEdit?: (row: OfficerListItem) => void;
+  onDelete?: (row: OfficerListItem) => void;
+};
 
-export function OfficerTable({ rows }: { rows: OfficerListItem[] }) {
+export function OfficerTable({ rows, onEdit, onDelete }: Props) {
   if (rows.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-(--color-border) bg-(--color-surface-2) px-6 py-16 text-center">
@@ -19,23 +22,20 @@ export function OfficerTable({ rows }: { rows: OfficerListItem[] }) {
 
   return (
     <div className="overflow-x-auto rounded-lg border border-(--color-border) bg-(--color-surface-card)">
-      <table className="w-full min-w-[920px] border-collapse text-left text-sm">
+      <table className="w-full min-w-200 border-collapse text-left text-sm">
         <thead>
           <tr className="border-b border-(--color-border) bg-(--color-surface-offset)">
             <th className="whitespace-nowrap px-4 py-3 text-sm font-semibold text-(--color-text-muted)">
               Nama
             </th>
             <th className="whitespace-nowrap px-4 py-3 text-sm font-semibold text-(--color-text-muted)">
-              Nomor telepon
-            </th>
-            <th className="min-w-[180px] px-4 py-3 text-sm font-semibold text-(--color-text-muted)">
-              Lokasi penugasan
+              Email
             </th>
             <th className="whitespace-nowrap px-4 py-3 text-sm font-semibold text-(--color-text-muted)">
-              Status akun
+              Nomor telepon
             </th>
-            <th className="whitespace-nowrap px-4 py-3 text-right text-sm font-semibold text-(--color-text-muted)">
-              Transaksi hari ini
+            <th className="min-w-45 px-4 py-3 text-sm font-semibold text-(--color-text-muted)">
+              Lokasi penugasan
             </th>
             <th className="whitespace-nowrap px-4 py-3 text-sm font-semibold text-(--color-text-muted)">
               Aksi
@@ -56,16 +56,13 @@ export function OfficerTable({ rows }: { rows: OfficerListItem[] }) {
                   {row.fullName}
                 </Link>
               </td>
+              <td className="px-4 py-3 align-middle text-(--color-text-muted)">
+                {row.email}
+              </td>
               <td className="whitespace-nowrap px-4 py-3 align-middle font-mono text-(--color-text-muted)">
                 {row.phone}
               </td>
               <td className="px-4 py-3 align-middle text-(--color-text)">{row.assignedLocationName}</td>
-              <td className="px-4 py-3 align-middle">
-                <OfficerStatusBadge status={row.status} />
-              </td>
-              <td className="px-4 py-3 text-right align-middle tabular-nums text-(--color-text)">
-                {row.transactionsToday}
-              </td>
               <td className="whitespace-nowrap px-4 py-3 align-middle">
                 <div className="flex flex-wrap items-center gap-2">
                   <Link
@@ -76,24 +73,28 @@ export function OfficerTable({ rows }: { rows: OfficerListItem[] }) {
                   >
                     <Eye className="size-4" strokeWidth={1.75} />
                   </Link>
-                  <button
-                    type="button"
-                    disabled
-                    title={stubTitle}
-                    aria-label="Edit"
-                    className="text-(--color-text-muted)"
-                  >
-                    <Pencil className="size-4" strokeWidth={1.75} />
-                  </button>
-                  <button
-                    type="button"
-                    disabled
-                    title={stubTitle}
-                    aria-label="Nonaktifkan"
-                    className="text-(--color-text-muted)"
-                  >
-                    <Trash className="size-4" strokeWidth={1.75} />
-                  </button>
+                  {onEdit && (
+                    <button
+                      type="button"
+                      onClick={() => onEdit(row)}
+                      title="Edit"
+                      aria-label="Edit"
+                      className="text-(--color-text-muted) hover:text-teluk-600"
+                    >
+                      <Pencil className="size-4" strokeWidth={1.75} />
+                    </button>
+                  )}
+                  {onDelete && (
+                    <button
+                      type="button"
+                      onClick={() => onDelete(row)}
+                      title="Hapus"
+                      aria-label="Hapus"
+                      className="text-(--color-text-muted) hover:text-red-600"
+                    >
+                      <Trash className="size-4" strokeWidth={1.75} />
+                    </button>
+                  )}
                 </div>
               </td>
             </tr>
