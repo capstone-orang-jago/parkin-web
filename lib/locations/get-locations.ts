@@ -1,25 +1,29 @@
 import { fetchWithTokenRetry } from "@/lib/auth/server-api";
 import type {
-	ApiLocation,
 	LocationDetail,
 	LocationListItem,
 	LocationRecentTransaction,
 } from "./types";
 
-/**
- * Daftar lokasi parkir.
- */
+type ApiPetugas = {
+	email: string;
+	id: string;
+	is_verified: boolean;
+	lokasi: string;
+	name: string;
+	password: string;
+	role: string;
+	saldo: number;
+	telephone: string;
+};
 
-function mapApiLocationToListItem(item: ApiLocation): LocationListItem {
-	return {
-		id: item.id,
-		name: item.nama_lokasi,
-		address: item.alamat,
-		activeOfficerLabel: item.petugas ? item.petugas.name : "-",
-		status: item.is_active ? "active" : "inactive",
-		transactionsToday: 0,
-	};
-}
+type ApiLocation = {
+	alamat: string;
+	id: string;
+	is_active: boolean;
+	nama_lokasi: string;
+	petugas: ApiPetugas | null;
+};
 
 type ApiTransactionItem = {
 	created_at: string;
@@ -42,6 +46,10 @@ type ApiLocationDetail = {
 	total_transaksi: number;
 };
 
+// ---------------------------------------------------------------------------
+// Normalizers
+// ---------------------------------------------------------------------------
+
 function normalizeVehicleType(
 	value: string,
 ): LocationRecentTransaction["vehicleType"] {
@@ -55,8 +63,21 @@ function normalizeStatus(
 ): LocationRecentTransaction["status"] {
 	const v = value.trim().toLowerCase();
 	if (v === "gagal") return "Gagal";
-	if (v === "pending") return "Pending";
 	return "Sukses";
+}
+
+// ---------------------------------------------------------------------------
+// Mappers
+// ---------------------------------------------------------------------------
+
+function mapApiLocationToListItem(item: ApiLocation): LocationListItem {
+	return {
+		id: item.id,
+		name: item.nama_lokasi,
+		address: item.alamat,
+		activeOfficerLabel: item.petugas?.name ?? "—",
+		status: item.is_active ? "active" : "inactive",
+	};
 }
 
 function mapRecentTransaction(item: ApiTransactionItem): LocationRecentTransaction {
@@ -70,13 +91,17 @@ function mapRecentTransaction(item: ApiTransactionItem): LocationRecentTransacti
 	};
 }
 
+// ---------------------------------------------------------------------------
+// Fetch functions
+// ---------------------------------------------------------------------------
+
 export async function getLocationList(): Promise<LocationListItem[]> {
-	const baseUrl = process.env.API_BASE_URL;
+	const baseUrl = process.env.API_BASE_URL?.replace(/\/$/, "");
 	if (!baseUrl) {
-		throw new Error("API_BASE_URL belum disetel");
+		throw new Error("API_BASE_URL belum disetel.");
 	}
 
-	const res = await fetchWithTokenRetry(`${baseUrl}/admin/locations`);
+	const res = await fetchWithTokenRetry(`${baseUrl}/admin/lokasi-parkir`);
 
 	if (!res.ok) {
 		throw new Error(`Gagal mengambil lokasi: ${res.status} ${res.statusText}`);
@@ -86,23 +111,23 @@ export async function getLocationList(): Promise<LocationListItem[]> {
 	const data: ApiLocation[] = Array.isArray(payload)
 		? payload
 		: (payload.data ?? []);
+
 	return data.map(mapApiLocationToListItem);
 }
 
 export async function getLocationById(
 	id: string,
 ): Promise<LocationDetail | null> {
-	const baseUrl = process.env.API_BASE_URL?.replace(/\/$/, "") ?? "";
+	const baseUrl = process.env.API_BASE_URL?.replace(/\/$/, "");
 	if (!baseUrl) {
-		throw new Error("API_BASE_URL belum diset.");
+		throw new Error("API_BASE_URL belum disetel.");
 	}
 
-	// Gunakan /admin/locations/{id} yang mengembalikan AdminLocationDetailDTO dengan stats
 	const res = await fetchWithTokenRetry(`${baseUrl}/admin/locations/${id}`);
 
 	if (res.status === 404) return null;
 	if (!res.ok) {
-		throw new Error("Gagal mengambil detail lokasi.");
+		throw new Error(`Gagal mengambil detail lokasi: ${res.status} ${res.statusText}`);
 	}
 
 	const payload = await res.json();
@@ -117,11 +142,8 @@ export async function getLocationById(
 		name: item.nama_lokasi,
 		address: item.alamat,
 		status: item.is_active ? "active" : "inactive",
-		createdAt: new Date().toISOString(),
-		assignedOfficerNames: [],
 		totalTransactions: item.total_transaksi ?? 0,
 		totalRevenueRp: item.total_pendapatan ?? 0,
-		avgDailyRp: 0,
 		recentTransactions,
 	};
 }

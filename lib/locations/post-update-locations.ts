@@ -35,11 +35,17 @@ async function callBackend(
 }
 
 export async function createLocation(values: LocationFormValues) {
-	await callBackend("/admin/lokasi-parkir", "POST", values);
+	await callBackend("/admin/lokasi-parkir", "POST", {
+		...values,
+		is_active: true,
+	});
 }
 
 export async function updateLocation(id: string, values: LocationFormValues) {
-	await callBackend(`/admin/lokasi-parkir/${id}`, "PUT", values);
+	await callBackend(`/admin/lokasi-parkir/${id}`, "PUT", {
+		...values,
+		is_active: values.is_active,
+	});
 }
 
 export async function deleteLocation(id: string) {

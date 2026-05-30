@@ -7,36 +7,15 @@ export type LocationListItem = {
   id: string;
   name: string;
   address: string;
-  /** Label tampilan — kosong jika tidak ada petugas aktif */
+  /** Label tampilan — "—" jika tidak ada petugas aktif */
   activeOfficerLabel: string;
   status: LocationOperationalStatus;
-  transactionsToday: number;
 };
-
-export type ApiPetugas = {
-  email: string;
-  id: string;
-  is_verified: boolean;
-  lokasi: string;
-  name: string;
-  password: string;
-  role: string;
-  saldo: number;
-  telephone: string;
-};
-export type ApiLocation = {
-  alamat: string;
-  id: string;
-  is_active: boolean;
-  nama_lokasi: string;
-  petugas: ApiPetugas | null;
-}
 
 export type LocationRecentTransaction = {
   id: string;
   time: string;
   vehicleType: VehicleType;
-  /** Nama petugas dari data transaksi */
   officerName: string;
   amountRp: number;
   status: TransactionStatus;
@@ -47,12 +26,7 @@ export type LocationDetail = {
   name: string;
   address: string;
   status: LocationOperationalStatus;
-  /** ISO tanggal pembuatan */
-  createdAt: string;
-  assignedOfficerNames: string[];
   totalTransactions: number;
   totalRevenueRp: number;
-  /** Rata-rata pendapatan harian (Rp) */
-  avgDailyRp: number;
   recentTransactions: LocationRecentTransaction[];
 };
