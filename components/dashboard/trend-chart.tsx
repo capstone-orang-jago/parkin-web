@@ -25,39 +25,17 @@ export function TrendChart({ data }: { data: TrendPoint[] }) {
     data.every((d) => d.transactionCount === 0 && d.revenueRp === 0);
 
   if (empty) {
-    return (
-      <div className="flex h-[280px] items-center justify-center rounded-lg border border-dashed border-megalit-300 bg-megalit-100/50 text-sm text-megalit-600">
-        Belum ada data tren untuk periode ini.
-      </div>
-    );
+    return <div className="flex h-70 items-center justify-center rounded-lg border border-dashed border-megalit-300 bg-megalit-100/50 text-sm text-megalit-600">Belum ada data tren untuk periode ini.</div>;
   }
 
   return (
-    <div className="h-[280px] w-full min-w-0 rounded-lg border border-megalit-200 bg-(--color-surface-card) p-3 shadow-sm">
+    <div className="h-70 w-full min-w-0 rounded-lg border border-megalit-200 bg-(--color-surface-card) p-3 shadow-sm">
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={data} margin={{ top: 8, right: 16, left: 0, bottom: 0 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#e1d9ce" />
-          <XAxis
-            dataKey="label"
-            tick={{ fontSize: 11, fill: "#71624f" }}
-            axisLine={false}
-            tickLine={false}
-          />
-          <YAxis
-            yAxisId="left"
-            tick={{ fontSize: 11, fill: "#71624f" }}
-            axisLine={false}
-            tickLine={false}
-            allowDecimals={false}
-          />
-          <YAxis
-            yAxisId="right"
-            orientation="right"
-            tick={{ fontSize: 11, fill: "#71624f" }}
-            axisLine={false}
-            tickLine={false}
-            tickFormatter={formatRpAxis}
-          />
+          <XAxis dataKey="label" tick={{ fontSize: 11, fill: "#71624f" }} axisLine={false} tickLine={false} />
+          <YAxis yAxisId="left" tick={{ fontSize: 11, fill: "#71624f" }} axisLine={false} tickLine={false} allowDecimals={false} />
+          <YAxis yAxisId="right" orientation="right" tick={{ fontSize: 11, fill: "#71624f" }} axisLine={false} tickLine={false} tickFormatter={formatRpAxis} />
           <Tooltip
             formatter={(value: number | string, name: string) => {
               const n = typeof value === "number" ? value : Number(value);
@@ -78,26 +56,8 @@ export function TrendChart({ data }: { data: TrendPoint[] }) {
             }}
           />
           <Legend wrapperStyle={{ fontSize: "12px" }} />
-          <Line
-            yAxisId="left"
-            type="monotone"
-            dataKey="transactionCount"
-            name="Transaksi"
-            stroke="#d4860a"
-            strokeWidth={2}
-            dot={false}
-            activeDot={{ r: 4 }}
-          />
-          <Line
-            yAxisId="right"
-            type="monotone"
-            dataKey="revenueRp"
-            name="Pendapatan"
-            stroke="#0d7e96"
-            strokeWidth={2}
-            dot={false}
-            activeDot={{ r: 4 }}
-          />
+          <Line yAxisId="left" type="monotone" dataKey="transactionCount" name="Transaksi" stroke="#d4860a" strokeWidth={2} dot={false} activeDot={{ r: 4 }} />
+          <Line yAxisId="right" type="monotone" dataKey="revenueRp" name="Pendapatan" stroke="#0d7e96" strokeWidth={2} dot={false} activeDot={{ r: 4 }} />
         </LineChart>
       </ResponsiveContainer>
     </div>

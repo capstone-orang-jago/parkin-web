@@ -19,10 +19,7 @@ export default function DashboardLoading() {
       </div>
       <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
         {Array.from({ length: 6 }).map((_, i) => (
-          <li
-            key={i}
-            className="rounded-lg border border-megalit-200 bg-(--color-surface-card) p-4 shadow-sm"
-          >
+          <li key={i} className="rounded-lg border border-megalit-200 bg-(--color-surface-card) p-4 shadow-sm">
             <Skeleton className="h-3 w-24" />
             <Skeleton className="mt-4 h-8 w-20" />
           </li>
@@ -30,7 +27,7 @@ export default function DashboardLoading() {
       </ul>
       <div className="space-y-2">
         <Skeleton className="h-4 w-40" />
-        <Skeleton className="h-[280px] w-full" />
+        <Skeleton className="h-70 w-full" />
       </div>
       <Skeleton className="h-48 w-full" />
       <Skeleton className="h-48 w-full" />
