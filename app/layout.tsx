@@ -7,6 +7,9 @@ export const metadata: Metadata = {
     default: "ParkIn Palu — Dashboard",
     template: "%s — ParkIn Palu",
   },
+  icons: {
+    icon: "/favicon.ico",
+  },
   description:
     "Dashboard admin untuk memantau transaksi, lokasi parkir, dan petugas ParkIn Palu.",
 };
