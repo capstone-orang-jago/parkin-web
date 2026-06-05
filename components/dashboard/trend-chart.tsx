@@ -11,13 +11,8 @@ import {
   YAxis,
 } from "recharts";
 import type { TrendPoint } from "@/lib/dashboard/types";
-import { formatRp } from "@/lib/format/rp";
-
-function formatRpAxis(v: number) {
-  if (v >= 1_000_000) return `${(v / 1_000_000).toFixed(1)} jt`;
-  if (v >= 1000) return `${Math.round(v / 1000)} rb`;
-  return String(v);
-}
+import { formatRp, formatRpAxis } from "@/lib/format/rp";
+import { CHART_TOOLTIP_STYLE, CHART_TICK_STYLE, ChartEmptyState } from "@/components/shared/chart-components";
 
 export function TrendChart({ data }: { data: TrendPoint[] }) {
   const empty =
@@ -25,7 +20,7 @@ export function TrendChart({ data }: { data: TrendPoint[] }) {
     data.every((d) => d.transactionCount === 0 && d.revenueRp === 0);
 
   if (empty) {
-    return <div className="flex h-70 items-center justify-center rounded-lg border border-dashed border-megalit-300 bg-megalit-100/50 text-sm text-megalit-600">Belum ada data tren untuk periode ini.</div>;
+    return <ChartEmptyState message="Belum ada data tren untuk periode ini." />;
   }
 
   return (
@@ -33,9 +28,9 @@ export function TrendChart({ data }: { data: TrendPoint[] }) {
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={data} margin={{ top: 8, right: 16, left: 0, bottom: 0 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#e1d9ce" />
-          <XAxis dataKey="label" tick={{ fontSize: 11, fill: "#71624f" }} axisLine={false} tickLine={false} />
-          <YAxis yAxisId="left" tick={{ fontSize: 11, fill: "#71624f" }} axisLine={false} tickLine={false} allowDecimals={false} />
-          <YAxis yAxisId="right" orientation="right" tick={{ fontSize: 11, fill: "#71624f" }} axisLine={false} tickLine={false} tickFormatter={formatRpAxis} />
+          <XAxis dataKey="label" tick={CHART_TICK_STYLE} axisLine={false} tickLine={false} />
+          <YAxis yAxisId="left" tick={CHART_TICK_STYLE} axisLine={false} tickLine={false} allowDecimals={false} />
+          <YAxis yAxisId="right" orientation="right" tick={CHART_TICK_STYLE} axisLine={false} tickLine={false} tickFormatter={formatRpAxis} />
           <Tooltip
             formatter={(value: number | string, name: string) => {
               const n = typeof value === "number" ? value : Number(value);
@@ -48,12 +43,7 @@ export function TrendChart({ data }: { data: TrendPoint[] }) {
               const p = payload?.[0]?.payload as TrendPoint | undefined;
               return p?.date ?? "";
             }}
-            contentStyle={{
-              background: "#fff",
-              border: "1px solid #e1d9ce",
-              borderRadius: "8px",
-              fontSize: "13px",
-            }}
+            contentStyle={CHART_TOOLTIP_STYLE}
           />
           <Legend wrapperStyle={{ fontSize: "12px" }} />
           <Line yAxisId="left" type="monotone" dataKey="transactionCount" name="Transaksi" stroke="#d4860a" strokeWidth={2} dot={false} activeDot={{ r: 4 }} />
