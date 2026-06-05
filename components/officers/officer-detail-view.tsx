@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Bike, Car, Clock, Hash, Mail, MapPin, Phone, User } from "lucide-react";
 import { TransactionStatusBadge } from "@/components/transactions/transaction-status-badge";
 import { formatRp } from "@/lib/format/rp";
+import { formatDateTime } from "@/lib/date";
 import type { OfficerDetail, OfficerRecentTransaction } from "@/lib/officers/types";
 
 function formatDateTime(iso: string) {

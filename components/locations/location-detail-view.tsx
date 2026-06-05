@@ -3,32 +3,8 @@ import { Bike, Car, Clock, MapPin } from "lucide-react";
 import { LocationStatusBadge } from "@/components/locations/location-status-badge";
 import { TransactionStatusBadge } from "@/components/transactions/transaction-status-badge";
 import { formatRp } from "@/lib/format/rp";
-import type { LocationDetail, LocationRecentTransaction } from "@/lib/locations/types";
-
-function formatDateTime(iso: string) {
-  return new Intl.DateTimeFormat("id-ID", {
-    dateStyle: "medium",
-    timeStyle: "short",
-  }).format(new Date(iso));
-}
-
-function VehicleCell({ vehicleType }: { vehicleType: LocationRecentTransaction["vehicleType"] }) {
-  const isMotor = vehicleType === "Motor";
-  return (
-    <span
-      className={`inline-flex items-center gap-1.5 rounded-full border border-(--color-border) bg-(--color-surface-2) px-2.5 py-1 text-xs font-medium ${
-        isMotor ? "text-teluk-800" : "text-bomba-800"
-      }`}
-    >
-      {isMotor ? (
-        <Bike className="size-3.5 text-teluk-600" strokeWidth={1.75} aria-hidden />
-      ) : (
-        <Car className="size-3.5 text-bomba-600" strokeWidth={1.75} aria-hidden />
-      )}
-      {vehicleType}
-    </span>
-  );
-}
+import { formatDateTime } from "@/lib/date";
+import type { LocationDetail } from "@/lib/locations/types";
 
 export function LocationDetailView({ location }: { location: LocationDetail }) {
   const transaksiFilterHref = `/transaksi?lokasi=${encodeURIComponent(location.id)}`;

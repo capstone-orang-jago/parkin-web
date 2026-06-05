@@ -1,16 +1,6 @@
 import type { TransactionVehicleFilter } from "@/lib/transactions/types";
+import { todayISO, daysAgoISO } from "@/lib/date";
 import type { ReportFilters } from "./types";
-
-function todayISO() {
-  const d = new Date();
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-}
-
-function defaultFromISO() {
-  const d = new Date();
-  d.setDate(d.getDate() - 30);
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-}
 
 /** Parse query `/laporan`: dari, sampai, lokasi, kendaraan */
 export function parseReportFilters(
@@ -21,7 +11,7 @@ export function parseReportFilters(
     return Array.isArray(v) ? v[0] : v;
   };
 
-  let dari = get("dari") ?? defaultFromISO();
+  let dari = get("dari") ?? daysAgoISO(30);
   let sampai = get("sampai") ?? todayISO();
   if (dari > sampai) {
     [dari, sampai] = [sampai, dari];
