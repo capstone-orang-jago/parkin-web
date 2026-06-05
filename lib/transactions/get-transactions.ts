@@ -115,20 +115,25 @@ function toQueryString(filters: TransactionFilters, page: number) {
 function buildFilterOptions(
 	payload: ApiTransactionFilterOptionsEnvelope,
 ): TransactionFilterOptions {
-	const locations = payload.data.locations.map((item) => ({
+	const d = payload.data;
+	if (!d) {
+		return { locations: [], officers: [], statuses: ["Semua"], vehicles: ["Semua"] };
+	}
+
+	const locations = (d.locations ?? []).map((item) => ({
 		id: item.id,
 		label: item.name,
 	}));
-	const officers = payload.data.officers.map((item) => ({
+	const officers = (d.officers ?? []).map((item) => ({
 		id: item.id,
 		label: item.name,
 	}));
 
 	const statuses: TransactionFilterOptions["statuses"] = ["Semua",
-		...payload.data.statuses.map((status) => normalizeStatus(status)),
+		...(d.statuses ?? []).map((status) => normalizeStatus(status)),
 	];
 	const vehicles: TransactionFilterOptions["vehicles"] = ["Semua",
-		...payload.data.vehicles
+		...(d.vehicles ?? [])
 			.map((vehicle) => normalizeVehicleType(vehicle, "Semua"))
 			.filter((v): v is VehicleType => v !== "Semua"),
 	];
