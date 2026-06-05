@@ -1,6 +1,6 @@
 import { jwtVerify } from "jose";
 
-export type AccessPayload = {
+type AccessPayload = {
   sub: string;
   role: "dishub" | "superadmin" | string;
   nama?: string;

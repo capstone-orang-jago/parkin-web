@@ -1,7 +1,6 @@
 import { jwtVerify } from "jose";
 import { ACCESS_COOKIE } from "./cookies";
 
-export { ACCESS_COOKIE };
 
 /**
  * Verifikasi ringan untuk Edge middleware (HS256 + role).

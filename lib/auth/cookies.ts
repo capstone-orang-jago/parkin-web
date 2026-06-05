@@ -5,7 +5,7 @@ export const REFRESH_COOKIE = "parkin_refresh";
 const ACCESS_MAX_AGE = 60 * 15; // 15 menit
 const REFRESH_MAX_AGE = 60 * 60 * 24 * 7; // 7 hari
 
-export function isProduction() {
+function isProduction() {
   return process.env.NODE_ENV === "production";
 }
 
@@ -27,4 +27,3 @@ export function serializeClearCookie(name: string) {
   return `${name}=; Max-Age=0; ${baseAttrs()}`;
 }
 
-export { ACCESS_MAX_AGE, REFRESH_MAX_AGE };
