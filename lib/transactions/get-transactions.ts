@@ -1,51 +1,14 @@
 import { fetchWithTokenRetry } from "@/lib/auth/server-api";
+import type { ApiTransactionItem, ApiTransactionListEnvelope } from "@/lib/api/types";
+import { normalizeVehicleType, normalizeStatus } from "@/lib/api/normalizers";
+import type { VehicleType } from "@/lib/dashboard/types";
 import type {
 	TransactionDetail,
 	TransactionFilterOptions,
 	TransactionFilters,
 	TransactionListItem,
 	TransactionListResult,
-	TransactionStatusFilter,
-	TransactionVehicleFilter,
 } from "./types";
-
-type ApiUser = {
-	id: string;
-	name: string;
-	email: string;
-};
-
-type ApiLocation = {
-	id: string;
-	nama_lokasi: string;
-	alamat: string;
-	is_active: boolean;
-};
-
-type ApiTransactionItem = {
-	created_at: string;
-	id: string;
-	jenis_kendaraan: string;
-	kode_transaksi: string;
-	lokasi: ApiLocation;
-	pengguna: ApiUser;
-	petugas: ApiUser | null;
-	saldo_sebelum: number;
-	saldo_sesudah: number;
-	status: string;
-	tarif: number;
-};
-
-type ApiTransactionListEnvelope = {
-	code: number;
-	data: {
-		items: ApiTransactionItem[];
-		limit: number;
-		page: number;
-		total: number;
-	};
-	message: string;
-};
 
 type ApiTransactionDetailEnvelope = {
 	code: number;
@@ -63,21 +26,6 @@ type ApiTransactionFilterOptionsEnvelope = {
 	};
 	message: string;
 };
-
-function normalizeVehicleType(value: string): TransactionVehicleFilter {
-	const v = value.trim().toLowerCase();
-	if (v === "motor") return "Motor";
-	if (v === "mobil") return "Mobil";
-	return "Semua";
-}
-
-function normalizeStatus(value: string): TransactionStatusFilter {
-	const v = value.trim().toLowerCase();
-	if (v === "sukses") return "Sukses";
-	if (v === "gagal") return "Gagal";
-	if (v === "pending") return "Pending";
-	return "Semua";
-}
 
 function maskUserId(id: string) {
 	const compact = id.replace(/[^a-z0-9]/gi, "").toUpperCase();
@@ -98,9 +46,10 @@ function mapApiTransactionItem(item: ApiTransactionItem): TransactionListItem {
 		officerName: item.petugas?.name ?? "-",
 		vehicleType: normalizeVehicleType(
 			item.jenis_kendaraan,
+			"Semua",
 		) as TransactionListItem["vehicleType"],
 		amountRp: item.tarif,
-		status: normalizeStatus(item.status) as TransactionListItem["status"],
+		status: normalizeStatus(item.status, "Semua") as TransactionListItem["status"],
 	};
 }
 
@@ -109,7 +58,7 @@ function mapApiTransactionDetail(item: ApiTransactionItem): TransactionDetail {
 	return {
 		...row,
 		tariffRp: item.tarif,
-		userIdMasked: maskUserId(item.pengguna.id),
+		userIdMasked: maskUserId(item.pengguna?.id ?? ""),
 		userName: item.pengguna?.name ?? "-",
 		userEmail: item.pengguna?.email ?? "-",
 		balanceBeforeRp: item.saldo_sebelum,
@@ -163,13 +112,6 @@ function toQueryString(filters: TransactionFilters, page: number) {
 	return params.toString();
 }
 
-function normalizeVehicleOption(value: string): TransactionVehicleFilter {
-	const lower = value.trim().toLowerCase();
-	if (lower === "motor") return "Motor";
-	if (lower === "mobil") return "Mobil";
-	return "Semua";
-}
-
 function buildFilterOptions(
 	payload: ApiTransactionFilterOptionsEnvelope,
 ): TransactionFilterOptions {
@@ -182,24 +124,20 @@ function buildFilterOptions(
 		label: item.name,
 	}));
 
-	const statuses = payload.data.statuses
-		.map((status) => normalizeStatus(status))
-		.filter(
-			(status): status is TransactionFilterOptions["statuses"][number] =>
-				status !== "Semua",
-		);
-	const vehicles = payload.data.vehicles
-		.map((vehicle) => normalizeVehicleOption(vehicle))
-		.filter(
-			(vehicle): vehicle is TransactionFilterOptions["vehicles"][number] =>
-				vehicle !== "Semua",
-		);
+	const statuses: TransactionFilterOptions["statuses"] = ["Semua",
+		...payload.data.statuses.map((status) => normalizeStatus(status)),
+	];
+	const vehicles: TransactionFilterOptions["vehicles"] = ["Semua",
+		...payload.data.vehicles
+			.map((vehicle) => normalizeVehicleType(vehicle, "Semua"))
+			.filter((v): v is VehicleType => v !== "Semua"),
+	];
 
 	return {
 		locations,
 		officers,
-		statuses: ["Semua", ...statuses],
-		vehicles: ["Semua", ...vehicles],
+		statuses,
+		vehicles,
 	};
 }
 

@@ -1,6 +1,7 @@
 "use server";
 
 import { getAccessToken } from "@/lib/auth/server-api";
+import { callBackend } from "@/lib/api/call-backend";
 
 export type OfficerFormValues = {
 	name: string;
@@ -50,41 +51,10 @@ export async function getOfficersForSelect(): Promise<OfficerSelectOption[]> {
 	}));
 }
 
-async function callBackend(
-	path: string,
-	method: "POST" | "PUT" | "DELETE",
-	body?: unknown,
-) {
-	const baseUrl = process.env.API_BASE_URL?.replace(/\/$/, "");
-	if (!baseUrl) throw new Error("API_BASE_URL belum disetel.");
-
-	const token = await getAccessToken();
-	if (!token) throw new Error("Sesi login tidak ditemukan.");
-
-	const res = await fetch(baseUrl + path, {
-		method,
-		headers: {
-			"Content-Type": "application/json",
-			Authorization: `Bearer ${token}`,
-		},
-		body: body !== undefined ? JSON.stringify(body) : undefined,
-		cache: "no-store",
-	});
-
-	if (!res.ok) {
-		const payload = await res.json().catch(() => null);
-		const msg =
-			payload && typeof payload === "object" && "message" in payload
-				? String((payload as { message?: unknown }).message ?? "")
-				: "";
-		throw new Error(msg || "Gagal memproses petugas.");
-	}
-}
-
 export async function createOfficer(values: OfficerFormValues) {
-	await callBackend("/admin/user", "POST", values);
+	await callBackend("/admin/user", "POST", values, "Gagal memproses petugas.");
 }
 
 export async function deleteOfficer(id: string) {
-	await callBackend(`/admin/user/${id}`, "DELETE");
+	await callBackend(`/admin/user/${id}`, "DELETE", undefined, "Gagal memproses petugas.");
 }

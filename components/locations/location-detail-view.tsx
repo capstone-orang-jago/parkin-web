@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { Bike, Car, Clock, MapPin } from "lucide-react";
+import { Clock, MapPin } from "lucide-react";
 import { LocationStatusBadge } from "@/components/locations/location-status-badge";
 import { TransactionStatusBadge } from "@/components/transactions/transaction-status-badge";
+import { VehicleCell } from "@/components/shared/vehicle-cell";
 import { formatRp } from "@/lib/format/rp";
 import { formatDateTime } from "@/lib/date";
 import type { LocationDetail } from "@/lib/locations/types";

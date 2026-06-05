@@ -9,14 +9,9 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { formatRp } from "@/lib/format/rp";
+import { formatRp, formatRpAxis } from "@/lib/format/rp";
+import { CHART_TOOLTIP_STYLE, CHART_TICK_STYLE } from "@/components/shared/chart-components";
 import type { ReportLocationBar, ReportTrendPoint } from "@/lib/reports/types";
-
-function formatRpAxis(v: number) {
-  if (v >= 1_000_000) return `${(v / 1_000_000).toFixed(1)} jt`;
-  if (v >= 1000) return `${Math.round(v / 1000)} rb`;
-  return String(v);
-}
 
 export function ReportCharts({
   trend,
@@ -46,13 +41,13 @@ export function ReportCharts({
                 <CartesianGrid strokeDasharray="3 3" stroke="#e1d9ce" />
                 <XAxis
                   dataKey="label"
-                  tick={{ fontSize: 10, fill: "#71624f" }}
+                  tick={{ ...CHART_TICK_STYLE, fontSize: 10 }}
                   interval="preserveStartEnd"
                   axisLine={false}
                   tickLine={false}
                 />
                 <YAxis
-                  tick={{ fontSize: 11, fill: "#71624f" }}
+                  tick={CHART_TICK_STYLE}
                   tickFormatter={formatRpAxis}
                   axisLine={false}
                   tickLine={false}
@@ -62,12 +57,7 @@ export function ReportCharts({
                     formatRp(typeof v === "number" ? v : Number(v)),
                     "Pendapatan",
                   ]}
-                  contentStyle={{
-                    background: "#fff",
-                    border: "1px solid #e1d9ce",
-                    borderRadius: "8px",
-                    fontSize: "13px",
-                  }}
+                  contentStyle={CHART_TOOLTIP_STYLE}
                 />
                 <Bar dataKey="revenueRp" name="Pendapatan" fill="#0d7e96" radius={[4, 4, 0, 0]} />
               </BarChart>
@@ -96,7 +86,7 @@ export function ReportCharts({
                 <CartesianGrid strokeDasharray="3 3" stroke="#e1d9ce" />
                 <XAxis
                   type="number"
-                  tick={{ fontSize: 11, fill: "#71624f" }}
+                  tick={CHART_TICK_STYLE}
                   tickFormatter={formatRpAxis}
                   axisLine={false}
                   tickLine={false}
@@ -105,7 +95,7 @@ export function ReportCharts({
                   type="category"
                   dataKey="locationName"
                   width={112}
-                  tick={{ fontSize: 11, fill: "#71624f" }}
+                  tick={CHART_TICK_STYLE}
                   axisLine={false}
                   tickLine={false}
                 />
@@ -114,12 +104,7 @@ export function ReportCharts({
                     formatRp(typeof v === "number" ? v : Number(v)),
                     "Pendapatan",
                   ]}
-                  contentStyle={{
-                    background: "#fff",
-                    border: "1px solid #e1d9ce",
-                    borderRadius: "8px",
-                    fontSize: "13px",
-                  }}
+                  contentStyle={CHART_TOOLTIP_STYLE}
                 />
                 <Bar dataKey="revenueRp" name="Pendapatan" fill="#d4860a" radius={[0, 4, 4, 0]} />
               </BarChart>

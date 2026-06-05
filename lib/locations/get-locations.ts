@@ -1,4 +1,6 @@
 import { fetchWithTokenRetry } from "@/lib/auth/server-api";
+import type { ApiTransactionItem } from "@/lib/api/types";
+import { normalizeVehicleType, normalizeStatus } from "@/lib/api/normalizers";
 import type {
 	LocationDetail,
 	LocationListItem,
@@ -19,20 +21,6 @@ type ApiLocation = {
 	petugas: ApiPetugas | null;
 };
 
-type ApiTransactionItem = {
-	id: string;
-	kode_transaksi: string;
-	pengguna: { id: string; name: string; email: string };
-	petugas: { id: string; name: string; email: string };
-	lokasi: { id: string; nama_lokasi: string; alamat: string; is_active: boolean };
-	jenis_kendaraan: string;
-	tarif: number;
-	saldo_sebelum: number;
-	saldo_sesudah: number;
-	status: string;
-	created_at: string;
-};
-
 type ApiLocationDetail = {
 	alamat: string;
 	id: string;
@@ -42,27 +30,6 @@ type ApiLocationDetail = {
 	total_pendapatan: number;
 	total_transaksi: number;
 };
-
-// ---------------------------------------------------------------------------
-// Normalizers
-// ---------------------------------------------------------------------------
-
-function normalizeVehicleType(
-	value: string,
-): LocationRecentTransaction["vehicleType"] {
-	const v = value.trim().toLowerCase();
-	if (v === "mobil") return "Mobil";
-	return "Motor";
-}
-
-function normalizeStatus(
-	value: string,
-): LocationRecentTransaction["status"] {
-	const v = value.trim().toLowerCase();
-	if (v === "gagal") return "Gagal";
-	if (v === "pending") return "Pending";
-	return "Sukses";
-}
 
 // ---------------------------------------------------------------------------
 // Mappers

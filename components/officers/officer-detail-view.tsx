@@ -1,39 +1,15 @@
 import Link from "next/link";
-import { Bike, Car, Clock, Hash, Mail, MapPin, Phone, User } from "lucide-react";
+import { Clock, Hash, Mail, MapPin, Phone, User } from "lucide-react";
 import { TransactionStatusBadge } from "@/components/transactions/transaction-status-badge";
+import { VehicleCell } from "@/components/shared/vehicle-cell";
 import { formatRp } from "@/lib/format/rp";
 import { formatDateTime } from "@/lib/date";
-import type { OfficerDetail, OfficerRecentTransaction } from "@/lib/officers/types";
-
-function formatDateTime(iso: string) {
-  return new Intl.DateTimeFormat("id-ID", {
-    dateStyle: "medium",
-    timeStyle: "short",
-  }).format(new Date(iso));
-}
+import type { OfficerDetail } from "@/lib/officers/types";
 
 function initials(name: string) {
   const p = name.trim().split(/\s+/);
   if (p.length >= 2) return (p[0]![0] + p[1]![0]).toUpperCase();
   return name.slice(0, 2).toUpperCase();
-}
-
-function VehicleCell({ vehicleType }: { vehicleType: OfficerRecentTransaction["vehicleType"] }) {
-  const isMotor = vehicleType === "Motor";
-  return (
-    <span
-      className={`inline-flex items-center gap-1.5 rounded-full border border-(--color-border) bg-(--color-surface-2) px-2.5 py-1 text-xs font-medium ${
-        isMotor ? "text-teluk-800" : "text-bomba-800"
-      }`}
-    >
-      {isMotor ? (
-        <Bike className="size-3.5 text-teluk-600" strokeWidth={1.75} aria-hidden />
-      ) : (
-        <Car className="size-3.5 text-bomba-600" strokeWidth={1.75} aria-hidden />
-      )}
-      {vehicleType}
-    </span>
-  );
 }
 
 export function OfficerDetailView({ officer }: { officer: OfficerDetail }) {

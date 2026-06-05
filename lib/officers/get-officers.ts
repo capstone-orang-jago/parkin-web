@@ -1,4 +1,6 @@
 import { fetchWithTokenRetry } from "@/lib/auth/server-api";
+import type { ApiTransactionItem } from "@/lib/api/types";
+import { normalizeVehicleType, normalizeStatus } from "@/lib/api/normalizers";
 import type {
 	OfficerDetail,
 	OfficerListItem,
@@ -42,26 +44,6 @@ type ApiOfficerListResponse = {
 // (returned by GET /admin/officers/{id})
 // ---------------------------------------------------------------------------
 
-type ApiPengguna = {
-	id: string;
-	name: string;
-	email: string;
-};
-
-type ApiTransactionItem = {
-	created_at: string;
-	id: string;
-	jenis_kendaraan: string;
-	kode_transaksi: string;
-	lokasi: { nama_lokasi: string };
-	pengguna: ApiPengguna | null;
-	petugas: { id: string; name: string; email: string } | null;
-	saldo_sebelum: number;
-	saldo_sesudah: number;
-	status: string;
-	tarif: number;
-};
-
 type ApiOfficerDetail = {
 	email: string;
 	history_handled: ApiTransactionItem[] | null;
@@ -71,22 +53,6 @@ type ApiOfficerDetail = {
 	total_duty_days: number;
 	total_tx_handled: number;
 };
-
-function normalizeVehicleType(
-	value: string,
-): OfficerRecentTransaction["vehicleType"] {
-	const v = value.trim().toLowerCase();
-	if (v === "mobil") return "Mobil";
-	return "Motor";
-}
-
-function normalizeStatus(
-	value: string,
-): OfficerRecentTransaction["status"] {
-	const v = value.trim().toLowerCase();
-	if (v === "gagal") return "Gagal";
-	return "Sukses";
-}
 
 function mapApiOfficerToListItem(item: ApiOfficer): OfficerListItem {
 	return {
