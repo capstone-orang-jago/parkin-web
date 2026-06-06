@@ -25,7 +25,7 @@ export function TransactionFiltersBar({
 		<form
 			action="/transaksi"
 			method="get"
-			className="sticky top-0 z-10 -mx-6 mb-6 border-b border-(--color-border) bg-(--color-bg)/95 px-6 py-4 backdrop-blur-sm"
+			className="-mx-6 mb-6 border-b border-(--color-border) px-6 py-4"
 		>
 			<div className="flex flex-col gap-4 rounded-lg border border-(--color-border) bg-(--color-surface-card) p-5 shadow-sm">
 				<p className="text-xs font-medium tracking-wide text-(--color-text-muted)">
