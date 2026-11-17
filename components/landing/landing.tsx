@@ -1,6 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import gsap from "gsap";
@@ -13,17 +13,18 @@ import {
   LogIn,
   MapPin,
   Monitor,
-  QrCode,
   Server,
-  ShieldCheck,
   Smartphone,
   Users,
-  Wallet,
 } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// ENERGY 2 / RHYTHM 2 / MOTION 1: the live QR and real product screens carry ParkIn's identity.
+// v2 — "Satu scan": bukan lagi daftar fitur berurutan, tapi satu momen yang
+// diperbesar. Karcis digital hidup di hero (timer QR + tarif yang terkunci),
+// lalu alur bayar diceritakan lewat scroll: layar HP berganti mengikuti
+// langkahnya. Selera Avav dipertahankan: hero gelap, serif raksasa, sudut
+// tajam, teks mudah dibaca, urutan tim, footer tanpa kolom kode sumber.
 
 const DRIVE_URL =
   "https://drive.google.com/drive/folders/138yF_tEOmi3Vr6Z7SeeJ59mQXyBiQX8c?usp=sharing";
@@ -35,6 +36,50 @@ const TEAM = [
   "Lila Vimala",
   "Marcello Daud M. Liling",
   "Cahya Nabila Mannasai",
+];
+
+type Vehicle = "motor" | "mobil";
+
+const TARIFF: Record<Vehicle, { label: string; price: string; desc: string }> = {
+  motor: { label: "Motor", price: "Rp2.000", desc: "Sepeda motor & sejenisnya, per sekali parkir." },
+  mobil: { label: "Mobil", price: "Rp4.000", desc: "Mobil, SUV & sejenisnya, per sekali parkir." },
+};
+
+// Layar asli dari laporan capstone (Gambar 3.4–3.19), dipotong per layar HP.
+const PAY_STEPS = [
+  {
+    n: "01",
+    title: "Isi saldo dulu",
+    body: "Top up lewat Midtrans, mulai Rp10.000. Pilih Rp10.000, Rp20.000, Rp50.000, Rp100.000, atau nominal sendiri. Saldo langsung terlihat di Beranda.",
+    image: "/landing/report-topup.jpg",
+    imageAlt: "Layar Top Up Saldo ParkIn, pilih nominal Rp10.000 sampai Rp100.000",
+    imageCaption: "Tampilan asli aplikasi — pilih nominal top up.",
+  },
+  {
+    n: "02",
+    title: "Pilih kendaraan, tarifnya terkunci",
+    body: "Motor Rp2.000, mobil Rp4.000 — angkanya sudah tertulis di layar sebelum bayar. Bukan petugas yang menentukan, sistem yang mengunci.",
+    image: "/landing/report-bayar-parkir.jpg",
+    imageAlt: "Layar Bayar Parkir ParkIn, motor Rp2.000 dan mobil Rp4.000",
+    imageCaption: "Tampilan asli aplikasi — tarif terlihat sebelum scan.",
+  },
+  {
+    n: "03",
+    title: "Scan QR petugas",
+    body: "Arahkan kamera ke QR yang ditampilkan petugas. QR itu berubah tiap 4 menit dan ditandai HMAC — QR yang difoto kemarin tidak bisa dipakai lagi hari ini.",
+    image: "/landing/report-scan-qr.jpg",
+    imageAlt: "Layar Scan QR Petugas ParkIn dengan bingkai kamera",
+    imageCaption: "Tampilan asli aplikasi — kamera diarahkan ke QR petugas.",
+  },
+  {
+    n: "04",
+    title: "Konfirmasi, selesai, ada buktinya",
+    body: "Saldo terpotong, struk dan riwayat tersimpan di HP pengguna. Di saat yang sama, petugas melihat rekap hariannya dan Dishub melihat transaksi itu masuk ke dashboard.",
+    image: "/landing/report-bayar-berhasil.jpg",
+    imageAlt: "Layar Pembayaran Berhasil ParkIn, Rp2.000 dengan bukti transaksi",
+    imageCaption:
+      "Tampilan asli aplikasi — contoh transaksi di Pasar Inpres Palu, petugas Pak Hasan, saldo Rp47.500 menjadi Rp45.500.",
+  },
 ];
 
 type Role = "pengguna" | "petugas" | "dishub";
@@ -100,9 +145,23 @@ const ROLES: Record<
   },
 };
 
+const MARQUEE =
+  "MOTOR Rp2.000 ✦ MOBIL Rp4.000 ✦ SCAN QR ✦ TANPA UANG PAS ✦ TARIF TERKUNCI ✦ QR BERUBAH 4 MENIT ✦ ";
+
 export default function Landing() {
   const root = useRef<HTMLDivElement>(null);
-  const [role, setRole] = useState<Role>("pengguna");
+  const [vehicle, setVehicle] = useState<Vehicle>("motor");
+  const [qrSeconds, setQrSeconds] = useState(240);
+
+  // Simulasi siklus QR 4 menit di hero: berdetak, lalu mulai lagi dari 4:00.
+  useEffect(() => {
+    const id = window.setInterval(() => {
+      setQrSeconds((s) => (s <= 1 ? 240 : s - 1));
+    }, 1000);
+    return () => window.clearInterval(id);
+  }, []);
+
+  const qrClock = `${Math.floor(qrSeconds / 60)}:${String(qrSeconds % 60).padStart(2, "0")}`;
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
@@ -129,17 +188,6 @@ export default function Landing() {
         });
       });
 
-      gsap.to("#flow-progress", {
-        scaleX: 1,
-        ease: "none",
-        scrollTrigger: {
-          trigger: "#cara-kerja",
-          start: "top 70%",
-          end: "bottom 60%",
-          scrub: 0.6,
-        },
-      });
-
       gsap.to(".hero-phone-main", {
         y: -14,
         ease: "none",
@@ -150,15 +198,74 @@ export default function Landing() {
           scrub: 0.8,
         },
       });
+
+      const mm = gsap.matchMedia();
+      // Cerita bayar yang di-pin: di desktop, scroll menggerakkan langkah
+      // dan layar HP berganti. Di HP/tablet, langkah tampil berurutan biasa.
+      mm.add("(min-width: 1024px)", () => {
+        const steps = gsap.utils.toArray<HTMLElement>(".pay-step");
+        const phones = gsap.utils.toArray<HTMLElement>(".pay-phone");
+        gsap.set(steps.slice(1), { autoAlpha: 0 });
+        gsap.set(phones.slice(1), { autoAlpha: 0 });
+
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: "#cara-kerja",
+            start: "top top",
+            end: "+=2600",
+            pin: true,
+            scrub: 0.6,
+          },
+        });
+        for (let i = 1; i < steps.length; i++) {
+          tl.to(steps[i - 1], { autoAlpha: 0, y: -32, duration: 0.6, ease: "power2.inOut" }, i - 1)
+            .to(phones[i - 1], { autoAlpha: 0, duration: 0.6, ease: "power2.inOut" }, "<")
+            .fromTo(
+              steps[i],
+              { autoAlpha: 0, y: 40 },
+              { autoAlpha: 1, y: 0, duration: 0.6, ease: "power2.out" },
+              "<",
+            )
+            .fromTo(
+              phones[i],
+              { autoAlpha: 0, scale: 0.96 },
+              { autoAlpha: 1, scale: 1, duration: 0.6, ease: "power2.out" },
+              "<",
+            );
+        }
+        return () => {
+          tl.scrollTrigger?.kill();
+          tl.kill();
+        };
+      });
     }, root);
     return () => ctx.revert();
   }, []);
 
-  const active = ROLES[role];
+  // Harga tarif beranimasi tiap ganti kendaraan.
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    gsap.fromTo(
+      "#tarif-price",
+      { y: 16, autoAlpha: 0 },
+      { y: 0, autoAlpha: 1, duration: 0.45, ease: "power3.out" },
+    );
+  }, [vehicle]);
 
   return (
     <div ref={root} className="min-h-full overflow-x-clip bg-[#FBF8F2] text-megalit-900 antialiased">
-      {/* Nav */}
+      <style>{`
+        @keyframes parkin-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+        .parkin-marquee { animation: parkin-marquee 32s linear infinite; }
+        @media (min-width: 1024px) {
+          .pay-step { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; }
+          .pay-phone { position: absolute; inset: 0; }
+          .pay-phone:first-child { position: relative; }
+        }
+        @media (prefers-reduced-motion: reduce) { .parkin-marquee { animation: none; } }
+      `}</style>
+
+      {/* Nav — seperti versi Avav */}
       <header className="sticky top-0 z-40 bg-[#FBF8F2]">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
           <Link href="/" className="flex items-center gap-2.5 rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-bomba-700">
@@ -192,9 +299,9 @@ export default function Landing() {
         </div>
       </header>
 
-      {/* Hero */}
+      {/* Hero — karcis digital yang hidup */}
       <section id="hero" className="overflow-hidden bg-megalit-900 text-[#FBF8F2]">
-        <div className="mx-auto grid max-w-7xl gap-10 px-4 pb-16 pt-12 sm:px-6 sm:pb-20 sm:pt-16 lg:grid-cols-12 lg:items-center lg:gap-8 lg:pt-20">
+        <div className="mx-auto grid max-w-7xl gap-12 px-4 pb-16 pt-12 sm:px-6 sm:pb-20 sm:pt-16 lg:grid-cols-12 lg:items-center lg:gap-8 lg:pt-20">
           <div className="lg:col-span-7">
             <h1 className="hero-el max-w-[12ch] font-display text-[clamp(3rem,8vw,6.5rem)] leading-[0.94] tracking-[-0.035em]">
               Parkir di Palu,
@@ -225,56 +332,89 @@ export default function Landing() {
             <p className="hero-el mt-7 max-w-[56ch] text-sm leading-relaxed text-white/70">
               Pameran Fakultas Teknik, Jurusan Teknologi Informasi, Universitas Tadulako.
             </p>
-            <dl className="hero-el mt-10 grid max-w-xl grid-cols-1 gap-x-5 gap-y-5 sm:grid-cols-2">
-              <div>
-                <dt className="text-sm font-semibold text-white/70">Tarif resmi</dt>
-                <dd className="mt-1 text-sm font-bold">Motor Rp2.000 · Mobil Rp4.000</dd>
-              </div>
-              <div>
-                <dt className="text-sm font-semibold text-white/70">QR petugas</dt>
-                <dd className="mt-1 text-sm font-bold">Berubah tiap 4 menit</dd>
-              </div>
-              <div>
-                <dt className="text-sm font-semibold text-white/70">Pengawasan</dt>
-                <dd className="mt-1 text-sm font-bold">Dashboard Dishub real-time</dd>
-              </div>
-            </dl>
           </div>
 
-          <div className="relative lg:col-span-5">
-            <div className="hero-phone-main relative mx-auto w-[280px] sm:w-[320px]">
-              <figure className="overflow-hidden rounded-2xl bg-white p-2 sm:p-3">
-                <Image
-                  src="/landing/mobile-pengguna-home.jpg"
-                  alt="Beranda aplikasi ParkIn untuk pengguna, saldo Rp59.000"
-                  width={1080}
-                  height={2210}
-                  priority
-                  className="h-auto w-full"
-                />
-              </figure>
-              <figure className="absolute -left-16 top-24 hidden w-[180px] overflow-hidden rounded-xl bg-white p-1 sm:block lg:-left-20">
-                <Image
-                  src="/landing/mobile-petugas-qr.jpg"
-                  alt="QR Code Parkir petugas ParkIn"
-                  width={1080}
-                  height={2210}
-                  className="h-auto w-full"
-                />
-              </figure>
+          {/* Karcis: coba sendiri tarifnya, lihat QR-nya berdetak */}
+          <div className="hero-el relative lg:col-span-5">
+            <div className="hero-phone-main relative mx-auto max-w-[360px]">
+              <div className="overflow-hidden rounded-xl bg-white text-megalit-900">
+                <div className="flex items-center justify-between border-b border-dashed border-megalit-300 px-5 py-3">
+                  <span className="text-xs font-bold uppercase tracking-[0.18em] text-megalit-600">Karcis digital · contoh</span>
+                  <span className="inline-flex items-center gap-1.5 text-xs font-bold text-teluk-600">
+                    <span className="h-2 w-2 animate-pulse rounded-full bg-teluk-600" aria-hidden="true" />
+                    QR hidup
+                  </span>
+                </div>
+                <div className="px-5 pt-5">
+                  <div className="flex gap-2" role="group" aria-label="Pilih kendaraan untuk melihat tarif">
+                    {(Object.keys(TARIFF) as Vehicle[]).map((key) => (
+                      <button
+                        key={key}
+                        type="button"
+                        aria-pressed={vehicle === key}
+                        onClick={() => setVehicle(key)}
+                        className={
+                          vehicle === key
+                            ? "min-h-11 flex-1 rounded-md bg-megalit-900 px-4 py-2.5 text-sm font-semibold text-white"
+                            : "min-h-11 flex-1 rounded-md bg-megalit-100 px-4 py-2.5 text-sm font-semibold hover:bg-megalit-200"
+                        }
+                      >
+                        {TARIFF[key].label}
+                      </button>
+                    ))}
+                  </div>
+                  <p className="mt-5 text-center font-display text-6xl leading-none" aria-live="polite">
+                    {TARIFF[vehicle].price}
+                  </p>
+                  <p className="mt-2 text-center text-sm text-megalit-600">{TARIFF[vehicle].desc}</p>
+                  <div className="mt-4 flex justify-center">
+                    <span className="inline-flex -rotate-2 rounded-sm border-2 border-bomba-600 px-3 py-1 text-xs font-bold uppercase tracking-[0.14em] text-bomba-700">
+                      Terkunci · Perwali 9/2016
+                    </span>
+                  </div>
+                </div>
+                <div className="mt-5 border-t border-dashed border-megalit-300 px-5 py-4">
+                  <div className="flex items-center justify-between gap-4">
+                    <div>
+                      <p className="text-xs font-semibold text-megalit-600">QR petugas berganti dalam</p>
+                      <p className="mt-0.5 font-mono text-2xl font-bold tabular-nums" aria-live="off">{qrClock}</p>
+                      <div className="mt-2 h-1.5 w-32 overflow-hidden rounded-full bg-megalit-100" aria-hidden="true">
+                        <div className="h-full bg-teluk-600 transition-[width] duration-1000 ease-linear" style={{ width: `${(qrSeconds / 240) * 100}%` }} />
+                      </div>
+                    </div>
+                    <figure className="w-[92px] shrink-0 overflow-hidden rounded-md bg-megalit-50 p-1">
+                      <Image
+                        src="/landing/mobile-petugas-qr.jpg"
+                        alt="QR Code Parkir petugas ParkIn, contoh yang sudah kedaluwarsa"
+                        width={1080}
+                        height={2210}
+                        className="h-auto w-full"
+                      />
+                    </figure>
+                  </div>
+                </div>
+              </div>
+              <p className="mx-auto mt-5 max-w-sm text-center text-sm leading-relaxed text-white/75">
+                QR di karcis ini contoh dan sudah kedaluwarsa, jangan dipindai.
+                QR asli berubah tiap 4 menit, seperti timer di atas.
+              </p>
             </div>
-            <p className="mx-auto mt-5 max-w-sm text-center text-sm leading-relaxed text-white/75">
-              Tampilan asli aplikasi. QR di gambar adalah contoh dan sudah
-              kedaluwarsa, jangan dipindai. QR asli berubah tiap 4 menit.
-            </p>
           </div>
         </div>
       </section>
 
-      {/* Masalah */}
+      {/* Marquee — satu garis, satu-satunya yang bergerak tanpa henti */}
+      <div className="overflow-hidden border-y border-megalit-900 bg-bomba-600 py-3 text-white" aria-hidden="true">
+        <div className="parkin-marquee flex w-max whitespace-nowrap font-display text-lg tracking-wide">
+          <span className="pr-2">{MARQUEE.repeat(3)}</span>
+          <span className="pr-2">{MARQUEE.repeat(3)}</span>
+        </div>
+      </div>
+
+      {/* Masalah — editorial, angka besar, bukan checklist */}
       <section className="bg-megalit-50">
-        <div className="mx-auto grid max-w-7xl gap-10 px-4 py-16 sm:px-6 lg:grid-cols-12 lg:py-24">
-          <div className="lg:col-span-4">
+        <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:py-24">
+          <div className="max-w-3xl">
             <h2 className="reveal font-display text-4xl leading-tight sm:text-[2.75rem]">
               Parkir di Palu hari ini masih serba manual.
             </h2>
@@ -283,167 +423,165 @@ export default function Landing() {
               Perhubungan Kota Palu. Masalah itulah yang coba diselesaikan ParkIn.
             </p>
           </div>
-          <ul className="space-y-7 lg:col-span-8">
+          <ol className="mt-12">
             {[
               {
+                n: "01",
                 title: "Juru parkir tidak terdata",
                 body: "Masih ada titik parkir liar dan juru parkir yang belum terdaftar resmi, jadi sulit diawasi.",
               },
               {
+                n: "02",
                 title: "Tarif tidak selalu sesuai aturan",
-              body: "Bayar tunai di lapangan kadang berbeda dari tarif resmi, tanpa karcis sebagai bukti.",
+                body: "Bayar tunai di lapangan kadang berbeda dari tarif resmi, tanpa karcis sebagai bukti.",
               },
               {
+                n: "03",
                 title: "Tidak ada catatan yang rapi",
                 body: "Jumlah kendaraan dan pendapatan tidak tercatat terstruktur, jadi sulit diketahui secara akurat setiap hari.",
               },
               {
+                n: "04",
                 title: "Laporan datang sebulan sekali",
                 body: "Juru parkir resmi melapor ke Dishub sebulan sekali, datang langsung ke kantor. Monitoring jadi tertinggal.",
               },
             ].map((item) => (
               <li
-                key={item.title}
-                className="reveal flex gap-4"
+                key={item.n}
+                className="reveal group grid gap-2 border-t border-megalit-300 py-7 transition-colors last:border-b hover:bg-white sm:grid-cols-12 sm:items-baseline sm:gap-6"
               >
-                <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-sm bg-bomba-600 text-white">
-                  <Check size={15} strokeWidth={3} />
+                <span className="font-display text-5xl leading-none text-bomba-600 transition-transform duration-300 group-hover:-translate-y-1 sm:col-span-2 sm:text-6xl">
+                  {item.n}
                 </span>
-                <div>
-                  <h3 className="font-bold">{item.title}</h3>
-                  <p className="mt-1 max-w-[62ch] text-sm leading-relaxed text-megalit-600">{item.body}</p>
-                </div>
+                <h3 className="text-xl font-bold sm:col-span-4">{item.title}</h3>
+                <p className="max-w-[58ch] leading-relaxed text-megalit-600 sm:col-span-6">{item.body}</p>
               </li>
             ))}
-          </ul>
+          </ol>
         </div>
       </section>
 
-      {/* Cara kerja */}
-      <section id="cara-kerja" className="scroll-mt-20">
-        <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:py-24">
-          <h2 className="reveal max-w-2xl font-display text-4xl leading-tight sm:text-[2.75rem]">
-            Tiga langkah. Tidak ada uang pas, tidak ada karcis hilang.
-          </h2>
-          <div className="relative mt-7 h-1 overflow-hidden rounded-full bg-megalit-200" aria-hidden="true">
-            <div id="flow-progress" className="h-full w-full origin-left scale-x-0 bg-bomba-500" />
+      {/* Cara kerja — cerita bayar yang di-pin, layar HP berganti mengikuti scroll */}
+      <section id="cara-kerja" className="scroll-mt-20 overflow-hidden bg-white">
+        <div className="mx-auto max-w-7xl px-4 pb-16 pt-16 sm:px-6 lg:min-h-screen lg:pb-0 lg:pt-20">
+          <div className="max-w-3xl">
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-teluk-600">Cara kerja · 30 detik di lapangan</p>
+            <h2 className="mt-3 font-display text-4xl leading-tight sm:text-[2.75rem]">
+              Satu scan. Bukan satu formulir.
+            </h2>
+            <p className="mt-3 max-w-[58ch] leading-relaxed text-megalit-600">
+              Scroll ke bawah — setiap langkah mengganti layar HP di samping.
+              Di HP, keempat langkah tampil berurutan.
+            </p>
           </div>
 
-          <div className="mt-10 grid gap-10 lg:grid-cols-12">
-            <ol className="space-y-8 lg:col-span-7">
-              {[
-                {
-                  icon: Wallet,
-                  title: "Isi saldo dulu",
-                  body: "Top up lewat Midtrans, mulai Rp10.000. Pilih Rp10.000, Rp20.000, Rp50.000, Rp100.000, atau nominal sendiri. Saldo langsung terlihat di Beranda.",
-                },
-                {
-                  icon: QrCode,
-                  title: "Scan QR petugas",
-                  body: "Pilih motor atau mobil, lalu arahkan kamera ke QR yang ditampilkan petugas. Tarif terkunci di layar: motor Rp2.000, mobil Rp4.000.",
-                },
-                {
-                  icon: ShieldCheck,
-                  title: "Bayar, dan semuanya tercatat",
-                  body: "Saldo terpotong, struk dan riwayat tersimpan di HP pengguna. Di saat yang sama, petugas melihat rekap hariannya dan Dishub melihat transaksi itu masuk ke dashboard.",
-                },
-              ].map((step) => (
-                <li key={step.title} className="reveal flex gap-5">
-                  <div className="flex flex-col items-center">
-                    <span className="flex h-12 w-12 items-center justify-center rounded-md bg-bomba-600 text-white">
-                      <step.icon size={22} />
-                    </span>
-                  </div>
-                  <div className="max-w-2xl pb-7">
-                    <h3 className="text-xl font-bold">{step.title}</h3>
-                    <p className="mt-2 max-w-[62ch] leading-relaxed text-megalit-600">{step.body}</p>
-                  </div>
-                </li>
+          <div className="mt-10 grid gap-10 lg:mt-4 lg:grid-cols-12 lg:gap-8">
+            <div className="space-y-12 lg:relative lg:col-span-7 lg:min-h-[560px] lg:space-y-0">
+              {PAY_STEPS.map((step) => (
+                <article key={step.n} className="pay-step">
+                  <p className="font-display text-6xl leading-none text-bomba-500/90 sm:text-7xl">{step.n}</p>
+                  <h3 className="mt-4 max-w-[18ch] text-2xl font-bold leading-snug sm:text-3xl">{step.title}</h3>
+                  <p className="mt-3 max-w-[56ch] leading-relaxed text-megalit-600">{step.body}</p>
+                  <figure className="mx-auto mt-6 w-full max-w-[280px] lg:hidden">
+                    <div className="overflow-hidden rounded-xl bg-megalit-50 p-1">
+                      <Image src={step.image} alt={step.imageAlt} width={330} height={407} className="h-auto w-full" />
+                    </div>
+                    <figcaption className="mt-3 text-center text-sm leading-relaxed text-megalit-600">
+                      {step.imageCaption}
+                    </figcaption>
+                  </figure>
+                </article>
               ))}
-            </ol>
-            <div className="lg:col-span-5">
-              <figure className="reveal mx-auto max-w-[360px] overflow-hidden rounded-2xl bg-white p-2">
-                <Image
-                  src="/landing/mobile-petugas-qr.jpg"
-                  alt="QR Code Parkir petugas ParkIn yang berlaku hingga 22:14"
-                  width={1080}
-                  height={2210}
-                  className="mx-auto h-auto w-full max-w-[340px]"
-                />
-              </figure>
-              <p className="mt-4 text-center text-sm leading-relaxed text-megalit-600">
-                QR petugas diperbarui otomatis tiap 4 menit, dengan tanda
-                tangan keamanan (HMAC), jadi QR yang difoto kemarin tidak
-                bisa dipakai lagi hari ini.
-              </p>
             </div>
-          </div>
-        </div>
-      </section>
 
-      {/* Untuk siapa */}
-      <section id="untuk-siapa" className="scroll-mt-20 bg-white">
-        <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:py-24">
-          <h2 className="reveal max-w-2xl font-display text-4xl leading-tight sm:text-[2.75rem]">
-            Satu sistem, tiga layar yang saling terhubung.
-          </h2>
-          <p className="reveal mt-3 max-w-[62ch] leading-relaxed text-megalit-600">
-            Pilih perannya untuk melihat apa yang didapat masing-masing pihak.
-          </p>
-
-          <div className="reveal mt-8 flex flex-wrap gap-2" role="group" aria-label="Pilih peran untuk melihat alur ParkIn">
-            {(Object.keys(ROLES) as Role[]).map((key) => (
-              <button
-                key={key}
-                type="button"
-                aria-pressed={role === key}
-                onClick={() => setRole(key)}
-                className={
-                  role === key
-                    ? "min-h-11 rounded-md bg-megalit-900 px-5 py-2.5 text-sm font-semibold text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-bomba-700"
-                    : "min-h-11 rounded-md bg-megalit-100 px-5 py-2.5 text-sm font-semibold hover:bg-megalit-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-bomba-700"
-                }
-              >
-                {ROLES[key].label}
-              </button>
-            ))}
-          </div>
-
-          <div className="mt-10 grid items-start gap-10 lg:grid-cols-12" key={role} aria-live="polite">
-            <div className="lg:col-span-6">
-              <h3 className="text-2xl font-bold leading-snug">{active.title}</h3>
-              <p className="mt-3 max-w-[58ch] leading-relaxed text-megalit-600">{active.desc}</p>
-              <ul className="mt-6 space-y-3">
-                {active.points.map((point) => (
-                  <li key={point} className="flex gap-3">
-                    <Check size={18} className="mt-0.5 shrink-0 text-teluk-600" strokeWidth={3} />
-                    <span className="leading-relaxed">{point}</span>
-                  </li>
+            <div className="hidden lg:col-span-5 lg:block">
+              <div className="relative mx-auto w-[300px] xl:w-[330px]">
+                {PAY_STEPS.map((step) => (
+                  <figure key={step.n} className="pay-phone">
+                    <div className="overflow-hidden rounded-2xl bg-megalit-50 p-1.5 shadow-[0_24px_60px_-24px_rgba(43,34,24,0.45)]">
+                      <Image src={step.image} alt={step.imageAlt} width={330} height={407} className="h-auto w-full" />
+                    </div>
+                    <figcaption className="mt-4 text-center text-sm leading-relaxed text-megalit-600">
+                      {step.imageCaption}
+                    </figcaption>
+                  </figure>
                 ))}
-              </ul>
-            </div>
-            <figure className={active.wide ? "lg:col-span-6" : "mx-auto w-full max-w-[340px] lg:col-span-6"}>
-              <div className="overflow-hidden rounded-xl bg-megalit-50 p-1">
-                <Image
-                  src={active.image}
-                  alt={active.imageAlt}
-                  width={active.wide ? 1854 : 1080}
-                  height={active.wide ? 931 : 2210}
-                  className="h-auto w-full"
-                />
               </div>
-              <figcaption className="mt-3 text-center text-sm leading-relaxed text-megalit-600">
-                {active.imageCaption}
-              </figcaption>
-            </figure>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Tarif */}
+      {/* Untuk siapa — tiga kartu yang menumpuk saat di-scroll */}
+      <section id="untuk-siapa" className="scroll-mt-20 bg-megalit-50">
+        <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:py-24">
+          <div className="max-w-3xl">
+            <h2 className="reveal font-display text-4xl leading-tight sm:text-[2.75rem]">
+              Satu sistem, tiga layar yang saling terhubung.
+            </h2>
+            <p className="reveal mt-3 max-w-[62ch] leading-relaxed text-megalit-600">
+              Scroll — tiap peran menumpuk di atas yang sebelumnya. Tidak ada
+              yang disembunyikan di balik tab.
+            </p>
+          </div>
+
+          <div className="mt-12 space-y-6">
+            {(Object.keys(ROLES) as Role[]).map((key, i) => {
+              const item = ROLES[key];
+              const dark = key === "dishub";
+              return (
+                <article
+                  key={key}
+                  className={
+                    dark
+                      ? "sticky top-20 overflow-hidden rounded-xl bg-megalit-900 text-[#FBF8F2]"
+                      : "sticky top-20 overflow-hidden rounded-xl bg-white"
+                  }
+                >
+                  <div className="grid gap-8 p-7 sm:p-10 lg:grid-cols-12 lg:items-center">
+                    <div className="lg:col-span-6">
+                      <p className="text-xs font-bold uppercase tracking-[0.18em] text-bomba-600">
+                        0{i + 1} · {item.label}
+                      </p>
+                      <h3 className="mt-3 text-2xl font-bold leading-snug sm:text-3xl">{item.title}</h3>
+                      <p className={`mt-3 max-w-[56ch] leading-relaxed ${dark ? "text-white/80" : "text-megalit-600"}`}>
+                        {item.desc}
+                      </p>
+                      <ul className="mt-6 space-y-3">
+                        {item.points.map((point) => (
+                          <li key={point} className="flex gap-3">
+                            <Check size={18} className="mt-0.5 shrink-0 text-teluk-600" strokeWidth={3} />
+                            <span className="leading-relaxed">{point}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <figure className={item.wide ? "lg:col-span-6" : "mx-auto w-full max-w-[320px] lg:col-span-6"}>
+                      <div className={`overflow-hidden rounded-lg p-1 ${dark ? "bg-white" : "bg-megalit-50"}`}>
+                        <Image
+                          src={item.image}
+                          alt={item.imageAlt}
+                          width={item.wide ? 1854 : 1080}
+                          height={item.wide ? 931 : 2210}
+                          className="h-auto w-full"
+                        />
+                      </div>
+                      <figcaption className={`mt-3 text-center text-sm leading-relaxed ${dark ? "text-white/75" : "text-megalit-600"}`}>
+                        {item.imageCaption}
+                      </figcaption>
+                    </figure>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Tarif — interaktif, harga yang sama dengan karcis di hero */}
       <section id="tarif" className="scroll-mt-20">
         <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:py-24">
-          <div className="grid gap-10 lg:grid-cols-12">
+          <div className="grid gap-12 lg:grid-cols-12">
             <div className="lg:col-span-5">
               <h2 className="reveal font-display text-4xl leading-tight sm:text-[2.75rem]">
                 Tarifnya jelas sebelum bayar. Bukan sesudahnya.
@@ -459,25 +597,46 @@ export default function Landing() {
                 itulah yang masuk.
               </p>
             </div>
-            <div className="grid gap-4 sm:grid-cols-2 lg:col-span-7">
-              <article className="reveal rounded-xl bg-megalit-50 p-7">
-                <p className="flex items-center gap-2 text-sm font-bold text-teluk-600">
-                  <Smartphone size={18} /> Motor
+            <div className="lg:col-span-7">
+              <div className="reveal rounded-xl bg-megalit-900 p-7 text-[#FBF8F2] sm:p-10">
+                <div className="flex flex-wrap items-center justify-between gap-4">
+                  <div className="flex gap-2" role="group" aria-label="Pilih kendaraan untuk melihat tarif">
+                    {(Object.keys(TARIFF) as Vehicle[]).map((key) => (
+                      <button
+                        key={key}
+                        type="button"
+                        aria-pressed={vehicle === key}
+                        onClick={() => setVehicle(key)}
+                        className={
+                          vehicle === key
+                            ? "min-h-11 rounded-md bg-bomba-600 px-5 py-2.5 text-sm font-semibold text-white"
+                            : "min-h-11 rounded-md bg-white/10 px-5 py-2.5 text-sm font-semibold text-white hover:bg-white/20"
+                        }
+                      >
+                        {TARIFF[key].label}
+                      </button>
+                    ))}
+                  </div>
+                  <span className="inline-flex -rotate-2 rounded-sm border-2 border-bomba-500 px-3 py-1 text-xs font-bold uppercase tracking-[0.14em] text-bomba-500">
+                    Terkunci · Perwali 9/2016
+                  </span>
+                </div>
+                <p id="tarif-price" key={vehicle} className="mt-8 font-display text-[clamp(4rem,12vw,7rem)] leading-none">
+                  {TARIFF[vehicle].price}
                 </p>
-                <p className="mt-4 font-display text-5xl">Rp2.000</p>
-                <p className="mt-2 text-sm text-megalit-600">Sepeda motor &amp; sejenisnya, per sekali parkir.</p>
-              </article>
-              <article className="reveal rounded-xl bg-bomba-600 p-7 text-white">
-                <p className="flex items-center gap-2 text-sm font-bold text-white/90">
-                  <Monitor size={18} /> Mobil
+                <p className="mt-3 text-white/80">{TARIFF[vehicle].desc}</p>
+                <div className="mt-8 flex flex-wrap gap-2" aria-label="Nominal top up">
+                  {["Rp10.000", "Rp20.000", "Rp50.000", "Rp100.000"].map((n) => (
+                    <span key={n} className="rounded-md bg-white/10 px-4 py-2 text-sm font-semibold">
+                      {n}
+                    </span>
+                  ))}
+                  <span className="rounded-md bg-white/10 px-4 py-2 text-sm text-white/80">atau nominal sendiri, min. Rp10.000</span>
+                </div>
+                <p className="mt-5 text-sm leading-relaxed text-white/70">
+                  Top up lewat Midtrans. Saldo yang masuk sama dengan nominal yang dipilih.
                 </p>
-                <p className="mt-4 font-display text-5xl">Rp4.000</p>
-                <p className="mt-2 text-sm text-white/85">Mobil, SUV &amp; sejenisnya, per sekali parkir.</p>
-              </article>
-              <p className="reveal text-sm leading-relaxed text-megalit-600 sm:col-span-2">
-                Top up: Rp10.000 · Rp20.000 · Rp50.000 · Rp100.000, atau nominal
-                sendiri (minimal Rp10.000), lewat Midtrans.
-              </p>
+              </div>
             </div>
           </div>
         </div>
@@ -491,7 +650,7 @@ export default function Landing() {
           </h2>
           <p className="reveal mt-4 max-w-[64ch] leading-relaxed text-white/75">
             Aplikasi HP, backend, dan dashboard web bukan tiga produk yang
-              terpisah. Semuanya membaca dan menulis ke tempat yang sama.
+            terpisah. Semuanya membaca dan menulis ke tempat yang sama.
           </p>
 
           <ol className="reveal mt-12 grid gap-x-10 gap-y-8 md:grid-cols-3">
@@ -519,6 +678,22 @@ export default function Landing() {
               </li>
             ))}
           </ol>
+
+          <figure className="reveal mt-12">
+            <div className="overflow-hidden rounded-lg bg-white p-2">
+              <Image
+                src="/landing/report-arsitektur.jpg"
+                alt="Diagram arsitektur ParkIn: aplikasi pengguna dan petugas, dashboard web, backend Go, PostgreSQL, Midtrans dan WhatsApp Gateway"
+                width={1264}
+                height={520}
+                className="h-auto w-full"
+              />
+            </div>
+            <figcaption className="mt-3 text-sm leading-relaxed text-white/80">
+              Diagram arsitektur dari laporan capstone — HP pengguna dan petugas,
+              dashboard web, backend Go + PostgreSQL, Midtrans, dan WhatsApp Gateway.
+            </figcaption>
+          </figure>
 
           <div className="mt-12 grid gap-6 lg:grid-cols-2">
             <figure className="reveal">
@@ -627,7 +802,7 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* Footer */}
+      {/* Footer — seperti versi Avav */}
       <footer className="bg-white">
         <div className="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-10 sm:px-6 md:flex-row md:items-start md:justify-between">
           <div>
