@@ -8,7 +8,6 @@ import { tryVerifyAccessCookie } from "./lib/auth/session-edge";
 
 export const config = {
   matcher: [
-    "/",
     "/login",
     "/dashboard/:path*",
     "/transaksi/:path*",
@@ -18,9 +17,9 @@ export const config = {
   ],
 };
 
+/** `/` adalah landing page publik — tidak lagi dialihkan ke /login. */
 function isProtectedAppPath(pathname: string) {
   return (
-    pathname === "/" ||
     pathname.startsWith("/dashboard") ||
     pathname.startsWith("/transaksi") ||
     pathname.startsWith("/lokasi") ||
@@ -108,9 +107,6 @@ export async function proxy(request: NextRequest) {
         url.searchParams.set("reason", "session_expired");
       }
       return NextResponse.redirect(url);
-    }
-    if (pathname === "/") {
-      return NextResponse.redirect(new URL("/dashboard", request.url));
     }
     return NextResponse.next({
       request: { headers: withPathnameHeader(request) },
