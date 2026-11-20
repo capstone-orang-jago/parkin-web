@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Eye, EyeOff } from "lucide-react";
 import { useState, useTransition } from "react";
 
 export function LoginForm() {
@@ -10,6 +11,7 @@ export function LoginForm() {
 	const reason = searchParams.get("reason");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+	const [showPassword, setShowPassword] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 	const [isPending, startTransition] = useTransition();
 
@@ -93,6 +95,7 @@ export function LoginForm() {
 						type="email"
 						autoComplete="username"
 						required
+						placeholder="admin@parkin.id"
 						value={email}
 						onChange={(e) => setEmail(e.target.value)}
 						className="mt-1 w-full rounded-md border border-megalit-300 px-3 py-2 text-megalit-900 shadow-sm focus:border-bomba-500 focus:outline-none focus:ring-1 focus:ring-bomba-500"
@@ -105,16 +108,28 @@ export function LoginForm() {
 					>
 						Password
 					</label>
-					<input
-						id="password"
-						name="password"
-						type="password"
-						autoComplete="current-password"
-						required
-						value={password}
-						onChange={(e) => setPassword(e.target.value)}
-						className="mt-1 w-full rounded-md border border-megalit-300 px-3 py-2 text-megalit-900 shadow-sm focus:border-bomba-500 focus:outline-none focus:ring-1 focus:ring-bomba-500"
-					/>
+					<div className="relative mt-1">
+						<input
+							id="password"
+							name="password"
+							type={showPassword ? "text" : "password"}
+							autoComplete="current-password"
+							required
+							placeholder="Masukkan password"
+							value={password}
+							onChange={(e) => setPassword(e.target.value)}
+							className="w-full rounded-md border border-megalit-300 px-3 py-2 pr-10 text-megalit-900 shadow-sm focus:border-bomba-500 focus:outline-none focus:ring-1 focus:ring-bomba-500"
+						/>
+						<button
+							type="button"
+							tabIndex={-1}
+							onClick={() => setShowPassword((v) => !v)}
+							className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-megalit-400 hover:text-megalit-600"
+							aria-label={showPassword ? "Sembunyikan password" : "Tampilkan password"}
+						>
+							{showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+						</button>
+					</div>
 				</div>
 				{error ? (
 					<p className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800">
