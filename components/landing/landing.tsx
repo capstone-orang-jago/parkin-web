@@ -283,11 +283,21 @@ export default function Landing() {
             <span className="font-display text-[22px] leading-none">ParkIn Palu</span>
           </Link>
           <nav aria-label="Navigasi utama" className="hidden items-center gap-3 text-sm font-medium text-megalit-700 lg:flex lg:gap-5 xl:gap-7">
-            <a href="#cara-kerja" className="rounded-sm py-2 hover:text-bomba-700 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-bomba-700">Cara kerja</a>
-            <a href="#untuk-siapa" className="rounded-sm py-2 hover:text-bomba-700 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-bomba-700">Untuk siapa</a>
-            <a href="#tarif" className="rounded-sm py-2 hover:text-bomba-700 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-bomba-700">Tarif</a>
-            <a href="#sistem" className="rounded-sm py-2 hover:text-bomba-700 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-bomba-700">Sistem</a>
-            <a href="#tim" className="rounded-sm py-2 hover:text-bomba-700 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-bomba-700">Tim</a>
+            <a href="#cara-kerja" className="rounded-sm py-2 hover:text-bomba-700 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-bomba-700">
+              Cara kerja
+            </a>
+            <a href="#untuk-siapa" className="rounded-sm py-2 hover:text-bomba-700 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-bomba-700">
+              Untuk siapa
+            </a>
+            <a href="#tarif" className="rounded-sm py-2 hover:text-bomba-700 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-bomba-700">
+              Tarif
+            </a>
+            <a href="#sistem" className="rounded-sm py-2 hover:text-bomba-700 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-bomba-700">
+              Sistem
+            </a>
+            <a href="#tim" className="rounded-sm py-2 hover:text-bomba-700 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-bomba-700">
+              Tim
+            </a>
           </nav>
           <div className="flex items-center gap-2">
             <Link
@@ -319,9 +329,7 @@ export default function Landing() {
               tanpa uang pas.
             </h1>
             <p className="hero-el mt-6 max-w-[56ch] text-base leading-relaxed text-white/85 sm:text-lg">
-              ParkIn menggantikan karcis dan uang tunai dengan scan QR.
-              Tarifnya terkunci sesuai aturan, pembayarannya tercatat,
-              dan Dishub bisa memantaunya langsung, bukan sebulan kemudian.
+              ParkIn menggantikan karcis dan uang tunai dengan scan QR. Tarifnya terkunci sesuai aturan, pembayarannya tercatat, dan Dishub bisa memantaunya langsung, bukan sebulan kemudian.
             </p>
             <div className="hero-el mt-8 flex flex-wrap gap-3">
               <a
@@ -339,14 +347,12 @@ export default function Landing() {
                 <Download size={16} /> Unduh APK di stan
               </a>
             </div>
-            <p className="hero-el mt-7 max-w-[56ch] text-sm leading-relaxed text-white/70">
-              Pameran Fakultas Teknik, Jurusan Teknologi Informasi, Universitas Tadulako.
-            </p>
+            <p className="hero-el mt-7 max-w-[56ch] text-sm leading-relaxed text-white/70">Pameran Fakultas Teknik, Jurusan Teknologi Informasi, Universitas Tadulako.</p>
           </div>
 
           {/* Karcis: coba sendiri tarifnya, lihat QR-nya berdetak */}
           <div className="hero-el relative lg:col-span-5">
-            <div className="hero-phone-main relative mx-auto max-w-[360px]">
+            <div className="hero-phone-main relative mx-auto max-w-90">
               <div className="overflow-hidden rounded-xl bg-white text-megalit-900">
                 <div className="flex items-center justify-between border-b border-dashed border-megalit-300 px-5 py-3">
                   <span className="text-xs font-bold uppercase tracking-[0.18em] text-megalit-600">Karcis digital · contoh</span>
@@ -364,9 +370,7 @@ export default function Landing() {
                         aria-pressed={vehicle === key}
                         onClick={() => setVehicle(key)}
                         className={
-                          vehicle === key
-                            ? "min-h-11 flex-1 rounded-md bg-megalit-900 px-4 py-2.5 text-sm font-semibold text-white"
-                            : "min-h-11 flex-1 rounded-md bg-megalit-100 px-4 py-2.5 text-sm font-semibold hover:bg-megalit-200"
+                          vehicle === key ? "min-h-11 flex-1 rounded-md bg-megalit-900 px-4 py-2.5 text-sm font-semibold text-white" : "min-h-11 flex-1 rounded-md bg-megalit-100 px-4 py-2.5 text-sm font-semibold hover:bg-megalit-200"
                         }
                       >
                         {TARIFF[key].label}
@@ -378,36 +382,27 @@ export default function Landing() {
                   </p>
                   <p className="mt-2 text-center text-sm text-megalit-600">{TARIFF[vehicle].desc}</p>
                   <div className="mt-4 flex justify-center">
-                    <span className="inline-flex -rotate-2 rounded-sm border-2 border-bomba-600 px-3 py-1 text-xs font-bold uppercase tracking-[0.14em] text-bomba-700">
-                      Terkunci · Perwali 9/2016
-                    </span>
+                    <span className="inline-flex -rotate-2 rounded-sm border-2 border-bomba-600 px-3 py-1 text-xs font-bold uppercase tracking-[0.14em] text-bomba-700">Terkunci · Perwali 9/2016</span>
                   </div>
                 </div>
                 <div className="mt-5 border-t border-dashed border-megalit-300 px-5 py-4">
                   <div className="flex items-center justify-between gap-4">
                     <div>
                       <p className="text-xs font-semibold text-megalit-600">QR petugas berganti dalam</p>
-                      <p className="mt-0.5 font-mono text-2xl font-bold tabular-nums" aria-live="off">{qrClock}</p>
+                      <p className="mt-0.5 font-mono text-2xl font-bold tabular-nums" aria-live="off">
+                        {qrClock}
+                      </p>
                       <div className="mt-2 h-1.5 w-32 overflow-hidden rounded-full bg-megalit-100" aria-hidden="true">
                         <div className="h-full bg-teluk-600 transition-[width] duration-1000 ease-linear" style={{ width: `${(qrSeconds / 240) * 100}%` }} />
                       </div>
                     </div>
-                    <figure className="w-[92px] shrink-0 overflow-hidden rounded-md bg-megalit-50 p-1">
-                      <Image
-                        src="/landing/mobile-petugas-qr.jpg"
-                        alt="QR Code Parkir petugas ParkIn, contoh yang sudah kedaluwarsa"
-                        width={1080}
-                        height={2210}
-                        className="h-auto w-full"
-                      />
+                    <figure className="w-23 shrink-0 overflow-hidden rounded-md bg-megalit-50 p-1">
+                      <Image src="/landing/mobile-petugas-qrcode.jpg" alt="QR Code Parkir petugas ParkIn, contoh yang sudah kedaluwarsa" width={1080} height={1080} className="h-auto w-full" />
                     </figure>
                   </div>
                 </div>
               </div>
-              <p className="mx-auto mt-5 max-w-sm text-center text-sm leading-relaxed text-white/75">
-                QR di karcis ini contoh dan sudah kedaluwarsa, jangan dipindai.
-                QR asli berubah tiap 4 menit, seperti timer di atas.
-              </p>
+              <p className="mx-auto mt-5 max-w-sm text-center text-sm leading-relaxed text-white/75">QR di karcis ini contoh dan sudah kedaluwarsa, jangan dipindai. QR asli berubah tiap 4 menit, seperti timer di atas.</p>
             </div>
           </div>
         </div>
@@ -425,13 +420,8 @@ export default function Landing() {
       <section className="bg-megalit-50">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:py-24">
           <div className="max-w-3xl">
-            <h2 className="reveal font-display text-4xl leading-tight sm:text-[2.75rem]">
-              Parkir di Palu hari ini masih serba manual.
-            </h2>
-            <p className="reveal mt-4 max-w-[52ch] leading-relaxed text-megalit-600">
-              Itu yang ditemukan tim saat observasi bersama Dinas
-              Perhubungan Kota Palu. Masalah itulah yang coba diselesaikan ParkIn.
-            </p>
+            <h2 className="reveal font-display text-4xl leading-tight sm:text-[2.75rem]">Parkir di Palu hari ini masih serba manual.</h2>
+            <p className="reveal mt-4 max-w-[52ch] leading-relaxed text-megalit-600">Itu yang ditemukan tim saat observasi bersama Dinas Perhubungan Kota Palu. Masalah itulah yang coba diselesaikan ParkIn.</p>
           </div>
           <ol className="mt-12">
             {[
@@ -456,13 +446,8 @@ export default function Landing() {
                 body: "Juru parkir resmi melapor ke Dishub sebulan sekali, datang langsung ke kantor. Monitoring jadi tertinggal.",
               },
             ].map((item) => (
-              <li
-                key={item.n}
-                className="reveal group grid gap-2 border-t border-megalit-300 py-7 transition-colors last:border-b hover:bg-white sm:grid-cols-12 sm:items-baseline sm:gap-6"
-              >
-                <span className="font-display text-5xl leading-none text-bomba-600 transition-transform duration-300 group-hover:-translate-y-1 sm:col-span-2 sm:text-6xl">
-                  {item.n}
-                </span>
+              <li key={item.n} className="reveal group grid gap-2 border-t border-megalit-300 py-7 transition-colors last:border-b hover:bg-white sm:grid-cols-12 sm:items-baseline sm:gap-6">
+                <span className="font-display text-5xl leading-none text-bomba-600 transition-transform duration-300 group-hover:-translate-y-1 sm:col-span-2 sm:text-6xl">{item.n}</span>
                 <h3 className="text-xl font-bold sm:col-span-4">{item.title}</h3>
                 <p className="max-w-[58ch] leading-relaxed text-megalit-600 sm:col-span-6">{item.body}</p>
               </li>
@@ -476,13 +461,8 @@ export default function Landing() {
         <div className="mx-auto max-w-6xl px-4 pb-16 pt-16 sm:px-6 lg:flex lg:min-h-screen lg:flex-col lg:justify-center lg:pb-14 lg:pt-24">
           <div className="max-w-3xl">
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-teluk-600">Cara kerja · 30 detik di lapangan</p>
-            <h2 className="mt-3 font-display text-4xl leading-tight sm:text-[2.75rem]">
-              Satu scan. Bukan satu formulir.
-            </h2>
-            <p className="mt-3 max-w-[58ch] leading-relaxed text-megalit-600">
-              Scroll ke bawah — setiap langkah mengganti layar HP di samping.
-              Di HP, keempat langkah tampil berurutan.
-            </p>
+            <h2 className="mt-3 font-display text-4xl leading-tight sm:text-[2.75rem]">Satu scan. Bukan satu formulir.</h2>
+            <p className="mt-3 max-w-[58ch] leading-relaxed text-megalit-600">Scroll ke bawah — setiap langkah mengganti layar HP di samping. Di HP, keempat langkah tampil berurutan.</p>
             <div className="mt-8 hidden items-center gap-3 lg:flex" aria-hidden="true">
               <span className="font-mono text-sm font-bold tabular-nums text-megalit-900">
                 {String(activeStep + 1).padStart(2, "0")} / {String(PAY_STEPS.length).padStart(2, "0")}
@@ -490,42 +470,31 @@ export default function Landing() {
               <span className="h-px w-16 bg-megalit-300" />
               <span className="flex items-center gap-1.5">
                 {PAY_STEPS.map((s, i) => (
-                  <span
-                    key={s.n}
-                    className={
-                      i === activeStep
-                        ? "h-1.5 w-6 rounded-full bg-bomba-600"
-                        : i < activeStep
-                          ? "h-1.5 w-1.5 rounded-full bg-bomba-600/60"
-                          : "h-1.5 w-1.5 rounded-full bg-megalit-300"
-                    }
-                  />
+                  <span key={s.n} className={i === activeStep ? "h-1.5 w-6 rounded-full bg-bomba-600" : i < activeStep ? "h-1.5 w-1.5 rounded-full bg-bomba-600/60" : "h-1.5 w-1.5 rounded-full bg-megalit-300"} />
                 ))}
               </span>
             </div>
           </div>
 
           <div className="mt-10 grid gap-10 lg:mt-10 lg:grid-cols-12 lg:gap-12">
-            <div className="space-y-12 lg:relative lg:col-span-6 lg:min-h-[500px] lg:space-y-0">
+            <div className="space-y-12 lg:relative lg:col-span-6 lg:min-h-125 lg:space-y-0">
               {PAY_STEPS.map((step) => (
                 <article key={step.n} className="pay-step">
                   <p className="font-display text-6xl leading-none text-bomba-500/90 sm:text-7xl">{step.n}</p>
                   <h3 className="mt-4 max-w-[18ch] text-2xl font-bold leading-snug sm:text-3xl">{step.title}</h3>
                   <p className="mt-3 max-w-[56ch] leading-relaxed text-megalit-600">{step.body}</p>
-                  <figure className="mx-auto mt-6 w-full max-w-[280px] lg:hidden">
+                  <figure className="mx-auto mt-6 w-full max-w-70 lg:hidden">
                     <div className="overflow-hidden rounded-xl bg-megalit-50 p-1">
                       <Image src={step.image} alt={step.imageAlt} width={1080} height={step.imageHeight} className="h-auto w-full" />
                     </div>
-                    <figcaption className="mt-3 text-center text-sm leading-relaxed text-megalit-600">
-                      {step.imageCaption}
-                    </figcaption>
+                    <figcaption className="mt-3 text-center text-sm leading-relaxed text-megalit-600">{step.imageCaption}</figcaption>
                   </figure>
                 </article>
               ))}
             </div>
 
             <div className="hidden lg:col-span-6 lg:block">
-              <div className="relative mx-auto h-[484px] w-[260px]">
+              <div className="relative mx-auto h-121 w-65">
                 {PAY_STEPS.map((step) => (
                   <figure key={step.n} className="pay-phone">
                     <div className="overflow-hidden rounded-2xl bg-megalit-50 p-1.5 shadow-[0_24px_60px_-24px_rgba(43,34,24,0.45)]">
@@ -543,13 +512,8 @@ export default function Landing() {
       <section id="untuk-siapa" className="scroll-mt-20 bg-megalit-50">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:py-24">
           <div className="max-w-3xl">
-            <h2 className="reveal font-display text-4xl leading-tight sm:text-[2.75rem]">
-              Satu sistem, tiga layar yang saling terhubung.
-            </h2>
-            <p className="reveal mt-3 max-w-[62ch] leading-relaxed text-megalit-600">
-              Pengguna, petugas, dan Dishub memakai layar yang berbeda —
-              tapi semuanya membaca dan menulis ke sistem yang sama.
-            </p>
+            <h2 className="reveal font-display text-4xl leading-tight sm:text-[2.75rem]">Satu sistem, tiga layar yang saling terhubung.</h2>
+            <p className="reveal mt-3 max-w-[62ch] leading-relaxed text-megalit-600">Pengguna, petugas, dan Dishub memakai layar yang berbeda — tapi semuanya membaca dan menulis ke sistem yang sama.</p>
           </div>
 
           <div className="mt-12 space-y-6">
@@ -558,23 +522,14 @@ export default function Landing() {
               const dark = key === "dishub";
               const flip = key === "petugas";
               return (
-                <article
-                  key={key}
-                  className={
-                    dark
-                      ? "overflow-hidden rounded-xl bg-megalit-900 text-[#FBF8F2] ring-1 ring-megalit-900/10"
-                      : "overflow-hidden rounded-xl bg-white ring-1 ring-megalit-900/5"
-                  }
-                >
+                <article key={key} className={dark ? "overflow-hidden rounded-xl bg-megalit-900 text-[#FBF8F2] ring-1 ring-megalit-900/10" : "overflow-hidden rounded-xl bg-white ring-1 ring-megalit-900/5"}>
                   <div className="grid gap-8 p-7 sm:p-10 lg:grid-cols-12 lg:items-center lg:gap-12">
                     <div className={flip ? "lg:order-2 lg:col-span-7" : "lg:col-span-7"}>
                       <p className="text-xs font-bold uppercase tracking-[0.18em] text-bomba-600">
                         0{i + 1} · {item.label}
                       </p>
                       <h3 className="mt-3 text-2xl font-bold leading-snug sm:text-3xl">{item.title}</h3>
-                      <p className={`mt-3 max-w-[56ch] leading-relaxed ${dark ? "text-white/80" : "text-megalit-600"}`}>
-                        {item.desc}
-                      </p>
+                      <p className={`mt-3 max-w-[56ch] leading-relaxed ${dark ? "text-white/80" : "text-megalit-600"}`}>{item.desc}</p>
                       <ul className="mt-6 space-y-3">
                         {item.points.map((point) => (
                           <li key={point} className="flex gap-3">
@@ -588,29 +543,15 @@ export default function Landing() {
                       {item.wide ? (
                         <div className="overflow-hidden rounded-lg bg-white p-1">
                           <div className="relative aspect-video w-full overflow-hidden rounded-md">
-                            <Image
-                              src={item.image}
-                              alt={item.imageAlt}
-                              width={1854}
-                              height={931}
-                              className="h-full w-full object-cover object-top"
-                            />
+                            <Image src={item.image} alt={item.imageAlt} width={1854} height={931} className="h-full w-full object-cover object-top" />
                           </div>
                         </div>
                       ) : (
-                        <div className="mx-auto w-full max-w-[280px] overflow-hidden rounded-lg bg-megalit-50 p-1">
-                          <Image
-                            src={item.image}
-                            alt={item.imageAlt}
-                            width={1080}
-                            height={2210}
-                            className="h-auto w-full rounded-md"
-                          />
+                        <div className="mx-auto w-full max-w-70 overflow-hidden rounded-lg bg-megalit-50 p-1">
+                          <Image src={item.image} alt={item.imageAlt} width={1080} height={2210} className="h-auto w-full rounded-md" />
                         </div>
                       )}
-                      <figcaption className={`mt-3 text-center text-sm leading-relaxed ${dark ? "text-white/75" : "text-megalit-600"}`}>
-                        {item.imageCaption}
-                      </figcaption>
+                      <figcaption className={`mt-3 text-center text-sm leading-relaxed ${dark ? "text-white/75" : "text-megalit-600"}`}>{item.imageCaption}</figcaption>
                     </figure>
                   </div>
                 </article>
@@ -625,18 +566,12 @@ export default function Landing() {
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:py-24">
           <div className="grid gap-12 lg:grid-cols-12">
             <div className="lg:col-span-5">
-              <h2 className="reveal font-display text-4xl leading-tight sm:text-[2.75rem]">
-                Tarifnya jelas sebelum bayar. Bukan sesudahnya.
-              </h2>
+              <h2 className="reveal font-display text-4xl leading-tight sm:text-[2.75rem]">Tarifnya jelas sebelum bayar. Bukan sesudahnya.</h2>
               <p className="reveal mt-4 max-w-[52ch] leading-relaxed text-megalit-600">
-                Tarif mengikuti Peraturan Walikota Palu Nomor 9 Tahun 2016
-                tentang Perubahan Tarif Retribusi Parkir di Tepi Jalan Umum.
-                Sistem yang mengunci tarifnya, bukan orang di lapangan.
+                Tarif mengikuti Peraturan Walikota Palu Nomor 9 Tahun 2016 tentang Perubahan Tarif Retribusi Parkir di Tepi Jalan Umum. Sistem yang mengunci tarifnya, bukan orang di lapangan.
               </p>
               <p className="reveal mt-4 max-w-[52ch] text-sm leading-relaxed text-megalit-600">
-                Sebelum aturan ini, tarifnya motor Rp1.000 dan mobil Rp2.000.
-                Top up saldo tidak ada biaya tersembunyi: nominal yang dipilih,
-                itulah yang masuk.
+                Sebelum aturan ini, tarifnya motor Rp1.000 dan mobil Rp2.000. Top up saldo tidak ada biaya tersembunyi: nominal yang dipilih, itulah yang masuk.
               </p>
             </div>
             <div className="lg:col-span-7">
@@ -649,19 +584,13 @@ export default function Landing() {
                         type="button"
                         aria-pressed={vehicle === key}
                         onClick={() => setVehicle(key)}
-                        className={
-                          vehicle === key
-                            ? "min-h-11 rounded-md bg-bomba-600 px-5 py-2.5 text-sm font-semibold text-white"
-                            : "min-h-11 rounded-md bg-white/10 px-5 py-2.5 text-sm font-semibold text-white hover:bg-white/20"
-                        }
+                        className={vehicle === key ? "min-h-11 rounded-md bg-bomba-600 px-5 py-2.5 text-sm font-semibold text-white" : "min-h-11 rounded-md bg-white/10 px-5 py-2.5 text-sm font-semibold text-white hover:bg-white/20"}
                       >
                         {TARIFF[key].label}
                       </button>
                     ))}
                   </div>
-                  <span className="inline-flex -rotate-2 rounded-sm border-2 border-bomba-500 px-3 py-1 text-xs font-bold uppercase tracking-[0.14em] text-bomba-500">
-                    Terkunci · Perwali 9/2016
-                  </span>
+                  <span className="inline-flex -rotate-2 rounded-sm border-2 border-bomba-500 px-3 py-1 text-xs font-bold uppercase tracking-[0.14em] text-bomba-500">Terkunci · Perwali 9/2016</span>
                 </div>
                 <p id="tarif-price" key={vehicle} className="mt-8 font-display text-[clamp(3.25rem,12vw,7rem)] leading-none">
                   {TARIFF[vehicle].price}
@@ -675,9 +604,7 @@ export default function Landing() {
                   ))}
                   <span className="rounded-md bg-white/10 px-4 py-2 text-sm text-white/80">atau nominal sendiri, min. Rp10.000</span>
                 </div>
-                <p className="mt-5 text-sm leading-relaxed text-white/70">
-                  Top up lewat Midtrans. Saldo yang masuk sama dengan nominal yang dipilih.
-                </p>
+                <p className="mt-5 text-sm leading-relaxed text-white/70">Top up lewat Midtrans. Saldo yang masuk sama dengan nominal yang dipilih.</p>
               </div>
             </div>
           </div>
@@ -687,13 +614,8 @@ export default function Landing() {
       {/* Sistem / dashboard */}
       <section id="sistem" className="scroll-mt-20 bg-megalit-900 text-[#FBF8F2]">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:py-24">
-          <h2 className="reveal max-w-3xl font-display text-4xl leading-tight sm:text-[2.75rem]">
-            Di balik layar yang sederhana, ada satu sistem yang sama.
-          </h2>
-          <p className="reveal mt-4 max-w-[64ch] leading-relaxed text-white/75">
-            Aplikasi HP, backend, dan dashboard web bukan tiga produk yang
-            terpisah. Semuanya membaca dan menulis ke tempat yang sama.
-          </p>
+          <h2 className="reveal max-w-3xl font-display text-4xl leading-tight sm:text-[2.75rem]">Di balik layar yang sederhana, ada satu sistem yang sama.</h2>
+          <p className="reveal mt-4 max-w-[64ch] leading-relaxed text-white/75">Aplikasi HP, backend, dan dashboard web bukan tiga produk yang terpisah. Semuanya membaca dan menulis ke tempat yang sama.</p>
 
           <ol className="reveal mt-12 grid gap-x-10 gap-y-8 md:grid-cols-3">
             {[
@@ -731,46 +653,26 @@ export default function Landing() {
                 className="h-auto w-full"
               />
             </div>
-            <figcaption className="mt-3 text-sm leading-relaxed text-white/80">
-              Diagram arsitektur dari laporan capstone — HP pengguna dan petugas,
-              dashboard web, backend Go + PostgreSQL, Midtrans, dan WhatsApp Gateway.
-            </figcaption>
+            <figcaption className="mt-3 text-sm leading-relaxed text-white/80">Diagram arsitektur dari laporan capstone — HP pengguna dan petugas, dashboard web, backend Go + PostgreSQL, Midtrans, dan WhatsApp Gateway.</figcaption>
           </figure>
 
           <div className="mt-12 grid gap-6 lg:grid-cols-2">
             <figure className="reveal">
               <div className="overflow-hidden rounded-lg bg-white p-1">
                 <div className="relative aspect-video w-full overflow-hidden rounded-md">
-                  <Image
-                    src="/landing/web-dashboard.png"
-                    alt="Dashboard web ParkIn Palu, ringkasan operasional"
-                    width={1854}
-                    height={931}
-                    className="h-full w-full object-cover object-top"
-                  />
+                  <Image src="/landing/web-dashboard.png" alt="Dashboard web ParkIn Palu, ringkasan operasional" width={1854} height={931} className="h-full w-full object-cover object-top" />
                 </div>
               </div>
-              <figcaption className="mt-3 text-sm leading-relaxed text-white/80">
-                Dashboard. Contoh data uji 30 Mei 2026: 1 transaksi, Rp4.000,
-                1 mobil, 1 lokasi aktif, 1 petugas aktif.
-              </figcaption>
+              <figcaption className="mt-3 text-sm leading-relaxed text-white/80">Dashboard. Contoh data uji 30 Mei 2026: 1 transaksi, Rp4.000, 1 mobil, 1 lokasi aktif, 1 petugas aktif.</figcaption>
             </figure>
             <figure className="reveal">
               <div className="overflow-hidden rounded-lg bg-white p-1">
                 <div className="relative aspect-video w-full overflow-hidden rounded-md">
-                  <Image
-                    src="/landing/web-laporan.png"
-                    alt="Halaman laporan ParkIn Palu, pendapatan per hari dan per lokasi"
-                    width={1854}
-                    height={931}
-                    className="h-full w-full object-cover object-top"
-                  />
+                  <Image src="/landing/web-laporan.png" alt="Halaman laporan ParkIn Palu, pendapatan per hari dan per lokasi" width={1854} height={931} className="h-full w-full object-cover object-top" />
                 </div>
               </div>
               <figcaption className="mt-3 text-sm leading-relaxed text-white/80">
-                Laporan. Contoh data uji 30 April sampai 30 Mei 2026: 22 transaksi,
-                Rp70.000, 9 motor, 13 mobil, 2 lokasi aktif (perdos dan PGM).
-                Bukan angka skala kota.
+                Laporan. Contoh data uji 30 April sampai 30 Mei 2026: 22 transaksi, Rp70.000, 9 motor, 13 mobil, 2 lokasi aktif (perdos dan PGM). Bukan angka skala kota.
               </figcaption>
             </figure>
           </div>
@@ -778,19 +680,10 @@ export default function Landing() {
           <figure className="reveal mt-6">
             <div className="overflow-hidden rounded-lg bg-white p-1">
               <div className="relative aspect-video w-full overflow-hidden rounded-md">
-                <Image
-                  src="/landing/web-detail-petugas.png"
-                  alt="Detail petugas ParkIn Palu di dashboard web"
-                  width={1854}
-                  height={931}
-                  className="h-full w-full object-cover object-top"
-                />
+                <Image src="/landing/web-detail-petugas.png" alt="Detail petugas ParkIn Palu di dashboard web" width={1854} height={931} className="h-full w-full object-cover object-top" />
               </div>
             </div>
-            <figcaption className="mt-3 text-sm leading-relaxed text-white/80">
-              Detail petugas, contoh: ID PK-A0000000, lokasi perdos,
-              21 transaksi ditangani dalam 2 hari bertugas (data contoh).
-            </figcaption>
+            <figcaption className="mt-3 text-sm leading-relaxed text-white/80">Detail petugas, contoh: ID PK-A0000000, lokasi perdos, 21 transaksi ditangani dalam 2 hari bertugas (data contoh).</figcaption>
           </figure>
         </div>
       </section>
@@ -800,17 +693,15 @@ export default function Landing() {
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:py-24">
           <div className="grid gap-10 lg:grid-cols-12">
             <div className="lg:col-span-6">
-              <h2 className="reveal font-display text-4xl leading-tight sm:text-[2.75rem]">
-                Dibangun tim capstone dari Palu, untuk Palu.
-              </h2>
+              <h2 className="reveal font-display text-4xl leading-tight sm:text-[2.75rem]">Dibangun tim capstone dari Palu, untuk Palu.</h2>
               <p className="reveal mt-4 max-w-[56ch] leading-relaxed text-megalit-600">
-                ParkIn adalah Capstone Project Jurusan Teknologi Informasi,
-                Fakultas Teknik, Universitas Tadulako, dibuat bersama Dinas
-                Perhubungan Kota Palu, berdasarkan observasi lapangan.
+                ParkIn adalah Capstone Project Jurusan Teknologi Informasi, Fakultas Teknik, Universitas Tadulako, dibuat bersama Dinas Perhubungan Kota Palu, berdasarkan observasi lapangan.
               </p>
               <ul className="reveal mt-8 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2">
                 {TEAM.map((name) => (
-                  <li key={name} className="text-sm font-semibold">{name}</li>
+                  <li key={name} className="text-sm font-semibold">
+                    {name}
+                  </li>
                 ))}
               </ul>
               <p className="reveal mt-5 text-sm text-megalit-600">
@@ -820,10 +711,7 @@ export default function Landing() {
             <div className="lg:col-span-6">
               <div className="reveal rounded-xl bg-bomba-600 p-8 text-white sm:p-10">
                 <h3 className="font-display text-3xl leading-tight">Coba langsung di stan pameran.</h3>
-                <p className="mt-3 max-w-[52ch] leading-relaxed text-white/90">
-                  Aplikasi demonya ada di HP stan. Scan, bayar, dan lihat
-                  transaksinya langsung masuk ke dashboard.
-                </p>
+                <p className="mt-3 max-w-[52ch] leading-relaxed text-white/90">Aplikasi demonya ada di HP stan. Scan, bayar, dan lihat transaksinya langsung masuk ke dashboard.</p>
                 <div className="mt-7 flex flex-wrap gap-3">
                   <a
                     href={DRIVE_URL}
@@ -840,10 +728,7 @@ export default function Landing() {
                     <LogIn size={16} /> Masuk Dashboard
                   </Link>
                 </div>
-                <p className="mt-5 text-sm leading-relaxed text-white/75">
-                  ParkIn adalah prototipe capstone, bukan layanan resmi
-                  Dishub Kota Palu.
-                </p>
+                <p className="mt-5 text-sm leading-relaxed text-white/75">ParkIn adalah prototipe capstone, bukan layanan resmi Dishub Kota Palu.</p>
               </div>
             </div>
           </div>
@@ -858,28 +743,45 @@ export default function Landing() {
               <Image src="/logo.svg" alt="Logo ParkIn Palu" width={32} height={32} className="h-8 w-8" />
               <span className="font-display text-xl">ParkIn Palu</span>
             </div>
-            <p className="mt-3 max-w-[52ch] text-sm leading-relaxed text-megalit-600">
-              Aplikasi parkir digital berbasis QR Code. Jurusan Teknologi
-              Informasi, Fakultas Teknik, Universitas Tadulako, 2026.
-            </p>
+            <p className="mt-3 max-w-[52ch] text-sm leading-relaxed text-megalit-600">Aplikasi parkir digital berbasis QR Code. Jurusan Teknologi Informasi, Fakultas Teknik, Universitas Tadulako, 2026.</p>
           </div>
           <div className="grid grid-cols-1 gap-8 text-sm">
             <div>
               <p className="font-bold">Produk</p>
               <ul className="mt-3 space-y-2 text-megalit-600">
-                <li><a href="#cara-kerja" className="hover:text-bomba-600">Cara kerja</a></li>
-                <li><a href="#tarif" className="hover:text-bomba-600">Tarif</a></li>
-                <li><Link href="/login" className="hover:text-bomba-600">Dashboard admin</Link></li>
-                <li><a href={DRIVE_URL} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 hover:text-bomba-600">Unduh APK <ArrowUpRight size={14} /></a></li>
+                <li>
+                  <a href="#cara-kerja" className="hover:text-bomba-600">
+                    Cara kerja
+                  </a>
+                </li>
+                <li>
+                  <a href="#tarif" className="hover:text-bomba-600">
+                    Tarif
+                  </a>
+                </li>
+                <li>
+                  <Link href="/login" className="hover:text-bomba-600">
+                    Dashboard admin
+                  </Link>
+                </li>
+                <li>
+                  <a href={DRIVE_URL} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 hover:text-bomba-600">
+                    Unduh APK <ArrowUpRight size={14} />
+                  </a>
+                </li>
               </ul>
             </div>
           </div>
         </div>
         <div className="bg-megalit-50">
           <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-2 px-4 py-4 text-sm text-megalit-600 sm:px-6">
-            <span className="inline-flex items-center gap-1.5"><MapPin size={13} /> Kota Palu, Sulawesi Tengah</span>
+            <span className="inline-flex items-center gap-1.5">
+              <MapPin size={13} /> Kota Palu, Sulawesi Tengah
+            </span>
             <span aria-hidden="true">·</span>
-            <span className="inline-flex items-center gap-1.5"><Users size={13} /> Tim Capstone Orang Jago</span>
+            <span className="inline-flex items-center gap-1.5">
+              <Users size={13} /> Tim Capstone Orang Jago
+            </span>
             <span aria-hidden="true">·</span>
             <span>Tarif: Perwali Palu No. 9/2016</span>
           </div>
