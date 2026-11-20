@@ -41,7 +41,10 @@ export function OfficerSectionClient({ rows }: Props) {
 	}
 
 	async function submit(values: OfficerFormValues) {
-		await createOfficer(values);
+		const result = await createOfficer(values);
+		// Throw di sisi client (bukan di server action) supaya pesannya
+		// tidak disensor Next.js dan tampil apa adanya di modal.
+		if (!result.ok) throw new Error(result.message);
 		window.location.reload();
 	}
 

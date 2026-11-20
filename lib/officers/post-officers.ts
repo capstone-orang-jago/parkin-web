@@ -2,6 +2,7 @@
 
 import { getAccessToken } from "@/lib/auth/server-api";
 import { callBackend } from "@/lib/api/call-backend";
+import { mapCreateOfficerError } from "@/lib/officers/officer-errors";
 
 export type OfficerFormValues = {
 	name: string;
@@ -51,8 +52,18 @@ export async function getOfficersForSelect(): Promise<OfficerSelectOption[]> {
 	}));
 }
 
-export async function createOfficer(values: OfficerFormValues) {
-	await callBackend("/admin/user", "POST", values, "Gagal memproses petugas.");
+export type CreateOfficerResult = { ok: true } | { ok: false; message: string };
+
+export async function createOfficer(values: OfficerFormValues): Promise<CreateOfficerResult> {
+	try {
+		await callBackend("/admin/user", "POST", values, "Gagal memproses petugas.");
+		return { ok: true };
+	} catch (err) {
+		// Jangan throw: Next.js menyensor pesan error server action di
+		// production, sehingga modal hanya menampilkan pesan generik.
+		// Kembalikan hasil agar pesan ramah sampai ke form.
+		return { ok: false, message: mapCreateOfficerError(err) };
+	}
 }
 
 export async function deleteOfficer(id: string) {
