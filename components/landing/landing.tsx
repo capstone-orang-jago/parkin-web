@@ -51,7 +51,8 @@ const PAY_STEPS = [
     n: "01",
     title: "Isi saldo dulu",
     body: "Top up lewat Midtrans, mulai Rp10.000. Pilih Rp10.000, Rp20.000, Rp50.000, Rp100.000, atau nominal sendiri. Saldo langsung terlihat di Beranda.",
-    image: "/landing/report-topup.jpg",
+    image: "/landing/app-topup.jpg",
+    imageHeight: 1326,
     imageAlt: "Layar Top Up Saldo ParkIn, pilih nominal Rp10.000 sampai Rp100.000",
     imageCaption: "Tampilan asli aplikasi — pilih nominal top up.",
   },
@@ -59,7 +60,8 @@ const PAY_STEPS = [
     n: "02",
     title: "Pilih kendaraan, tarifnya terkunci",
     body: "Motor Rp2.000, mobil Rp4.000 — angkanya sudah tertulis di layar sebelum bayar. Bukan petugas yang menentukan, sistem yang mengunci.",
-    image: "/landing/report-bayar-parkir.jpg",
+    image: "/landing/app-bayar-parkir.jpg",
+    imageHeight: 2055,
     imageAlt: "Layar Bayar Parkir ParkIn, motor Rp2.000 dan mobil Rp4.000",
     imageCaption: "Tampilan asli aplikasi — tarif terlihat sebelum scan.",
   },
@@ -67,7 +69,8 @@ const PAY_STEPS = [
     n: "03",
     title: "Scan QR petugas",
     body: "Arahkan kamera ke QR yang ditampilkan petugas. QR itu berubah tiap 4 menit dan ditandai HMAC — QR yang difoto kemarin tidak bisa dipakai lagi hari ini.",
-    image: "/landing/report-scan-qr.jpg",
+    image: "/landing/app-scan-qr.jpg",
+    imageHeight: 1945,
     imageAlt: "Layar Scan QR Petugas ParkIn dengan bingkai kamera",
     imageCaption: "Tampilan asli aplikasi — kamera diarahkan ke QR petugas.",
   },
@@ -75,7 +78,8 @@ const PAY_STEPS = [
     n: "04",
     title: "Konfirmasi, selesai, ada buktinya",
     body: "Saldo terpotong, struk dan riwayat tersimpan di HP pengguna. Di saat yang sama, petugas melihat rekap hariannya dan Dishub melihat transaksi itu masuk ke dashboard.",
-    image: "/landing/report-bayar-berhasil.jpg",
+    image: "/landing/app-bayar-berhasil.jpg",
+    imageHeight: 1967,
     imageAlt: "Layar Pembayaran Berhasil ParkIn, Rp2.000 dengan bukti transaksi",
     imageCaption:
       "Tampilan asli aplikasi — contoh transaksi di Pasar Inpres Palu, petugas Pak Hasan, saldo Rp47.500 menjadi Rp45.500.",
@@ -265,7 +269,7 @@ export default function Landing() {
         .parkin-marquee { animation: parkin-marquee 32s linear infinite; }
         @media (min-width: 1024px) {
           .pay-step { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; }
-          .pay-phone { position: absolute; inset: 0; }
+          .pay-phone { position: absolute; inset: 0; display: flex; align-items: center; }
           .pay-phone:first-child { position: relative; }
         }
         @media (prefers-reduced-motion: reduce) { .parkin-marquee { animation: none; } }
@@ -469,7 +473,7 @@ export default function Landing() {
 
       {/* Cara kerja — cerita bayar yang di-pin, layar HP berganti mengikuti scroll */}
       <section id="cara-kerja" className="scroll-mt-20 overflow-hidden bg-white">
-        <div className="mx-auto max-w-6xl px-4 pb-16 pt-16 sm:px-6 lg:flex lg:min-h-screen lg:flex-col lg:justify-center lg:py-20">
+        <div className="mx-auto max-w-6xl px-4 pb-16 pt-16 sm:px-6 lg:flex lg:min-h-screen lg:flex-col lg:justify-center lg:pb-14 lg:pt-24">
           <div className="max-w-3xl">
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-teluk-600">Cara kerja · 30 detik di lapangan</p>
             <h2 className="mt-3 font-display text-4xl leading-tight sm:text-[2.75rem]">
@@ -502,7 +506,7 @@ export default function Landing() {
           </div>
 
           <div className="mt-10 grid gap-10 lg:mt-10 lg:grid-cols-12 lg:gap-12">
-            <div className="space-y-12 lg:relative lg:col-span-6 lg:min-h-[520px] lg:space-y-0">
+            <div className="space-y-12 lg:relative lg:col-span-6 lg:min-h-[500px] lg:space-y-0">
               {PAY_STEPS.map((step) => (
                 <article key={step.n} className="pay-step">
                   <p className="font-display text-6xl leading-none text-bomba-500/90 sm:text-7xl">{step.n}</p>
@@ -510,7 +514,7 @@ export default function Landing() {
                   <p className="mt-3 max-w-[56ch] leading-relaxed text-megalit-600">{step.body}</p>
                   <figure className="mx-auto mt-6 w-full max-w-[280px] lg:hidden">
                     <div className="overflow-hidden rounded-xl bg-megalit-50 p-1">
-                      <Image src={step.image} alt={step.imageAlt} width={330} height={407} className="h-auto w-full" />
+                      <Image src={step.image} alt={step.imageAlt} width={1080} height={step.imageHeight} className="h-auto w-full" />
                     </div>
                     <figcaption className="mt-3 text-center text-sm leading-relaxed text-megalit-600">
                       {step.imageCaption}
@@ -521,15 +525,12 @@ export default function Landing() {
             </div>
 
             <div className="hidden lg:col-span-6 lg:block">
-              <div className="relative mx-auto w-[320px] xl:w-[340px]">
+              <div className="relative mx-auto h-[484px] w-[260px]">
                 {PAY_STEPS.map((step) => (
                   <figure key={step.n} className="pay-phone">
                     <div className="overflow-hidden rounded-2xl bg-megalit-50 p-1.5 shadow-[0_24px_60px_-24px_rgba(43,34,24,0.45)]">
-                      <Image src={step.image} alt={step.imageAlt} width={330} height={407} className="h-auto w-full" />
+                      <Image src={step.image} alt={step.imageAlt} width={1080} height={step.imageHeight} className="h-auto w-full" />
                     </div>
-                    <figcaption className="mt-4 text-center text-sm leading-relaxed text-megalit-600">
-                      {step.imageCaption}
-                    </figcaption>
                   </figure>
                 ))}
               </div>
